@@ -1,0 +1,2474 @@
+Cryptography FAQ
+
+Overview
+Net Etiquette
+Basic Cryptology
+Mathematical Cryptology
+Product Ciphers
+Public Key Cryptography
+Digital Signatures
+Technical Miscellany
+Other Miscellany
+References
+
+Cryptography FAQ (01/10: Overview)
+
+Archive-name: cryptography-faq/part01
+Version: 1.0
+Last-modified: 94/01/11
+
+This is the first of ten parts of the sci.crypt FAQ. The parts are
+mostly independent, but you should read this part before the rest. We
+don't have the time to send out missing parts by mail, so don't ask.
+Notes such as ``[KAH67]'' refer to the reference list in the last part.
+
+Disclaimer: This document is the product of the Crypt Cabal, a secret
+society which serves the National Secu---uh, no. Seriously, we're the
+good guys, and we've done what we can to ensure the completeness and
+accuracy of this document, but in a field of military and commercial
+importance like cryptography you have to expect that some people and
+organizations consider their interests more important than open
+scientific discussion. Trust only what you can verify firsthand.
+And don't sue us.
+
+Many people have contributed to this FAQ. In alphabetical order:
+Eric Bach, Steve Bellovin, Dan Bernstein, Nelson Bolyard, Carl Ellison,
+Jim Gillogly, Mike Gleason, Doug Gwyn, Luke O'Connor, Tony Patti,
+William Setzer. We apologize for any omissions.
+
+If you have suggestions, comments, or criticism, please let the current
+editors know by sending e-mail to crypt-comments@math.ncsu.edu. Bear in
+mind that this is a work in progress; there are some questions which we
+should add but haven't gotten around to yet. In making comments on
+additions it is most helpful if you are as specific as possible and
+ideally even provide the actual exact text.
+
+Archives: sci.crypt has been archived since October 1991 on
+ripem.msu.edu, though these archives are available only to U.S. and
+Canadian users. Another site is rpub.cl.msu.edu in /pub/crypt/sci.crypt/
+from Jan 1992. Please contact crypt-comments@math.ncsu.edu if you know of
+other archives.
+
+The sections of this FAQ are available via anonymous FTP to rtfm.mit.edu
+as /pub/usenet/news.answers/cryptography-faq/part[xx]. The Cryptography
+FAQ is posted to the newsgroups sci.crypt, talk.politics.crypto,
+sci.answers, and news.answers every 21 days.
+
+The fields `Last-modified' and `Version' at the top of each part track
+revisions.
+
+Table of Contents
+-----------------
+
+1. Overview
+
+2. Net Etiquette
+2.1. What groups are around? What's a FAQ? Who am I? Why am I here?
+2.2. Do political discussions belong in sci.crypt?
+2.3. How do I present a new encryption scheme in sci.crypt?
+
+3. Basic Cryptology
+3.1. What is cryptology? Cryptography? Plaintext? Ciphertext? Encryption? Key?
+3.2. What references can I start with to learn cryptology?
+3.3. How does one go about cryptanalysis?
+3.4. What is a brute-force search and what is its cryptographic relevance?
+3.5. What are some properties satisfied by every strong cryptosystem?
+3.6. If a cryptosystem is theoretically unbreakable, then is it
+  guaranteed analysis-proof in practice?
+3.7. Why are many people still using cryptosystems that are
+  relatively easy to break?
+3.8. What are the basic types of cryptanalytic `attacks'?
+
+4. Mathematical Cryptology
+4.1. In mathematical terms, what is a private-key cryptosystem?
+4.2. What is an attack?
+4.3. What's the advantage of formulating all this mathematically?
+4.4. Why is the one-time pad secure?
+4.5. What's a ciphertext-only attack?
+4.6. What's a known-plaintext attack?
+4.7. What's a chosen-plaintext attack?
+4.8. In mathematical terms, what can you say about brute-force attacks?
+4.9. What's a key-guessing attack? What's entropy?
+
+5. Product Ciphers
+5.1. What is a product cipher?
+5.2. What makes a product cipher secure?
+5.3. What are some group-theoretic properties of product ciphers?
+5.4. What can be proven about the security of a product cipher?
+5.5. How are block ciphers used to encrypt data longer than the block size?
+5.6. Can symmetric block ciphers be used for message authentication?
+5.7. What exactly is DES?
+5.8. What is triple DES?
+5.9. What is differential cryptanalysis?
+5.10. How was NSA involved in the design of DES?
+5.11. Is DES available in software?
+5.12. Is DES available in hardware?
+5.13. Can DES be used to protect classified information?
+5.14. What are ECB, CBC, CFB, and OFB encryption?
+
+6. Public-Key Cryptography
+6.1. What is public-key cryptography?
+6.2. How does public-key cryptography solve cryptography's Catch-22?
+6.3. What is the role of the `trapdoor function' in public key schemes?
+6.4. What is the role of the `session key' in public key schemes?
+6.5. What's RSA?
+6.6. Is RSA secure?
+6.7. What's the difference between the RSA and Diffie-Hellman schemes?
+6.8. What is `authentication' and the `key distribution problem'?
+6.9. How fast can people factor numbers?
+6.10. What about other public-key cryptosystems?
+6.11. What is the `RSA Factoring Challenge?'
+
+7. Digital Signatures
+7.1. What is a one-way hash function?
+7.2. What is the difference between public, private, secret, shared, etc.?
+7.3. What are MD4 and MD5?
+7.4. What is Snefru?
+
+8. Technical Miscellany
+8.1. How do I recover from lost passwords in WordPerfect?
+8.2. How do I break a Vigenere (repeated-key) cipher?
+8.3. How do I send encrypted mail under UNIX? [PGP, RIPEM, PEM, ...]
+8.4. Is the UNIX crypt command secure?
+8.5. How do I use compression with encryption?
+8.6. Is there an unbreakable cipher?
+8.7. What does ``random'' mean in cryptography?
+8.8. What is the unicity point (a.k.a. unicity distance)?
+8.9. What is key management and why is it important?
+8.10. Can I use pseudo-random or chaotic numbers as a key stream?
+8.11. What is the correct frequency list for English letters?
+8.12. What is the Enigma?
+8.13. How do I shuffle cards?
+8.14. Can I foil S/W pirates by encrypting my CD-ROM?
+8.15. Can you do automatic cryptanalysis of simple ciphers?
+8.16. What is the coding system used by VCR+?
+
+9. Other Miscellany
+9.1. What is the National Security Agency (NSA)?
+9.2. What are the US export regulations?
+9.3. What is TEMPEST?
+9.4. What are the Beale Ciphers, and are they a hoax?
+9.5. What is the American Cryptogram Association, and how do I get in touch?
+9.6. Is RSA patented?
+9.7. What about the Voynich manuscript?
+
+10. References
+10.1. Books on history and classical methods
+10.2. Books on modern methods
+10.3. Survey articles
+10.4. Reference articles
+10.5. Journals, conference proceedings
+10.6. Other
+10.7. How may one obtain copies of FIPS and ANSI standards cited herein?
+10.8. Electronic sources
+10.9. RFCs (available from [FTPRF])
+10.10. Related newsgroups
+
+Cryptography FAQ (02/10: Net Etiquette)
+
+Archive-name: cryptography-faq/part02
+Last-modified: 94/06/13
+
+This is the second of ten parts of the sci.crypt FAQ. The parts are
+mostly independent, but you should read the first part before the rest.
+We don't have the time to send out missing parts by mail, so don't ask.
+Notes such as ``[KAH67]'' refer to the reference list in the last part.
+
+The sections of this FAQ are available via anonymous FTP to rtfm.mit.edu
+as /pub/usenet/news.answers/cryptography-faq/part[xx]. The Cryptography
+FAQ is posted to the newsgroups sci.crypt, talk.politics.crypto,
+sci.answers, and news.answers every 21 days.
+
+Contents:
+
+2.1. What groups are around? What's a FAQ? Who am I? Why am I here?
+2.2. Do political discussions belong in sci.crypt?
+2.3. How do I present a new encryption scheme in sci.crypt?
+
+2.1. What groups are around? What's a FAQ? Who am I? Why am I here?
+
+  Read news.announce.newusers and news.answers for a few weeks. Always
+  make sure to read a newsgroup for some time before you post to it.
+  You'll be amazed how often the same question can be asked in the same
+  newsgroup. After a month you'll have a much better sense of what the
+  readers want to see.
+
+2.2. Do political discussions belong in sci.crypt?
+
+  No. In fact some newsgroups (notably misc.legal.computing) were
+  created exactly so that political questions like ``Should RSA be
+  patented?'' don't get in the way of technical discussions. Many
+  sci.crypt readers also read misc.legal.computing, comp.org.eff.talk,
+  comp.patents, sci.math, comp.compression, talk.politics.crypto,
+  et al.; for the benefit of people who don't care about those other
+  topics, try to put your postings in the right group.
+
+  Questions about microfilm and smuggling and other non-cryptographic
+  ``spy stuff'' don't belong in sci.crypt either.
+
+2.3. How do I present a new encryption scheme in sci.crypt?
+
+  ``I just came up with this neat method of encryption. Here's some
+  ciphertext: FHDSIJOYW^&%$*#@OGBUJHKFSYUIRE. Is it strong?'' Without a
+  doubt questions like this are the most annoying traffic on sci.crypt.
+
+  If you have come up with an encryption scheme, providing some
+  ciphertext from it is not adequate. Nobody has ever been impressed by
+  random gibberish. Any new algorithm should be secure even if the
+  opponent knows the full algorithm (including how any message key is
+  distributed) and only the private key is kept secret. There are some
+  systematic and unsystematic ways to take reasonably long ciphertexts
+  and decrypt them even without prior knowledge of the algorithm, but
+  this is a time-consuming and possibly fruitless exercise which most
+  sci.crypt readers won't bother with.
+
+  So what do you do if you have a new encryption scheme? First of all,
+  find out if it's really new. Look through this FAQ for references and
+  related methods. Familiarize yourself with the literature and the
+  introductory textbooks.
+
+  When you can appreciate how your cryptosystem fits into the world at
+  large, try to break it yourself! You shouldn't waste the time of tens
+  of thousands of readers asking a question which you could have easily
+  answered on your own.
+
+  If you really think your system is secure, and you want to get some
+  reassurance from experts, you might try posting full details of your
+  system, including working code and a solid theoretical explanation, to
+  sci.crypt. (Keep in mind that the export of cryptography is regulated
+  in some areas.)
+
+  If you're lucky an expert might take some interest in what you posted.
+  You can encourage this by offering cash rewards---for instance, noted
+  cryptographer Ralph Merkle is offering $1000 to anyone who can break
+  Snefru-4---but there are no guarantees. If you don't have enough
+  experience, then most likely any experts who look at your system will
+  be able to find a flaw. If this happens, it's your responsibility to
+  consider the flaw and learn from it, rather than just add one more
+  layer of complication and come back for another round.
+
+  A different way to get your cryptosystem reviewed is to have the NSA
+  look at it. A full discussion of this procedure is outside the scope
+  of this FAQ.
+
+  Among professionals, a common rule of thumb is that if you want to
+  design a cryptosystem, you have to have experience as a cryptanalyst.
+
+Cryptography FAQ (03/10: Basic Cryptology)
+
+Archive-name: cryptography-faq/part03
+Last-modified: 93/10/10
+
+This is the third of ten parts of the sci.crypt FAQ. The parts are
+mostly independent, but you should read the first part before the rest.
+We don't have the time to send out missing parts by mail, so don't ask.
+Notes such as ``[KAH67]'' refer to the reference list in the last part.
+
+The sections of this FAQ are available via anonymous FTP to rtfm.mit.edu
+as /pub/usenet/news.answers/cryptography-faq/part[xx]. The Cryptography
+FAQ is posted to the newsgroups sci.crypt, talk.politics.crypto,
+sci.answers, and news.answers every 21 days.
+
+Contents:
+
+3.1. What is cryptology? Cryptography? Plaintext? Ciphertext? Encryption? Key?
+3.2. What references can I start with to learn cryptology?
+3.3. How does one go about cryptanalysis?
+3.4. What is a brute-force search and what is its cryptographic relevance?
+3.5. What are some properties satisfied by every strong cryptosystem?
+3.6. If a cryptosystem is theoretically unbreakable, then is it
+  guaranteed analysis-proof in practice?
+3.7. Why are many people still using cryptosystems that are
+  relatively easy to break?
+3.8. What are the basic types of cryptanalytic `attacks'?
+
+3.1. What is cryptology? Cryptography? Plaintext? Ciphertext? Encryption? Key?
+
+  The story begins: When Julius Caesar sent messages to his trusted
+  acquaintances, he didn't trust the messengers. So he replaced every A
+  by a D, every B by a E, and so on through the alphabet. Only someone
+  who knew the ``shift by 3'' rule could decipher his messages.
+
+  A cryptosystem or cipher system is a method of disguising messages so
+  that only certain people can see through the disguise. Cryptography is
+  the art of creating and using cryptosystems. Cryptanalysis is the art
+  of breaking cryptosystems---seeing through the disguise even when
+  you're not supposed to be able to. Cryptology is the study of both
+  cryptography and cryptanalysis.
+
+  The original message is called a plaintext. The disguised message is
+  called a ciphertext. Encryption means any procedure to convert
+  plaintext into ciphertext. Decryption means any procedure to convert
+  ciphertext into plaintext.
+
+  A cryptosystem is usually a whole collection of algorithms. The
+  algorithms are labelled; the labels are called keys. For instance,
+  Caesar probably used ``shift by n'' encryption for several different
+  values of n. It's natural to say that n is the key here.
+
+  The people who are supposed to be able to see through the disguise are
+  called recipients. Other people are enemies, opponents, interlopers,
+  eavesdroppers, or third parties.
+
+3.2. What references can I start with to learn cryptology?
+
+  For an introduction to technical matter, the survey articles given
+  in part 10 are the best place to begin as they are, in general,
+  concise, authored by competent people, and well written. However,
+  these articles are mostly concerned with cryptology as it has
+  developed in the last 50 years or so, and are more abstract and
+  mathematical than historical. The Codebreakers by Kahn [KAH67] is
+  encyclopedic in its history and technical detail of cryptology up
+  to the mid-60's.
+
+  Introductory cryptanalysis can be learned from Gaines [GAI44] or
+  Sinkov [SIN66]. This is recommended especially for people who want
+  to devise their own encryption algorithms since it is a common
+  mistake to try to make a system before knowing how to break one.
+
+  The selection of an algorithm for the DES drew the attention of
+  many public researchers to problems in cryptology. Consequently
+  several textbooks and books to serve as texts have appeared. The
+  book of Denning [DEN82] gives a good introduction to a broad range
+  of security including encryption algorithms, database security,
+  access control, and formal models of security. Similar comments
+  apply to the books of Price & Davies [PRI84] and Pfleeger [PFL89].
+
+  The books of Konheim [KON81] and Meyer & Matyas [MEY82] are quite
+  technical books. Both Konheim and Meyer were directly involved in
+  the development of DES, and both books give a thorough analysis of
+  DES. Konheim's book is quite mathematical, with detailed analyses
+  of many classical cryptosystems. Meyer and Matyas concentrate on
+  modern cryptographic methods, especially pertaining to key management
+  and the integration of security facilities into computer systems and
+  networks. For more recent documentation on related areas, try
+  G. Simmons in [SIM91].
+
+  The books of Rueppel [RUE86] and Koblitz [KOB89] concentrate on
+  the application of number theory and algebra to cryptography.
+
+3.3. How does one go about cryptanalysis?
+
+  Classical cryptanalysis involves an interesting combination of
+  analytical reasoning, application of mathematical tools, pattern
+  finding, patience, determination, and luck. The best available
+  textbooks on the subject are the Military Cryptanalytics series
+  [FRIE1]. It is clear that proficiency in cryptanalysis is, for
+  the most part, gained through the attempted solution of given
+  systems. Such experience is considered so valuable that some of the
+  cryptanalyses performed during WWII by the Allies are still
+  classified.
+
+  Modern public-key cryptanalysis may consist of factoring an integer,
+  or taking a discrete logarithm. These are not the traditional fare
+  of the cryptanalyst. Computational number theorists are some of the
+  most successful cryptanalysts against public key systems.
+
+3.4. What is a brute-force search and what is its cryptographic relevance?
+
+  In a nutshell: If f(x) = y and you know y and can compute f, you can
+  find x by trying every possible x. That's brute-force search.
+
+  Example: Say a cryptanalyst has found a plaintext and a corresponding
+  ciphertext, but doesn't know the key. He can simply try encrypting the
+  plaintext using each possible key, until the ciphertext matches---or
+  decrypting the ciphertext to match the plaintext, whichever is faster.
+  Every well-designed cryptosystem has such a large key space that this
+  brute-force search is impractical.
+
+  Advances in technology sometimes change what is considered
+  practical. For example, DES, which has been in use for over 10 years
+  now, has 2^56, or about 10^17, possible keys. A computation with
+  this many operations was certainly unlikely for most users in the
+  mid-70's. The situation is very different today given the dramatic
+  decrease in cost per processor operation. Massively parallel
+  machines threaten the security of DES against brute force search.
+  Some scenarios are described by Garron and Outerbridge [GAR91].
+
+  One phase of a more sophisticated cryptanalysis may involve a
+  brute-force search of some manageably small space of possibilities.
+
+3.5. What are some properties satisfied by every strong cryptosystem?
+
+  The security of a strong system resides with the secrecy of the key
+  rather than with the supposed secrecy of the algorithm.
+
+  A strong cryptosystem has a large keyspace, as mentioned above. It
+  has a reasonably large unicity distance; see question 8.8.
+
+  A strong cryptosystem will certainly produce ciphertext which appears
+  random to all standard statistical tests (see, for example, [CAE90]).
+
+  A strong cryptosystem will resist all known previous attacks. A
+  system which has never been subjected to scrutiny is suspect.
+
+  If a system passes all the tests mentioned above, is it necessarily
+  strong? Certainly not. Many weak cryptosystems looked good at first.
+  However, sometimes it is possible to show that a cryptosystem is
+  strong by mathematical proof. ``If Joe can break this system, then
+  he can also solve the well-known difficult problem of factoring
+  integers.'' See part 6. Failing that, it's a crap shoot.
+
+3.6. If a cryptosystem is theoretically unbreakable, then is it
+  guaranteed analysis-proof in practice?
+
+  Cryptanalytic methods include what is known as ``practical
+  cryptanalysis'': the enemy doesn't have to just stare at your
+  ciphertext until he figures out the plaintext. For instance, he might
+  assume ``cribs''---stretches of probable plaintext. If the crib is
+  correct then he might be able to deduce the key and then decipher the
+  rest of the message. Or he might exploit ``isologs''---the same
+  plaintext enciphered in several cryptosystems or several keys. Thus
+  he might obtain solutions even when cryptanalytic theory says he
+  doesn't have a chance.
+
+  Sometimes, cryptosystems malfunction or are misused. The one-time pad,
+  for example, loses all security if it is used more than once! Even
+  chosen-plaintext attacks, where the enemy somehow feeds plaintext into
+  the encryptor until he can deduce the key, have been employed. See
+  [KAH67].
+
+3.7. Why are many people still using cryptosystems that are
+  relatively easy to break?
+
+  Some don't know any better. Often amateurs think they can design
+  secure systems, and are not aware of what an expert cryptanalyst
+  could do. And sometimes there is insufficient motivation for anybody
+  to invest the work needed to crack a system.
+
+3.8. What are the basic types of cryptanalytic `attacks'?
+
+  A standard cryptanalytic attack is to know some plaintext matching a
+  given piece of ciphertext and try to determine the key which maps one
+  to the other.  This plaintext can be known because it is standard (a
+  standard greeting, a known header or trailer, ...) or because it is
+  guessed.  If text is guessed to be in a message, its position is probably
+  not known, but a message is usually short enough that the cryptanalyst
+  can assume the known plaintext is in each possible position and do
+  attacks for each case in parallel.  In this case, the known plaintext can
+  be something so common that it is almost guaranteed to be in a message.
+
+  A strong encryption algorithm will be unbreakable not only under known
+  plaintext (assuming the enemy knows all the plaintext for a given
+  ciphertext) but also under "adaptive chosen plaintext" -- an attack
+  making life much easier for the cryptanalyst.  In this attack, the enemy
+  gets to choose what plaintext to use and gets to do this over and over,
+  choosing the plaintext for round N+1 only after analyzing the result of
+  round N.
+
+  For example, as far as we know, DES is reasonably strong even under an
+  adaptive chosen plaintext attack (the attack Biham and Shamir used).  Of
+  course, we do not have access to the secrets of government cryptanalytic
+  services.  Still, it is the working assumption that DES is reasonably
+  strong under known plaintext and triple-DES is very strong under all
+  attacks.
+
+  To summarize, the basic types of cryptanalytic attacks in order of
+  difficulty for the attacker, hardest first, are:
+
+  cyphertext only: the attacker has only the encoded message from which
+    to determine the plaintext, with no knowledge whatsoever of the
+    latter.
+
+    A cyphertext only attack is usually presumed to be possible, and
+    a code's resistance to it is considered the basis of its
+    cryptographic security.
+
+  known plaintext: the attacker has the plaintext and corresponding
+    cyphertext of an arbitrary message not of his choosing. The
+    particular message of the sender's is said to be `compromised'.
+
+    In some systems, one known cyphertext-plaintext pair will
+    compromise the overall system, both prior and subsequent
+    transmissions, and resistance to this is characteristic of a
+    secure code.
+
+  Under the following attacks, the attacker has the far less likely
+  or plausible ability to `trick' the sender into encrypting or
+  decrypting arbitrary plaintexts or cyphertexts. Codes that resist
+  these attacks are considered to have the utmost security.
+
+  chosen plaintext: the attacker has the capability to find the
+    cyphertext corresponding to an arbitrary plaintext message of his
+    choosing.
+
+  chosen cyphertext: the attacker can choose arbitrary cyphertext and
+    find the corresponding decrypted plaintext. This attack can show
+    in public key systems, where it may reveal the private key.
+
+  adaptive chosen plaintext: the attacker can determine the cyphertext
+    of chosen plaintexts in an interactive or iterative process based on
+    previous results. This is the general name for a method of attacking
+    product ciphers called `differential cryptanalysis'.
+
+  The next part of the FAQ gives the mathematical detail behind the
+  various types of cryptoanalytic attacks.
+
+Cryptography FAQ (04/10: Mathematical Cryptology)
+
+Archive-name: cryptography-faq/part04
+Last-modified: 93/10/10
+
+This is the fourth of ten parts of the sci.crypt FAQ. The parts are
+mostly independent, but you should read the first part before the rest.
+We don't have the time to send out missing parts by mail, so don't ask.
+Notes such as ``[KAH67]'' refer to the reference list in the last part.
+
+The sections of this FAQ are available via anonymous FTP to rtfm.mit.edu
+as /pub/usenet/news.answers/cryptography-faq/part[xx]. The Cryptography
+FAQ is posted to the newsgroups sci.crypt, talk.politics.crypto,
+sci.answers, and news.answers every 21 days.
+
+Contents:
+
+4.1. In mathematical terms, what is a private-key cryptosystem?
+4.2. What is an attack?
+4.3. What's the advantage of formulating all this mathematically?
+4.4. Why is the one-time pad secure?
+4.5. What's a ciphertext-only attack?
+4.6. What's a known-plaintext attack?
+4.7. What's a chosen-plaintext attack?
+4.8. In mathematical terms, what can you say about brute-force attacks?
+4.9. What's a key-guessing attack? What's entropy?
+
+Reader, beware: This section is highly mathematical. Well, maybe not
+_highly_ mathematical, but it's got a bunch of symbols and scary-looking
+formulas. You have been warned.
+
+4.1. In mathematical terms, what is a private-key cryptosystem?
+
+  A private-key cryptosystem consists of an encryption system E and a
+  decryption system D. The encryption system E is a collection of
+  functions E_K, indexed by ``keys'' K, mapping some set of
+  ``plaintexts'' P to some set of ``ciphertexts'' C. Similarly the
+  decryption system D is a collection of functions D_K such that
+  D_K(E_K(P)) = P for every plaintext P. That is, succesful decryption
+  of ciphertext into plaintext is accomplished using the same key
+  (index) as was used for the corresponding encryption of plaintext
+  into ciphertext. Such systems, where the same key value is used to
+  encrypt and decrypt, are also known as ``symmetric'' cryptoystems.
+
+4.2. What is an attack?
+
+  In intuitive terms a (passive) attack on a cryptosystem is any method
+  of starting with some information about plaintexts and their
+  corresponding ciphertexts under some (unknown) key, and figuring out
+  more information about the plaintexts. It's possible to state
+  mathematically what this means. Here we go.
+
+  Fix functions F, G, and H of n variables. Fix an encryption system E,
+  and fix a distribution of plaintexts and keys.
+
+  An attack on E using G assuming F giving H with probability p is an
+  algorithm A with a pair f, g of inputs and one output h, such that
+  there is probability p of computing h = H(P_1,...,P_n), if we have
+  f = F(P_1,...,P_n) and g = G(E_K(P_1),...,E_K(P_n)). Note that this
+  probability depends on the distribution of the vector (K,P_1,...,P_n).
+
+  The attack is trivial (or ``pointless'') if there is probability at
+  least p of computing h = H(P_1,...,P_n) if f = F(P_1,...,P_n) and
+  g = G(C_1,...,C_n). Here C_1,...,C_n range uniformly over the possible
+  ciphertexts, and have no particular relation to P_1,...,P_n. In other
+  words, an attack is trivial if it doesn't actually use the encryptions
+  E_K(P_1),...,E_K(P_n).
+
+  An attack is called ``one-ciphertext'' if n = 1, ``two-ciphertext'' if
+  n = 2, and so on.
+
+4.3. What's the advantage of formulating all this mathematically?
+
+  In basic cryptology you can never prove that a cryptosystem is secure.
+  Read part 3: we keep saying ``a strong cryptosystem must have this
+  property, but having this property is no guarantee that a cryptosystem
+  is strong!''
+
+  In contrast, the purpose of mathematical cryptology is to precisely
+  formulate and, if possible, prove the statement that a cryptosystem is
+  strong. We say, for example, that a cryptosystem is secure against
+  all (passive) attacks if any nontrivial attack against the system (as
+  defined above) is too slow to be practical. If we can prove this
+  statement then we have confidence that our cryptosystem will resist
+  any (passive) cryptanalytic technique. If we can reduce this statement
+  to some well-known unsolved problem then we still have confidence that
+  the cryptosystem isn't easy to break.
+
+  Other parts of cryptology are also amenable to mathematical
+  definition. Again the point is to explicitly identify what assumptions
+  we're making and prove that they produce the desired results. We can
+  figure out what it means for a particular cryptosystem to be used
+  properly: it just means that the assumptions are valid.
+
+  The same methodology is useful for cryptanalysis too. The cryptanalyst
+  can take advantage of incorrect assumptions. Often he can try to
+  construct a proof of security for a system, see where the proof fails,
+  and use these failures as the starting points for his analysis.
+
+4.4. Why is the one-time pad secure?
+
+  By definition, the one-time pad is a cryptosystem where the
+  plaintexts, ciphertexts, and keys are all strings (say byte strings)
+  of some length m, and E_K(P) is just the sum (let's say the exclusive
+  or) of K and P.
+
+  It is easy to prove mathematically that there are _no_ nontrivial
+  single-ciphertext attacks on the one-time pad, assuming a uniform
+  distribution of keys. Note that we don't have to assume a uniform
+  distribution of plaintexts. (Here's the proof: Let A be an attack,
+  i.e., an algorithm taking two inputs f, g and producing one output h,
+  with some probability p that h = H(P) whenever f = F(P) and
+  g = G(E_K(P)) (i.e., g = G(K + P)). Then, because the distribution of
+  K is uniform and independent of P, the distribution of K + P must also
+  be uniform and independent of P. But also the distribution of C is
+  uniform and independent of P. Hence there is probability exactly p
+  that h = H(P) whenever f = F(P) and g = G(C), over all P and C. Thus
+  a fortiori A is trivial.)
+
+  On the other hand the one-time pad is _not_ secure if a key K is used
+  for more than one plaintext: i.e., there are nontrivial
+  multiple-ciphertext attacks. So to be properly used a key K must be
+  thrown away after one encryption. The key is also called a ``pad'';
+  this explains the name ``one-time pad.''
+
+  Also, a computer-based pseudo-random number generator does _not_
+  qualify as a true one-time pad because of its deterministic
+  properties. See `pseudo-random number generators as key stream'.
+
+4.5. What's a ciphertext-only attack?
+
+  In the notation above, a ciphertext-only attack is one where F is
+  constant. Given only some information G(E_K(P_1),...,E_K(P_n)) about
+  n ciphertexts, the attack has to have some chance of producing some
+  information H(P_1,...,P_n) about the plaintexts. The attack is trivial
+  if it has just as good a chance of producing H(P_1,...,P_n) when given
+  G(C_1,...,C_n) for random C_1,...,C_n.
+
+  For example, say G(C) = C, and say H(P) is the first bit of P. We can
+  easily write down an attack---the ``guessing attack,'' which simply
+  guesses that H(P) is 1. This attack is trivial because it doesn't use
+  the ciphertext: it has a fifty-fifty chance of guessing correctly no
+  matter what. On the other hand there is an attack on RSA which
+  produces one bit of information about P, with 100% success, using C.
+  If it is fed a random C then the success rate drops to 50%. So this is
+  a nontrivial attack.
+
+4.6. What's a known-plaintext attack?
+
+  The classic known-plaintext attack has F(P_1,P_2) = P_1,
+  G(C_1,C_2) = (C_1,C_2), and H(P_1,P_2) depending only on P_2.
+  In other words, given two ciphertexts C_1 and C_2 and one decryption
+  P_1, the known-plaintext attack should produce information about the
+  other decryption P_2.
+
+  Note that known-plaintext attacks are often defined in the literature
+  as producing information about the key, but this is pointless: the
+  cryptanalyst generally cares about the key only insofar as it lets him
+  decrypt further messages.
+
+4.7. What's a chosen-plaintext attack?
+
+  A chosen-plaintext attack is the first of an increasingly impractical
+  series of _active_ attacks on a cryptosystem: attacks where the
+  cryptanalyst feeds data to the encryptor. These attacks don't fit into
+  our model of passive attacks explained above. Anyway, a
+  chosen-plaintext attack lets the cryptanalyst choose a plaintext and
+  look at the corresponding ciphertext, then repeat until he has figured
+  out how to decrypt any message. More absurd examples of this sort of
+  attack are the ``chosen-key attack'' and ``chosen-system attack.''
+
+  A much more important form of active attack is a message corruption
+  attack, where the attacker tries to change the ciphertext in such a
+  way as to make a useful change in the plaintext.
+
+  There are many easy ways to throw kinks into all of these attacks:
+  for instance, automatically encrypting any plaintext P as
+  T,E_K(h(T+R+P),R,P), where T is a time-key (sequence number) chosen anew
+  for each message, R is a random number, and h is a one-way hash
+  function. Here comma means concatenation and plus means exclusive-or.
+
+4.8. In mathematical terms, what can you say about brute-force attacks?
+
+  Consider the following known-plaintext attack. We are given some
+  plaintexts P_1,...,P_{n-1} and ciphertexts C_1,...,C_{n-1}. We're
+  also given a ciphertext C_n. We run through every key K. When we find
+  K such that E_K(P_i) = C_i for every i < n, we print D_K(C_n).
+
+  If n is big enough that only one key works, this attack will succeed
+  on valid inputs all the time, while it will produce correct results
+  only once in a blue moon for random inputs. Thus this is a nontrivial
+  attack. Its only problem is that it is very slow if there are many
+  possible keys.
+
+4.9. What's a key-guessing attack? What's entropy?
+
+  Say somebody is using the one-time pad---but isn't choosing keys
+  randomly and uniformly from all m-bit messages, as he was supposed to
+  for our security proof. In fact say he's known to prefer keys which
+  are English words. Then a cryptanalyst can run through all English
+  words as possible keys. This attack will often succeed, and it's much
+  faster than a brute-force search of the entire keyspace.
+
+  We can measure how bad a key distribution is by calculating its
+  entropy. This number E is the number of ``real bits of information''
+  of the key: a cryptanalyst will typically happen across the key within
+  2^E guesses. E is defined as the sum of -p_K log_2 p_K, where p_K is
+  the probability of key K.
+
+Cryptography FAQ (05/10: Product Ciphers)
+
+Archive-name: cryptography-faq/part05
+Last-modified: 94/06/07
+
+This is the fifth of ten parts of the sci.crypt FAQ. The parts are
+mostly independent, but you should read the first part before the rest.
+We don't have the time to send out missing parts by mail, so don't ask.
+Notes such as ``[KAH67]'' refer to the reference list in the last part.
+
+The sections of this FAQ are available via anonymous FTP to rtfm.mit.edu
+as /pub/usenet/news.answers/cryptography-faq/part[xx]. The Cryptography
+FAQ is posted to the newsgroups sci.crypt, talk.politics.crypto,
+sci.answers, and news.answers every 21 days.
+
+Contents:
+
+5.1. What is a product cipher?
+5.2. What makes a product cipher secure?
+5.3. What are some group-theoretic properties of product ciphers?
+5.4. What can be proven about the security of a product cipher?
+5.5. How are block ciphers used to encrypt data longer than the block size?
+5.6. Can symmetric block ciphers be used for message authentication?
+5.7. What exactly is DES?
+5.8. What is triple DES?
+5.9. What is differential cryptanalysis?
+5.10. How was NSA involved in the design of DES?
+5.11. Is DES available in software?
+5.12. Is DES available in hardware?
+5.13. Can DES be used to protect classified information?
+5.14. What are ECB, CBC, CFB, OFB, and PCBC encryption?
+
+5.1. What is a product cipher?
+
+  A product cipher is a block cipher that iterates several weak
+  operations such as substitution, transposition, modular
+  addition/multiplication, and linear transformation. (A ``block
+  cipher'' just means a cipher that encrypts a block of data---8 bytes,
+  say---all at once, then goes on to the next block.) The notion of
+  product ciphers is due to Shannon [SHA49]. Examples of modern
+  product ciphers include LUCIFER [SOR84], DES [NBS77], SP-networks
+  [KAM78], LOKI [BRO90], FEAL [SHI84], PES [LAI90], Khufu and Khafre
+  [ME91a]. The so-called Feistel ciphers are a class of product
+  ciphers which operate on one half of the ciphertext at each round,
+  and then swap the ciphertext halves after each round. LUCIFER,
+  DES, LOKI, and FEAL are examples of Feistel ciphers.
+
+  The following table compares the main parameters of several product
+  ciphers:
+
+  cipher   |   block length   |   key bits   |   number of rounds
+  LUCIFER          128               128                16
+  DES               64                56                16
+  LOKI              64                64                16
+  FEAL              64               128            2^x, x >= 5
+  PES               64               128                 8
+
+5.2. What makes a product cipher secure?
+
+  Nobody knows how to prove mathematically that a product cipher is
+  completely secure. So in practice one begins by demonstrating that the
+  cipher ``looks highly random''. For example, the cipher must be
+  nonlinear, and it must produce ciphertext which functionally depends
+  on every bit of the plaintext and the key. Meyer [MEY78] has shown
+  that at least 5 rounds of DES are required to guarantee such a
+  dependence. In this sense a product cipher should act as a ``mixing''
+  function which combines the plaintext, key, and ciphertext in a
+  complex nonlinear fashion.
+
+  The fixed per-round substitutions of the product cipher are
+  referred to as S-boxes. For example, LUCIFER has 2 S-boxes, and DES
+  has 8 S-boxes. The nonlinearity of a product cipher reduces to a
+  careful design of these S-boxes. A list of partial design criteria
+  for the S-boxes of DES, which apply to S-boxes in general, may be
+  found in Brown [BRO89] and Brickell et al. [BRI86].
+
+5.3. What are some group-theoretic properties of product ciphers?
+
+  Let E be a product cipher that maps N-bit blocks to N-bit blocks.
+  Let E_K(X) be the encryption of X under key K. Then, for any fixed K,
+  the map sending X to E_K(X) is a permutation of the set of N-bit
+  blocks. Denote this permutation by P_K. The set of all N-bit
+  permutations is called the symmetric group and is written S_{2^N}.
+  The collection of all these permutations P_K, where K ranges over all
+  possible keys, is denoted E(S_{2^N}). If E were a random mapping from
+  plaintexts to ciphertexts then we would expect E(S_{2^N}) to generate
+  a large subset of S_{2^N}.
+
+  Coppersmith and Grossman [COP74] have shown that a very simple
+  product cipher can generate the alternating group A_{2^N} given a
+  sufficient number of rounds. (The alternating group is half of the
+  symmetric group: it consists of all ``even'' permutations, i.e., all
+  permutations which can be written as an even number of swaps.)
+  Even and Goldreich [EVE83] were able to extend these results to show
+  that Feistel ciphers can generate A_{2^N}, given a sufficient number
+  of rounds.
+
+  The security of multiple encipherment also depends on the
+  group-theoretic properties of a cipher. Multiple encipherment is an
+  extension over single encipherment if for keys K1, K2 there does
+  not exist a third key K3 such that
+
+  E_K2(E_K1(X)) == E_(K3)(X)                (**)
+
+  which indicates that encrypting twice with two independent keys
+  K1, K2 is equal to a single encryption under the third key K3. If
+  for every K1, K2 there exists a K3 such that eq. (**) is true then
+  we say that E is a group.
+
+  This question of whether DES is a group under this definition was
+  extensively studied by Sherman, Kaliski, and Rivest [SHE88]. In their
+  paper they give strong evidence for the hypothesis that DES is not a
+  group. In fact DES is not a group [CAM93].
+
+5.4. What can be proven about the security of a product cipher?
+
+  Recall from above that P_K is a permutation produced by E under
+  some key K. The goal of the designer of E is to ensure that P_K
+  appears to be a random element of S_{2^N}, the symmetric group.
+  Let R be an element of S_{2^N} selected randomly. We will say that P_K
+  and R are indistinguishable if an observer given P_K and R in some
+  order cannot distinguish between these two permutations in polynomial
+  time. That is, with time bounded resources, the observer cannot
+  determine which of the permutations is produced by E: the optimal
+  decision is no better than simply guessing.
+
+  Luby and Rackoff [LUB88] have shown that a class of Feistel ciphers
+  are secure in this sense when the round mapping is replaced by
+  random boolean functions.
+
+5.5. How are block ciphers used to encrypt data longer than the block size?
+
+  There are four standard ``modes of operation'' (and numerous non-standard
+  ones as well). The standard modes of operation are defined in the U.S.
+  Department of Commerce Federal Information Processing Standard (FIPS) 81,
+  published in 1980. See the question about ECB below for more details.
+
+  Although they are defined for the DES block cipher, the ``modes of
+  operation'' can be used with any block cipher.
+
+5.6. Can symmetric block ciphers be used for message authentication?
+
+  You may use a symmetric cryptosystem block cipher to prove to yourself
+  that you generated a message, and that the message wasn't altered
+  after you created it. But you cannot prove these things to anyone else
+  without revealing your key. Thereafter you cannot prove anything about
+  messages authenticated with that key.
+
+  See ANSI X3.106-1983 and FIPS 113 (1985) for a standard method of message
+  authentication using DES.
+
+5.7. What exactly is DES?
+
+  DES is the U.S. Government's Data Encryption Standard, a product
+  cipher that operates on 64-bit blocks of data, using a 56-bit key.
+
+  It is defined in FIPS 46-1 (1988) [which supersedes FIPS 46 (1977)].
+  FIPS are Federal Information Processing Standards published by NTIS.
+  DES is identical to the ANSI standard Data Encryption Algorithm (DEA)
+  defined in ANSI X3.92-1981.
+
+5.8. What is triple DES?
+
+  Triple DES is a product cipher which, like DES, operates on 64-bit
+  data blocks. There are several forms, each of which uses the DES
+  cipher 3 times. Some forms use two 56-bit keys, some use three.
+  The DES ``modes of operation'' may also be used with triple-DES.
+
+  Some people refer to E(K1,D(K2,E(K1,x))) as triple-DES.
+
+  This method is defined in chapter 7.2 of the ANSI standard X9.17-1985
+  ``Financial Institution Key Management'' and is intended for use in
+  encrypting DES keys and IVs for ``Automated Key Distribution''. Its
+  formal name is ``Encryption and Decryption of a Single Key by a Key
+  Pair'', but it is referenced in other standards documents as EDE.
+
+  That standard says (section 7.2.1): ``Key encrypting keys may be a single
+  DEA key or a DEA key pair. Key pairs shoud be used where additional
+  security is needed (e.g., the data protected by the key(s) has a long
+  security life). A key pair shall not be encrypted or decrypted using a
+  single key.''
+
+  Others use the term ``triple-DES'' for E(K1,D(K2,E(K3,x))) or
+  E(K1,E(K2,E(K3,x))).
+
+  All of these methods are defined only for ECB mode of operation.  The
+  security of various methods of achieving other modes of operation (such as
+  CBC) is under study at the moment.  For now, it should be assumed that
+  other modes be defined as they are today, but with E(K1,D(K2,E(K1,x))) as
+  the block cipher within the feedback mechanism creating the mode.
+
+  One of us (Ellison) has long advocated triple DES use in the form
+
+    E(K1, Tran( E(K2, Tran( E(K3, Compress( x )))))),
+
+  where each DES instance has its own key and IV (for CBC mode) and Tran is
+  a large-block transposition program. Tran is available from [FTPTR].  This
+  claims to gain security by diffusing single bit changes over a much larger
+  block (Tran's block size).  Other compositions of weak ciphers with DES
+  are possible.  For example, one could use:
+
+   E(K1, Prngxor(K4, Tran( E(K2, Tran( Prngxor(K5, E(K3, Compress( x )))))))),
+
+  where Prngxor() [FTPPX] is a simple stream cipher driven from a long-period
+  pseudo-random number generator (PRNG), to make sure that all plaintext or
+  ciphertext patterns are hidden while permitting the use of ECB mode for DES
+  (since there are certain weaknesses in the use of inner CBC loops for
+  multiple-DES, under some attacks, and we do not yet know if these show up
+  under composition with Tran()).
+
+5.9. What is differential cryptanalysis?
+
+  Differential cryptanalysis is a statistical attack that can be
+  applied to any iterated mapping (i.e., any mapping which is based on
+  a repeated round function). The method was recently popularized by
+  Biham and Shamir [BIH91], but Coppersmith has remarked that the
+  S-boxes of DES were optimized against this attack some 20 years ago.
+  This method has proved effective against several product ciphers,
+  notably FEAL [BI91a].
+
+  Differential cryptanalysis is based on observing a large number of
+  ciphertexts Y, Y' whose corresponding plaintexts X, X' satisfy a
+  known difference D = X+X', where + is componentwise XOR. In the
+  basic Biham-Shamir attack, 2^{47} such plaintext pairs are required
+  to determine the key for DES. Substantially fewer pairs are required
+  if DES is truncated to 6 or 8 rounds. In these cases, the actual key
+  can be recovered in a matter of minutes using a few thousand pairs.
+  For full DES this attack is impractical because it requires so many
+  known plaintexts.
+
+  The work of Biham and Shamir on DES revealed several startling
+  observations on the algorithm. Most importantly, if the key
+  schedule was removed from DES and a 16*48 = 768-bit key was used,
+  the key could be recovered in less than 2^{64} steps. Thus
+  independent subkeys do not add substantial security to DES.
+  Further, the S-boxes of DES are extremely sensitive in that
+  changing even single entries in these tables yields significant
+  improvement in the differential attack.
+
+  Adi Shamir is quoted to say (NYTimes Oct 13 1991), ``I would say
+  that, contrary to what some people believe, there is no evidence
+  of tampering with the DES so that the basic design was weakened.''
+
+5.10. How was NSA involved in the design of DES?
+
+  According to Kinnucan [KIN78], Tuchman, a member of the group that
+  developed DES at IBM is quoted as saying, ``We developed the DES
+  algorithm entirely within IBM using IBMers. The NSA did not
+  dictate a single wire!'' Tuchman and Meyer (another developer of
+  DES) spent a year breaking ciphers and finding weaknesses in
+  Lucifer. They then spent two years strengthening Lucifer. ``Their
+  basic approach was to look for strong substitution, permutation,
+  and key scheduling functions ... IBM has classified the notes
+  containing the selection criteria at the request of the NSA....
+  `The NSA told us we had inadvertently reinvented some of the deep
+  secrets it uses to make its own algorithms,' explains Tuchman.''
+
+  On the other hand, a document called ``Involvement of the NSA in
+  the development of DES: unclassified summary of the United States
+  Select Committee on Intelligence'', printed in the IEEE
+  Communications Magazine, p53-55, 1978, states: ``In the development
+  of DES, NSA convinced IBM that a reduced keysize was sufficient;
+  indirectly assisted in the development of the S-box structures; and
+  certified that the final DES algorithm was, to the best of their
+  knowledge, free from any statistical or mathematical weakness.''
+
+  Clearly the key size was reduced at the insistence of the NSA.
+  The article further states that the NSA did not tamper with the
+  algorithm itself, just the parameters, which in some sense
+  resolves the apparent conflict in the remarks of Meyer and Tuchman
+  presented above.
+
+5.11. Is DES available in software?
+
+  Several people have made DES code available via ftp (see part 10 for
+  pathnames): Stig Ostholm [FTPSO]; BSD [FTPBK]; Eric Young [FTPEY];
+  Dennis Furguson [FTPDF]; Mark Riordan [FTPMR]; Phil Karn [FTPPK].
+  A Pascal listing of DES is also given in Patterson [PAT87]. Antti
+  Louko <alo@kampi.hut.fi> has written a version of DES with BigNum
+  packages in [FTPAL].
+
+  FIPS 46-1 says ``The algorithm specified in this standard is to be
+  implemented ... using hardware (not software) technology. ...
+  Software implementations in general purpose computers are not in
+  compliance with this standard.''  Despite this, software
+  implementations abound, and are used by government agencies.
+
+5.12. Is DES available in hardware?
+
+  The following paragraphs are quoted from messages sent to the editors.
+  We don't vouch for the quality or even existence of the products.
+
+  Christian Franke, franke@informatik.rwth-aachen.de, says: ``1.
+  Cryptech CRY12C102: 22.5Mbit/s according to Data Sheet, with 32 Bit
+  interface. We use this one, because it was the only one available when
+  we started the project. No problems !  2. Pijnenburg PCC100: 20Mbit/s
+  according to Data Sheet. Address: PIJNENBURG B.V., Boxtelswweg 26,
+  NL-5261 NE Vught, The Netherlands. 3. INFOSYS DES Chip (Germany):
+  S-Boxes must be loaded by software. So you can modify the Algorithm.
+  Sorry, I don't have the data sheet handy. Please E-Mail me if you need
+  further information.''
+
+  Marcus J Ranum, mjr@tis.com, says: ``SuperCrypt'' 100Mb/sec and faster
+  DES and Proprietary Storage for 16 56-bit keys Key stream generator
+  Integrated hardware DES3 procedure Extended mode with 112 bit keys;
+  Computer Elektronik Infosys; 512-A Herndon Parkway,; Herndon, VA
+  22070; 800-322-3464.
+
+  Tim Hember, thember@gandalf.ca, says: Newbridge Microsystems sells
+  an AM9568 compatible DES chip that operates at 25MHz, performs a
+  round of encryption in 18 clocks, has a three-stage pipeline,
+  supports ECB, CBC, CFB-8 and >>> CFB-1 <<<<. Further it is very
+  reasonable priced as opposed to other high-end DES chips. Call
+  Newbridge Microsystems, Ottawa, 613-592-0714. (... there are no
+  import/export issues with Canada and the US). If you require custom
+  DES or Public Key ICs then Timestep Engineering developed
+  Newbridge's crypto chips and ICs for other commercial and
+  educational establishments. They can be reached at 613-820-0024.
+
+5.13. Can DES be used to protect classified information?
+
+  DES is not intended to protect classified data. FIPS 46-1 says:
+  ``This standard will be used by Federal departments and agencies for
+  the cryptographic protection of computer data when the following
+  conditions apply: 1. ... cryptographic protection is required; and
+  2. the data is not classified according to the National Security Act
+  of 1947, as amended, or the Atomic Energy Act of 1954, as amended.''
+
+5.14. What are ECB, CBC, CFB, OFB, and PCBC encryption?
+
+  These are methods for using block ciphers, such as DES, to encrypt
+  messages, files, and blocks of data, known as ``modes of operation.''
+  Four ``modes of operation'' are defined in FIPS 81 (1980 December 2),
+  and also in ANSI X3.106-1983.
+
+  FIPS 81 specifies that when 7-bit ASCII data is sent in octets, the
+  unused most-significant bit is to be set to 1.
+
+  FIPS 81 also specifies the padding for short blocks.
+
+  The four FIPS/ANSI standard DES modes of operation are:
+        Electronic Code Book  (ECB),
+        Cipher Block Chaining (CBC),
+        K-bit Cipher FeedBack (CFB), and
+        K-bit Output FeedBack (OFB).
+
+  All four of the ANSI/FIPS modes have very little "error extension".
+  For a single bit error in the cipherstream, none of them produce an
+  error burst in the decrypted output stream of longer than 128 bits.
+
+  A fifth mode of operation, used in Kerberos and elsewhere but not
+  defined in any standard, is error-Propagating Cipher Block Chaining
+  (PCBC).  Unlike the 4 standard modes, PCBC extends or propagates the
+  effect of a single bit error in the cipherstream throughout remainder
+  of the decrypted textstream after the point of error.
+
+  These 5 methods are explained below in a C-language-like notation.
+
+  Some symbols:
+
+  P[n]  The n'th block of plaintext, input to encryption, output from
+        decryption. Size of block determined by the mode.
+
+  C[n]  The n'th block of ciphertext, output from encryption, input to
+        decryption. Size of block determined by the mode.
+
+  E(m)  The DES encryption function, performed on 64-bit block m, using
+        the 16-key schedule derived from some 56-bit key.
+
+  D(m)  The DES decryption function, performed on 64-bit block m, using
+        the same key schedule as in E(m), except that the 16 keys
+        in the schedule are used in the opposite order as in E(m).
+
+  IV    A 64-bit ``initialization vector'', a secret value which, along with
+        the key, is shared by both encryptor and decryptor.
+
+  I[n]  The n'th value of a 64-bit variable, used in some modes.
+  R[n]  The n'th value of a 64-bit variable, used in some modes.
+
+  LSB(m,k) The k least significant (right-most) bits of m.
+        e.g. m & ((1 << k) - 1)
+
+  MSB(m,k) The k most significant (left-most) bits of m.
+        e.g. (m >> (64-k)) & ((1 << k) - 1)
+
+  = ^ << >> &  operators as defined in the c langage.
+
+  Electronic Code Book (ECB):
+
+          P[n] and C[n] are each 64-bits long.
+
+          Encryption:                   Decryption:
+          C[n] = E(P[n])                P[n] = D(C[n])
+
+  Cipher Block Chaining (CBC):
+
+          P[n] and C[n] are each 64-bits long.
+
+          Encryption:                   Decryption:
+          C[0] = E(P[0]^IV)             P[0] = D(C[0])^IV
+  (n>0)   C[n] = E(P[n]^C[n-1])         P[n] = D(C[n])^C[n-1]
+
+  Propagating Cipher Block Chaining (PCBC):
+
+          P[n] and C[n] are each 64-bits long.
+
+          Encryption:                   Decryption:
+          C[0] = E(P[0]^IV)             P[0] = D(C[0])^IV
+  (n>0)   C[n] = E(P[n]^P[n-1]^C[n-1])  P[n] = D(C[n])^P[n-1]^C[n-1]
+
+  k-bit Cipher FeedBack (CFB):
+
+          P[n] and C[n] are each k bits long, 1 <= k <= 64.
+
+          Encryption:                   Decryption:
+          I[0] = IV                     I[0] = IV
+  (n>0)   I[n] = I[n-1]<<k | C[n-1]     I[n] = I[n-1]<<k | C[n-1]
+  (all n) R[n] = MSB(E(I[n]),k)         R[n] = MSB(E(I[n]),k)
+  (all n) C[n] = P[n]^R[n]              P[n] = C[n]^R[n]
+
+          Note that for k==64, this reduces to:
+
+          I[0] = IV                     I[0] = IV
+  (n>0)   I[n] = C[n-1]                 I[n] = C[n-1]
+  (all n) R[n] = E(I[n])                R[n] = E(I[n])
+  (all n) C[n] = P[n]^R[n]              P[n] = C[n]^R[n]
+
+  CFB notes: Since I[n] depends only on the plain or cipher text from the
+  previous operation, the E() function can be performed in parallel with
+  the reception of the text with which it is used.
+
+  k-bit Output FeedBack (OFB):
+
+          P[n] and C[n] are each k bits long, 1 <= k <= 64.
+
+          Encryption:                   Decryption:
+          I[0] = IV                     I[0] = IV
+  (n>0)   I[n] = I[n-1]<<k | R[n-1]     I[n] = I[n-1]<<k | R[n-1]
+  (all n) R[n] = MSB(E(I[n]),k)         R[n] = MSB(E(I[n]),k)
+  (all n) C[n] = P[n]^R[n]              P[n] = C[n]^R[n]
+
+          Note that for k==64, this reduces to:
+
+          I[0] = IV                     I[0] = IV
+  (n>0)   I[n] = R[n-1]                 I[n] = R[n-1]
+  (all n) R[n] = E(I[n])                R[n] = E(I[n])
+  (all n) C[n] = P[n]^R[n]              P[n] = C[n]^R[n]
+
+  OFB notes: encryption and decryption are identical. Since I[n] is
+  independent of P and C, the E() function can be performed in advance of
+  the receipt of the plain/cipher text with which it is to be used.
+
+  Additional notes on DES ``modes of operation'':
+
+  ECB and CBC use E() to encrypt and D() to decrypt, but the feedback
+  modes use E() to both encrypt and decrypt. This disproves the following
+  erroneous claim: ``DES implementations which provide E() but not D()
+  cannot be used for data confidentiality.''
+
+Cryptography FAQ (06/10: Public Key Cryptography)
+
+Archive-name: cryptography-faq/part06
+Last-modified: 94/06/07
+
+This is the sixth of ten parts of the sci.crypt FAQ. The parts are
+mostly independent, but you should read the first part before the rest.
+We don't have the time to send out missing parts by mail, so don't ask.
+Notes such as ``[KAH67]'' refer to the reference list in the last part.
+
+The sections of this FAQ are available via anonymous FTP to rtfm.mit.edu
+as /pub/usenet/news.answers/cryptography-faq/part[xx]. The Cryptography
+FAQ is posted to the newsgroups sci.crypt, talk.politics.crypto,
+sci.answers, and news.answers every 21 days.
+
+Contents:
+
+6.1. What is public-key cryptography?
+6.2. How does public-key cryptography solve cryptography's Catch-22?
+6.3. What is the role of the `trapdoor function' in public key schemes?
+6.4. What is the role of the `session key' in public key schemes?
+6.5. What's RSA?
+6.6. Is RSA secure?
+6.7. What's the difference between the RSA and Diffie-Hellman schemes?
+6.8. What is `authentication' and the `key distribution problem'?
+6.9. How fast can people factor numbers?
+6.10. What about other public-key cryptosystems?
+6.11. What is the `RSA Factoring Challenge?'
+
+6.1. What is public-key cryptography?
+
+  In a classic cryptosystem, we have encryption functions E_K and
+  decryption functions D_K such that D_K(E_K(P)) = P for any plaintext
+  P. In a public-key cryptosystem, E_K can be easily computed from some
+  ``public key'' X which in turn is computed from K. X is published, so
+  that anyone can encrypt messages. If decryption D_K cannot be easily
+  computed from public key X without knowledge of private key K, but
+  readily with knowledge of K, then only the person who generated K can
+  decrypt messages. That's the essence of public-key cryptography,
+  introduced by Diffie and Hellman in 1976.
+
+  This document describes only the rudiments of public key cryptography.
+  There is an extensive literature on security models for public-key
+  cryptography, applications of public-key cryptography, other
+  applications of the mathematical technology behind public-key
+  cryptography, and so on; consult the references at the end for more
+  refined and thorough presentations.
+
+6.2. How does public-key cryptography solve cryptography's Catch-22?
+
+  In a classic cryptosystem, if you want your friends to be able to
+  send secret messages to you, you have to make sure nobody other than
+  them sees the key K. In a public-key cryptosystem, you just publish
+  X, and you don't have to worry about spies. Hence public key
+  cryptography `solves' one of the most vexing problems of all prior
+  cryptography: the necessity of establishing a secure channel for the
+  exchange of the key. To establish a secure channel one uses
+  cryptography, but private key cryptography requires a secure channel!
+  In resolving the dilemma, public key cryptography has been considered
+  by many to be a `revolutionary technology,' representing a
+  breakthrough that makes routine communication encryption practical
+  and potentially ubiquitous.
+
+6.3. What is the role of the `trapdoor function' in public key schemes?
+
+  Intrinsic to public key cryptography is a `trapdoor function' D_K
+  with the properties that computation in one direction (encryption,
+  E_K) is easy and in the other is virtually impossible (attack,
+  determining P from encryption E_K(P) and public key X). Furthermore,
+  it has the special property that the reversal of the computation
+  (decryption, D_K) is again tractable if the private key K is known.
+
+6.4. What is the role of the `session key' in public key schemes?
+
+  In virtually all public key systems, the encryption and decryption
+  times are very lengthy compared to other block-oriented
+  algorithms such as DES for equivalent data sizes. Therefore in most
+  implementations of public-key systems, a temporary, random `session
+  key' of much smaller length than the message is generated for each
+  message and alone encrypted by the public key algorithm. The message
+  is actually encrypted using a faster private key algorithm with the
+  session key. At the receiver side, the session key is decrypted using
+  the public-key algorithms and the recovered `plaintext' key is used
+  to decrypt the message.
+
+  The session key approach blurs the distinction between `keys' and
+  `messages' -- in the scheme, the message includes the key, and the
+  key itself is treated as an encryptable `message'. Under this
+  dual-encryption approach, the overall cryptographic strength is
+  related to the security of either the public- and private-key
+  algorithms.
+
+6.5. What's RSA?
+
+  RSA is a public-key cryptosystem defined by Rivest, Shamir, and
+  Adleman. Here's a small example. See also [FTPDQ].
+
+  Plaintexts are positive integers up to 2^{512}. Keys are quadruples
+  (p,q,e,d), with p a 256-bit prime number, q a 258-bit prime number,
+  and d and e large numbers with (de - 1) divisible by (p-1)(q-1). We
+  define E_K(P) = P^e mod pq, D_K(C) = C^d mod pq. All quantities are
+  readily computed from classic and modern number theoretic algorithms
+  (Euclid's algorithm for computing the greatest common divisor yields
+  an algorithm for the former, and historically newly explored
+  computational approaches to finding large `probable' primes, such as
+  the Fermat test, provide the latter.)
+
+  Now E_K is easily computed from the pair (pq,e)---but, as far as
+  anyone knows, there is no easy way to compute D_K from the pair
+  (pq,e). So whoever generates K can publish (pq,e). Anyone can send a
+  secret message to him; he is the only one who can read the messages.
+
+6.6. Is RSA secure?
+
+  Nobody knows. An obvious attack on RSA is to factor pq into p and q.
+  See below for comments on how fast state-of-the-art factorization
+  algorithms run. Unfortunately nobody has the slightest idea how to
+  prove that factorization---or any realistic problem at all, for that
+  matter---is inherently slow. It is easy to formalize what we mean by
+  ``RSA is/isn't strong''; but, as Hendrik W. Lenstra, Jr., says,
+  ``Exact definitions appear to be necessary only when one wishes to
+  prove that algorithms with certain properties do _not_ exist, and
+  theoretical computer science is notoriously lacking in such negative
+  results.''
+
+  Note that there may even be a `shortcut' to breaking RSA other than
+  factoring. It is obviously sufficient but so far not provably
+  necessary. That is, the security of the system depends on two
+  critical assumptions: (1) factoring is required to break the system,
+  and (2) factoring is `inherently computationally intractable',
+  or, alternatively, `factoring is hard' and `any approach that can
+  be used to break the system is at least as hard as factoring'.
+
+  Historically even professional cryptographers have made mistakes
+  in estimating and depending on the intractability of various
+  computational problems for secure cryptographic properties. For
+  example, a system called a `Knapsack cipher' was in vogue in the
+  literature for years until it was demonstrated that the instances
+  typically generated could be efficiently broken, and the whole
+  area of research fell out of favor.
+
+6.7. What's the difference between the RSA and Diffie-Hellman schemes?
+
+  Diffie and Hellman proposed a system that requires the dynamic
+  exchange of keys for every sender-receiver pair (and in practice,
+  usually every communications session, hence the term `session key').
+  This two-way key negotiation is useful in further complicating
+  attacks, but requires additional communications overhead. The RSA
+
+  system reduces communications overhead with the ability to have
+  static, unchanging keys for each receiver that are `advertised' by
+  a formal `trusted authority' (the hierarchical model) or distributed
+  in an informal `web of trust'.
+
+6.8. What is `authentication' and the `key-exchange problem'?
+
+  The ``key exchange problem'' involves (1) ensuring that keys are
+  exchanged so that the sender and receiver can perform encryption and
+  decryption, and (2) doing so in such a way that ensures an
+  eavesdropper or outside party cannot break the code. `Authentication'
+  adds the requirement that (3) there is some assurance to the receiver
+  that a message was encrypted by `a given entity' and not `someone
+  else'.
+
+  The simplest but least available method to ensure all constraints
+  above are satisfied (successful key exchange and valid authentication)
+  is employed by private key cryptography: exchanging the key secretly.
+  Note that under this scheme, the problem of authentication is
+  implicitly resolved. The assumption under the scheme is that only the
+  sender will have the key capable of encrypting sensible messages
+  delivered to the receiver.
+
+  While public-key cryptographic methods solve a critical aspect of the
+  `key-exchange problem', specifically their resistance to analysis
+  even with the presence a passive eavesdropper during exchange of keys,
+  they do not solve all problems associated with key exchange. In
+  particular, since the keys are considered `public knowledge,'
+  (particularly with RSA) some other mechanism must be
+  developed to testify to authenticity, because possession of keys
+  alone (sufficient to encrypt intelligible messages) is no evidence
+  of a particular unique identity of the sender.
+
+  One solution is to develop a key distribution mechanism that assures
+  that listed keys are actually those of the given entities, sometimes
+  called a `trusted authority'. The authority typically does not actually
+  generate keys, but does ensure via some mechanism that the lists of
+  keys and associated identities kept and advertised for reference
+  by senders and receivers are `correct'. Another method relies on users
+  to distribute and track each other's keys and trust in an informal,
+  distributed fashion. This has been popularized as a viable alternative
+  by the PGP software which calls the model the `web of trust'.
+
+  Under RSA, if a person wishes to send evidence of their identity in
+  addition to an encrypted message, they simply encrypt some information
+  with their private key called the `signature', additionally included in
+  the message sent under the public-key encryption to the receiver.
+  The receiver can use the RSA algorithm `in reverse' to verify that the
+  information decrypts sensibly, such that only the given entity could
+  have encrypted the plaintext by use of the secret key. Typically the
+  encrypted `signature' is a `message digest' that comprises a unique
+  mathematical `summary' of the secret message (if the signature were
+  static across multiple messages, once known previous receivers could
+  use it falsely). In this way, theoretically only the sender of the
+  message could generate their valid signature for that message, thereby
+  authenticating it for the receiver. `Digital signatures' have many
+  other design properties as described in Section 7.
+
+6.9. How fast can people factor numbers?
+
+  It depends on the size of the numbers, and their form. Numbers
+  in special forms, such as a^n - b for `small' b, are more readily
+  factored through specialized techniques and not necessarily related
+  to the difficulty of factoring in general. Hence a specific factoring
+  `breakthrough' for a special number form may have no practical value
+  or relevance to particular instances (and those generated for use
+  in cryptographic systems are specifically `filtered' to resist such
+  approaches.) The most important observation about factoring is that
+  all known algorithms require an exponential amount of time in the
+  _size_ of the number (measured in bits, log2(n) where `n' is the
+  number). Cryptgraphic algorithms built on the difficulty of factoring
+  generally depend on this exponential-time property. (The distinction
+  of `exponential' vs. `polynomial time' algorithms, or NP vs. P, is a
+  major area of active computational research, with insights very
+  closely intertwined with cryptographic security.)
+
+  In October 1992 Arjen Lenstra and Dan Bernstein factored 2^523 - 1
+  into primes, using about three weeks of MasPar time. (The MasPar is
+  a 16384-processor SIMD machine; each processor can add about 200000
+  integers per second.) The algorithm there is called the ``number field
+  sieve''; it is quite a bit faster for special numbers like 2^523 - 1
+  than for general numbers n, but it takes time only
+  exp(O(log^{1/3} n log^{2/3} log n)) in any case.
+
+  An older and more popular method for smaller numbers is the ``multiple
+  polynomial quadratic sieve'', which takes time exp(O(log^{1/2} n
+  log^{1/2} log n))---faster than the number field sieve for small n,
+  but slower for large n. The breakeven point is somewhere between 100
+  and 150 digits, depending on the implementations.
+
+  Factorization is a fast-moving field---the state of the art just a few
+  years ago was nowhere near as good as it is now. If no new methods are
+  developed, then 2048-bit RSA keys will always be safe from
+  factorization, but one can't predict the future. (Before the number
+  field sieve was found, many people conjectured that the quadratic
+  sieve was asymptotically as fast as any factoring method could be.)
+
+6.10. What about other public-key cryptosystems?
+
+  We've talked about RSA because it's well known and easy to describe.
+  But there are lots of other public-key systems around, many of which
+  are faster than RSA or depend on problems more widely believed to be
+  difficult. This has been just a brief introduction; if you really want
+  to learn about the many facets of public-key cryptography, consult the
+  books and journal articles listed in part 10.
+
+6.11. What is the ``RSA Factoring Challenge''?
+
+  [Note: The e-mail addresses below have been reported as invalid.]
+  In ~1992 the RSA Data Securities Inc., owner and licensor of multiple
+  patents on the RSA hardware and public key cryptographic techniques in
+  general, and maker of various software encryption packages and
+  libraries, announced on sci.math and elsewhere the creation of an
+  ongoing Factoring Challenge contest to gauge the state of the art in
+  factoring technology. Every month a series of numbers are posted and
+  monetary awards are given to the first respondent to break them into
+  factors. Very significant hardware resources are required to succeed
+  by beating other participants. Information can be obtained via
+  automated reply from
+
+    challenge-rsa-honor-roll@rsa.com
+    challenge-partition-honor-roll@rsa.com
+
+Cryptography FAQ (07/10: Digital Signatures)
+
+Archive-name: cryptography-faq/part07
+Last-modified: 93/10/10
+
+This is the seventh of ten parts of the sci.crypt FAQ. The parts are
+mostly independent, but you should read the first part before the rest.
+We don't have the time to send out missing parts by mail, so don't ask.
+Notes such as ``[KAH67]'' refer to the reference list in the last part.
+
+The sections of this FAQ are available via anonymous FTP to rtfm.mit.edu
+as /pub/usenet/news.answers/cryptography-faq/part[xx]. The Cryptography
+FAQ is posted to the newsgroups sci.crypt, talk.politics.crypto,
+sci.answers, and news.answers every 21 days.
+
+Contents:
+
+7.1. What is a one-way hash function?
+7.2. What is the difference between public, private, secret, shared, etc.?
+7.3. What are MD4 and MD5?
+7.4. What is Snefru?
+
+7.1. What is a one-way hash function?
+
+  A typical one-way hash function takes a variable-length message and
+  produces a fixed-length hash. Given the hash it is computationally
+
+  impossible to find a message with that hash; in fact one can't
+  determine any usable information about a message with that hash, not
+  even a single bit. For some one-way hash functions it's also
+  computationally impossible to determine two messages which produce the
+  same hash.
+
+  A one-way hash function can be private or public, just like an
+  encryption function. Here's one application of a public one-way hash
+  function, like MD5 or Snefru. Most public-key signature systems are
+  relatively slow. To sign a long message may take longer than the user
+  is willing to wait. Solution: Compute the one-way hash of the message,
+  and sign the hash, which is short. Now anyone who wants to verify the
+  signature can do the same thing.
+
+  Another name for one-way hash function is message digest function.
+
+7.2. What is the difference between public, private, secret, shared, etc.?
+
+  There is a horrendous mishmash of terminology in the literature for a
+  very small set of concepts. Here are the concepts: (1) When an
+  algorithm depends on a key which isn't published, we call it a private
+  algorithm; otherwise we call it a public algorithm. (2) We have
+  encryption functions E and decryption functions D, so that D(E(M)) = M
+  for any message M. (3) We also have hashing functions H and
+  verification functions V, such that V(M,X) = 1 if and only if X = H(M).
+
+  A public-key cryptosystem has public encryption and private
+  decryption. Checksums, such as the application mentioned in the
+  previous question, have public hashing and public verification.
+  Digital signature functions have private hashing and public
+  verification: only one person can produce the hash for a message,
+  but everyone can verify that the hash is correct.
+
+  Obviously, when an algorithm depends on a private key, it's meant to
+  be unusable by anyone who doesn't have the key. There's no real
+  difference between a ``shared'' key and a private key: a shared key
+  isn't published, so it's private. If you encrypt data for a friend
+  rather than ``for your eyes only'', are you suddenly doing
+  ``shared-key encryption'' rather than private-key encryption? No.
+
+7.3. What are MD4 and MD5?
+
+  MD4 and MD5 are message digest functions developed by Ron Rivest.
+  Definitions appear in RFC 1320 and RFC 1321 (see part 10). Code is
+  available from [FTPMD].
+
+  Note that a transcription error was found in the original MD5 draft
+  RFC. The corrected algorithm should be called MD5a, though some
+  people refer to it as MD5.
+
+7.4. What is Snefru?
+
+  Snefru is a family of message digest functions developed by Ralph
+  Merkle. Snefru-8 is an 8-round function, the newest in the family.
+  Definitions appear in Merkle's paper [ME91a]. Code is available from
+  [FTPSF].
+
+Cryptography FAQ (08/10: Technical Miscellany)
+
+Archive-name: cryptography-faq/part08
+Last-modified: 94/01/25
+
+This is the eighth of ten parts of the sci.crypt FAQ. The parts are
+mostly independent, but you should read the first part before the rest.
+We don't have the time to send out missing parts by mail, so don't ask.
+Notes such as ``[KAH67]'' refer to the reference list in the last part.
+
+The sections of this FAQ are available via anonymous FTP to rtfm.mit.edu
+as /pub/usenet/news.answers/cryptography-faq/part[xx]. The Cryptography
+FAQ is posted to the newsgroups sci.crypt, talk.politics.crypto,
+sci.answers, and news.answers every 21 days.
+
+Contents
+
+8.1. How do I recover from lost passwords in WordPerfect?
+8.2. How do I break a Vigenere (repeated-key) cipher?
+8.3. How do I send encrypted mail under UNIX? [PGP, RIPEM, PEM, ...]
+8.4. Is the UNIX crypt command secure?
+8.5. How do I use compression with encryption?
+8.6. Is there an unbreakable cipher?
+8.7. What does ``random'' mean in cryptography?
+8.8. What is the unicity point (a.k.a. unicity distance)?
+8.9. What is key management and why is it important?
+8.10. Can I use pseudo-random or chaotic numbers as a key stream?
+8.11. What is the correct frequency list for English letters?
+8.12. What is the Enigma?
+8.13. How do I shuffle cards?
+8.14. Can I foil S/W pirates by encrypting my CD-ROM?
+8.15. Can you do automatic cryptanalysis of simple ciphers?
+8.16. What is the coding system used by VCR+?
+
+8.1. How do I recover from lost passwords in WordPerfect?
+
+  WordPerfect encryption has been shown to be very easy to break.
+  The method uses XOR with two repeating key streams: a typed password
+  and a byte-wide counter initialized to 1+<the password length>. Full
+  descriptions are given in Bennett [BEN87] and Bergen and Caelli
+  [BER91].
+
+  Chris Galas writes: ``Someone awhile back was looking for a way to
+  decrypt WordPerfect document files and I think I have a solution.
+  There is a software company named: Accessdata (87 East 600 South,
+  Orem, UT 84058), 1-800-658-5199 that has a software package that will
+  decrypt any WordPerfect, Lotus 1-2-3, Quatro-Pro, MS Excel and Paradox
+  files. The cost of the package is $185. Steep prices, but if you
+  think your pw key is less than 10 characters, (or 10 char) give them a
+  call and ask for the free demo disk. The demo disk will decrypt files
+  that have a 10 char or less pw key.'' Bruce Schneier says the phone
+  number for AccessData is 801-224-6970.
+
+8.2. How do I break a Vigenere (repeated-key) cipher?
+
+  A repeated-key cipher, where the ciphertext is something like the
+  plaintext xor KEYKEYKEYKEY (and so on), is called a Vigenere cipher.
+  If the key is not too long and the plaintext is in English, do the
+  following:
+
+  1. Discover the length of the key by counting coincidences.
+  (See Gaines [GAI44], Sinkov [SIN66].) Trying each displacement of
+  the ciphertext against itself, count those bytes which are equal.
+  If the two ciphertext portions have used the same key, something
+  over 6% of the bytes will be equal. If they have used different
+  keys, then less than 0.4% will be equal (assuming random 8-bit bytes
+  of key covering normal ASCII text). The smallest displacement which
+  indicates an equal key is the length of the repeated key.
+
+  2. Shift the text by that length and XOR it with itself. This
+  removes the key and leaves you with text XORed with itself. Since
+  English has about 1 bit of real information per byte, 2 streams of
+  text XORed together has 2 bits of info per 8-bit byte, providing
+  plenty of redundancy for choosing a unique decryption. (And in fact
+  one stream of text XORed with itself has just 1 bit per byte.)
+
+  If the key is short, it might be even easier to treat this as a
+  standard polyalphabetic substitution. All the old cryptanalysis
+  texts show how to break those. It's possible with those methods, in
+  the hands of an expert, if there's only ten times as much text as key.
+  See, for example, Gaines [GAI44], Sinkov [SIN66].
+
+8.3. How do I send encrypted mail under UNIX? [PGP, RIPEM, PEM, ...]
+
+  Here's one popular method, using the des command:
+
+    cat file | compress | des private_key | uuencode | mail
+
+  Meanwhile, there is a de jure Internet standard in the works called
+
+  PEM (Privacy Enhanced Mail). It is described in RFCs 1421 through
+  1424. To join the PEM mailing list, contact pem-dev-request@tis.com.
+  There is a beta version of PEM being tested at the time of this
+  writing.
+
+  There are also two programs available in the public domain for encrypting
+  mail: PGP and RIPEM. Both are available by FTP. Each has its own
+  newsgroup: alt.security.pgp and alt.security.ripem. Each has its own FAQ
+  as well.
+
+  PGP is most commonly used outside the USA since it uses the RSA algorithm
+  without a license and RSA's patent is valid only (or at least primarily)
+  in the USA.
+
+  RIPEM is most commonly used inside the USA since it uses the RSAREF which
+  is freely available within the USA but not available for shipment outside
+  the USA.
+
+  Since both programs use a secret key algorithm for encrypting the body of
+  the message (PGP used IDEA; RIPEM uses DES) and RSA for encrypting the
+  message key, they should be able to interoperate freely. Although there
+  have been repeated calls for each to understand the other's formats and
+  algorithm choices, no interoperation is available at this time (as far as
+  we know).
+
+8.4. Is the UNIX crypt command secure?
+
+  No. See [REE84]. There is a program available called cbw (crypt
+  breaker's workbench) which can be used to do ciphertext-only attacks
+  on files encrypted with crypt. One source for CBW is [FTPCB].
+
+8.5. How do I use compression with encryption?
+
+  A number of people have proposed doing perfect compression followed by
+  some simple encryption method (e.g., XOR with a repeated key).  This
+  would work, if you could do perfect compression.  Unfortunately, you can
+  only compress perfectly if you know the exact distribution of possible
+  inputs, and that is almost certainly not possible.
+
+  Compression aids encryption by reducing the redundancy of the plaintext.
+  This increases the amount of ciphertext you can send encrypted under a
+  given number of key bits.  (See "unicity distance")
+
+  Nearly all practical compression schemes, unless they have been designed
+  with cryptography in mind, produce output that actually starts off with
+  high redundancy. For example, the output of UNIX compress begins with a
+  well-known three-byte ``magic number''.  This produces a field of "known
+  plaintext" which can be used for some forms of cryptanalytic attack.
+  Compression is generally of value, however, because it removes other
+  known plaintext in the middle of the file being encrypted.  In general,
+  the lower the redundancy of the plaintext being fed an encryption
+  algorithm, the more difficult the cryptanalysis of that algorithm.
+
+  In addition, compression shortens the input file, shortening the output
+  file and reducing the amount of CPU required to do the encryption
+  algorithm, so even if there were no enhancement of security, compression
+  before encryption would be worthwhile.
+
+  Compression after encryption is silly.  If an encryption algorithm is
+  good, it will produce output which is statistically indistinguishable
+  from random numbers and no compression algorithm will successfully
+  compress random numbers.  On the other hand, if a compression algorithm
+  succeeds in finding a pattern to compress out of an encryption's output,
+  then a flaw in that algorithm has been found.
+
+8.6. Is there an unbreakable cipher?
+
+  Yes. The one-time pad is unbreakable; see part 4. Unfortunately the
+  one-time pad requires secure distribution of as much key material as
+  plaintext.
+
+  Of course, a cryptosystem need not be utterly unbreakable to be
+  useful. Rather, it needs to be strong enough to resist attacks by
+  likely enemies for whatever length of time the data it protects is
+  expected to remain valid.
+
+8.7. What does ``random'' mean in cryptography?
+
+  Cryptographic applications demand much more out of a pseudorandom
+  number generator than most applications. For a source of bits to be
+  cryptographically random, it must be computationally impossible to
+  predict what the Nth random bit will be given complete knowledge of
+  the algorithm or hardware generating the stream and the sequence of
+  0th through N-1st bits, for all N up to the lifetime of the source.
+
+  A software generator (also known as pseudo-random) has the function
+  of expanding a truly random seed to a longer string of apparently
+  random bits. This seed must be large enough not to be guessed by
+  the opponent. Ideally, it should also be truly random (perhaps
+  generated by a hardware random number source).
+
+  Those who have Sparcstation 1 workstations could, for example,
+  generate random numbers using the audio input device as a source of
+  entropy, by not connecting anything to it. For example,
+
+        cat /dev/audio | compress - >foo
+
+  gives a file of high entropy (not random but with much randomness in
+  it). One can then encrypt that file using part of itself as a key,
+  for example, to convert that seed entropy into a pseudo-random
+  string.
+
+  When looking for hardware devices to provide this entropy, it is
+  important really to measure the entropy rather than just assume that
+  because it looks complicated to a human, it must be "random". For
+  example, disk operation completion times sound like they might be
+  unpredictable (to many people) but a spinning disk is much like a
+  clock and its output completion times are relatively low in entropy.
+
+8.8. What is the unicity point (a.k.a. unicity distance)?
+
+  See [SHA49]. The unicity distance is an approximation to that amount
+  of ciphertext such that the sum of the real information (entropy) in
+  the corresponding source text and encryption key equals the number
+  of ciphertext bits used. Ciphertexts significantly longer than this
+  can be shown probably to have a unique decipherment. This is used to
+  back up a claim of the validity of a ciphertext-only cryptanalysis.
+  Ciphertexts significantly shorter than this are likely to have
+  multiple, equally valid decryptions and therefore to gain security
+  from the opponent's difficulty choosing the correct one.
+
+  Unicity distance, like all statistical or information-theoretic
+  measures, does not make deterministic predictions but rather gives
+  probabilistic results: namely, the minimum amount of ciphertext
+  for which it is likely that there is only a single intelligible
+  plaintext corresponding to the ciphertext, when all possible keys
+  are tried for the decryption. Working cryptologists don't normally
+  deal with unicity distance as such. Instead they directly determine
+  the likelihood of events of interest.
+
+  Let the unicity distance of a cipher be D characters. If fewer than
+  D ciphertext characters have been intercepted, then there is not
+  enough information to distinguish the real key from a set of
+  possible keys. DES has a unicity distance of 17.5 characters,
+  which is less than 3 ciphertext blocks (each block corresponds to
+  8 ASCII characters). This may seem alarmingly low at first, but
+  the unicity distance gives no indication of the computational work
+  required to find the key after approximately D characters have been
+  intercepted.
+
+  In fact, actual cryptanalysis seldom proceeds along the lines used
+  in discussing unicity distance. (Like other measures such as key
+  size, unicity distance is something that guarantees insecurity if
+  it's too small, but doesn't guarantee security if it's high.) Few
+  practical cryptosystems are absolutely impervious to analysis; all
+  manner of characteristics might serve as entering ``wedges'' to crack
+  some cipher messages. However, similar information-theoretic
+  considerations are occasionally useful, for example, to determine a
+  recommended key change interval for a particular cryptosystem.
+  Cryptanalysts also employ a variety of statistical and
+  information-theoretic tests to help guide the analysis in the most
+  promising directions.
+
+  Unfortunately, most literature on the application of information
+  statistics to cryptanalysis remains classified, even the seminal
+  1940 work of Alan Turing (see [KOZ84]). For some insight into the
+  possibilities, see [KUL68] and [GOO83].
+
+8.9. What is key management and why is it important?
+
+  One of the fundamental axioms of cryptography is that the enemy is in
+  full possession of the details of the general cryptographic system,
+  and lacks only the specific key data employed in the encryption. (Of
+  course, one would assume that the CIA does not make a habit of telling
+  Mossad about its cryptosystems, but Mossad probably finds out anyway.)
+  Repeated use of a finite amount of key provides redundancy that can
+  eventually facilitate cryptanalytic progress. Thus, especially in
+  modern communication systems where vast amounts of information are
+  transferred, both parties must have not only a sound cryptosystem but
+  also enough key material to cover the traffic.
+
+  Key management refers to the distribution, authentication, and
+  handling of keys.
+
+  A publicly accessible example of modern key management technology
+  is the STU III secure telephone unit, which for classified use
+  employs individual coded ``Crypto Ignition Keys'' and a central Key
+  Management Center operated by NSA. There is a hierarchy in that
+  certain CIKs are used by authorized cryptographic control
+  personnel to validate the issuance of individual traffic keys and
+  to perform installation/maintenance functions, such as the
+  reporting of lost CIKs.
+
+  This should give an inkling of the extent of the key management
+  problem. For public-key systems, there are several related issues,
+  many having to do with ``whom do you trust?''
+
+8.10. Can I use pseudo-random or chaotic numbers as a key stream?
+
+  Chaotic equations and fractals produce an apparent randomness from
+  relatively compact generators. Perhaps the simplest example is a
+  linear congruential sequence, one of the most popular types of random
+  number generators, where there is no obvious dependence between seeds
+  and outputs. Unfortunately the graph of any such sequence will, in a
+  high enough dimension, show up as a regular lattice. Mathematically
+  this lattice corresponds to structure which is notoriously easy for
+  cryptanalysts to exploit. More complicated generators have more
+  complicated structure, which is why they make interesting pictures---
+  but a cryptographically strong sequence will have no computable
+  structure at all.
+
+  See [KNU81], exercise 3.5-7; [REE77]; and [BOY89].
+
+8.11. What is the correct frequency list for English letters?
+
+  There are three answers to this question, each slightly deeper than
+  the one before. You can find the first answer in various books:
+  namely, a frequency list computed directly from a certain sample of
+  English text.
+
+  The second answer is that ``the English language'' varies from author
+  to author and has changed over time, so there is no definitive list.
+  Of course the lists in the books are ``correctly'' computed, but
+  they're all different: exactly which list you get depends on which
+  sample was taken. Any particular message will have different
+  statistics from those of the language as a whole.
+
+  The third answer is that yes, no particular message is going to have
+  exactly the same characteristics as English in general, but for all
+  reasonable statistical uses these slight discrepancies won't matter.
+  In fact there's an entire field called ``Bayesian statistics'' (other
+  buzzwords are ``maximum entropy methods'' and ``maximum likelihood
+  estimation'') which studies questions like ``What's the chance that a
+  text with these letter frequencies is in English?'' and comes up with
+  reasonably robust answers.
+
+  So make your own list from your own samples of English text. It will
+  be good enough for practical work, if you use it properly.
+
+8.12. What is the Enigma?
+
+  ``For a project in data security we are looking for sources of
+  information about the German Enigma code and how it was broken by
+  the British during WWII.''
+
+  See [WEL82], [DEA85], [KOZ84], [HOD83], [KAH91].
+
+8.13. How do I shuffle cards?
+
+  Card shuffling is a special case of the permutation of an array of
+  values, using a random or pseudo-random function. All possible output
+  permutations of this process should be equally likely. To do this, you
+  need a random function (modran(x)) which will produce a uniformly
+  distributed random integer in the interval [0..x-1]. Given that
+  function, you can shuffle with the following [C] code: (assuming ARRLTH
+  is the length of array arr[] and swap() interchanges values at the two
+  addresses given)
+
+  for ( n = ARRLTH-1; n > 0 ; n-- ) swap( &arr[modran( n+1 )], &arr[n] ) ;
+
+  modran(x) can not be achieved exactly with a simple (ranno() % x) since
+  ranno()'s interval may not be divisible by x, although in most cases the
+  error will be very small. To cover this case, one can take ranno()'s
+  modulus mod x, call that number y, and if ranno() returns a value less
+  than y, go back and get another ranno() value.
+
+  See [KNU81] for further discussion.
+
+8.14. Can I foil S/W pirates by encrypting my CD-ROM?
+
+  Someone will frequently express the desire to publish a CD-ROM with
+  possibly multiple pieces of software, perhaps with each encrypted
+  separately, and will want to use different keys for each user (perhaps
+  even good for only a limited period of time) in order to avoid piracy.
+
+  As far as we know, this is impossible, since there is nothing in standard
+  PC or workstation hardware which uniquely identifies the user at the
+  keyboard. If there were such an identification, then the CD-ROM could be
+  encrypted with a key based in part on the one sold to the user and in
+  part on the unique identifier. However, in this case the CD-ROM is one
+  of a kind and that defeats the intended purpose.
+
+  If the CD-ROM is to be encrypted once and then mass produced, there must
+  be a key (or set of keys) for that encryption produced at some stage in
+  the process. That key is useable with any copy of the CD-ROM's data.
+  The pirate needs only to isolate that key and sell it along with the
+  illegal copy.
+
+8.15. Can you do automatic cryptanalysis of simple ciphers?
+
+  Certainly. For commercial products you can try AccessData; see
+  question 8.1. We are not aware of any FTP sites for such software,
+  but there are many papers on the subject. See [PEL79], [LUC88],
+  [CAR86], [CAR87], [KOC87], [KOC88], [KIN92], [KIN93], [SPI93].
+
+8.16. What is the coding system used by VCR+?
+
+  One very frequently asked question in sci.crypt is how the VCR+ codes
+  work. The codes are used to program a VCR based on numerical input.
+  See [SHI92] for an attempt to describe it.
+
+Cryptography FAQ (09/10: Other Miscellany)
+
+Archive-name: cryptography-faq/part09
+Last-modified: 94/06/07
+
+This is the ninth of ten parts of the sci.crypt FAQ. The parts are
+mostly independent, but you should read the first part before the rest.
+We don't have the time to send out missing parts by mail, so don't ask.
+Notes such as ``[KAH67]'' refer to the reference list in the last part.
+
+The sections of this FAQ are available via anonymous FTP to rtfm.mit.edu
+as /pub/usenet/news.answers/cryptography-faq/part[xx]. The Cryptography
+FAQ is posted to the newsgroups sci.crypt, talk.politics.crypto,
+sci.answers, and news.answers every 21 days.
+
+Contents:
+
+9.1. What is the National Security Agency (NSA)?
+9.2. What are the US export regulations?
+9.3. What is TEMPEST?
+9.4. What are the Beale Ciphers, and are they a hoax?
+9.5. What is the American Cryptogram Association, and how do I get in touch?
+9.6. Is RSA patented?
+9.7. What about the Voynich manuscript?
+
+9.1. What is the National Security Agency (NSA)?
+
+  The NSA is the official communications security body of the U.S.
+  government. It was given its charter by President Truman in the early
+  50's, and has continued research in cryptology till the present. The
+  NSA is known to be the largest employer of mathematicians in the world,
+  and is also the largest purchaser of computer hardware in the
+  world. Governments in general have always been prime employers of
+  cryptologists. The NSA probably possesses cryptographic expertise many
+  years ahead of the public state of the art, and can undoubtedly break
+  many of the systems used in practice; but for reasons of national
+  security almost all information about the NSA is classified.
+
+  Bamford's book [BAMFD] gives a history of the people and operations of
+  the NSA. The following quote from Massey [MAS88] highlights the
+  difference between public and private research in cryptography:
+
+  ``... if one regards cryptology as the prerogative of government,
+  one accepts that most cryptologic research will be conducted
+
+  behind closed doors. Without doubt, the number of workers engaged
+  today in such secret research in cryptology far exceeds that of
+  those engaged in open research in cryptology. For only about 10
+  years has there in fact been widespread open research in
+  cryptology. There have been, and will continue to be, conflicts
+  between these two research communities. Open research is common
+  quest for knowledge that depends for its vitality on the open
+  exchange of ideas via conference presentations and publications in
+  scholarly journals. But can a government agency, charged with
+  responsibilities of breaking the ciphers of other nations,
+  countenance the publication of a cipher that it cannot break? Can
+  a researcher in good conscience publish such a cipher that might
+  undermine the effectiveness of his own government's code-breakers?
+  One might argue that publication of a provably-secure cipher would
+  force all governments to behave like Stimson's `gentlemen', but one
+  must be aware that open research in cryptography is fraught with
+  political and ethical considerations of a severity than in most
+  scientific fields. The wonder is not that some conflicts have
+  occurred between government agencies and open researchers in
+  cryptology, but rather that these conflicts (at least those of which
+  we are aware) have been so few and so mild.''
+
+9.2. What are the US export regulations?
+
+  In a nutshell, there are two government agencies which control
+  export of encryption software. One is the Bureau of Export
+  Administration (BXA) in the Department of Commerce, authorized by
+  the Export Administration Regulations (EAR). Another is the Office
+  of Defense Trade Controls (DTC) in the State Department, authorized
+  by the International Traffic in Arms Regulations (ITAR). As a rule
+  of thumb, BXA (which works with COCOM) has less stringent
+  requirements, but DTC (which takes orders from NSA) wants to see
+  everything first and can refuse to transfer jurisdiction to BXA.
+
+  The newsgroup misc.legal.computing carries many interesting
+  discussions on the laws surrounding cryptographic export, what
+  people think about those laws, and many other complex issues which
+  go beyond the scope of technical groups like sci.crypt. Make sure to
+  consult your lawyer before doing anything which will get you thrown in
+  jail; if you are lucky, your lawyer might know a lawyer who has at
+  least heard of the ITAR.
+
+9.3. What is TEMPEST?
+
+  TEMPEST is a standard for electromagnetic shielding for computer
+  equipment. It was created in response to the discovery that
+  information can be read from computer radiation (e.g., from a CRT) at
+  quite a distance and with little effort.
+
+  Needless to say, encryption doesn't do much good if the cleartext
+  is available this way.
+
+9.4. What are the Beale Ciphers, and are they a hoax?
+
+  (Thanks to Jim Gillogly for this information and John King for
+  corrections.)
+
+  The story in a pamphlet by J. B. Ward (1885) goes: Thomas
+  Jefferson Beale and a party of adventurers accumulated a huge mass
+  of treasure and buried it in Bedford County, Virginia, leaving
+  three ciphers with an innkeeper; the ciphers describe the
+  location, contents, and intended beneficiaries of the treasure.
+  Ward gives a decryption of the second cipher (contents) called B2;
+  it was encrypted as a book cipher using the initial letters of the
+  Declaration of Independence (DOI) as key. B1 and B3 are unsolved;
+  many documents have been tried as the key to B1.
+
+  Aficionados can join a group that attempts to solve B1 by various
+  means with an eye toward splitting the treasure:
+
+  The Beale Cypher Association
+  P.O. Box 975
+  Beaver Falls, PA 15010
+
+  You can get the ciphers from the rec.puzzles FAQL by including the
+  line:
+
+  send index
+
+  in a message to netlib@peregrine.com and following the directions.
+  (There are apparently several different versions of the cipher
+  floating around. The correct version is based on the 1885 pamphlet,
+  says John King <kingj@hpcc01.corp.hp.com>.)
+
+  Some believe the story is a hoax. Kruh [KRU88] gives a long list of
+  problems with the story. Gillogly [GIL80] decrypted B1 with the DOI
+  and found some unexpected strings, including ABFDEFGHIIJKLMMNOHPP.
+  Hammer (president of the Beale Cypher Association) agrees that this
+  string couldn't appear by chance, but feels there must be an
+  explanation; Gwyn (sci.crypt expert) is unimpressed with this
+  string.
+
+9.5. What is the American Cryptogram Association, and how do I get in touch?
+
+  The ACA is an organization devoted to cryptography, with an emphasis
+  on cryptanalysis of systems that can be attacked either with
+  pencil-and-paper or computers. Its organ ``The Cryptogram'' includes
+  articles and challenge ciphers. Among the more than 50 cipher types in
+  English and other languages are simple substitution, Playfair,
+  Vigenere, bifid, Bazeries, grille, homophonic, and cryptarithm.
+
+  Dues are $20 per year (6 issues) for new members, $15 thereafter; more
+  outside North America; less for students under 18 and seniors.  Send
+  checks to ACA Treasurer, P.O. Box 198, Vernon Hills, IL 60061-0198.
+
+9.6. Is RSA patented?
+
+  Yes. The patent number is 4,405,829, filed 12/14/77, granted 9/20/83.
+  For further discussion of this patent, whether it should have been
+  granted, algorithm patents in general, and related legal and moral
+  issues, see comp.patents and misc.legal.computing. For information
+  about the League for Programming Freedom see [FTPPF]. Note that one of
+  the original purposes of comp.patents was to collect questions such as
+  ``should RSA be patented?'', which often flooded sci.crypt and other
+  technical newsgroups, into a more appropriate forum.
+
+9.7. What about the Voynich manuscript?
+
+  The Voynich manuscript is an elaborately lettered and illustrated
+  document, in a script never deciphered. It has been handed down for
+  centuries by a line of art collectors and has uncertain origination.
+  Much speculation and attention has been focused on its potential
+  meaning.
+
+  nelson@reed.edu (Nelson Minar) says there is a mailing list on the
+  subject. The address to write to subscribe to the VMS mailing list
+  is: <voynich-request@rand.org>
+
+  the ftp archive is: rand.org:/pub/voynich
+
+  There's all sorts of information about the manuscript itself, of
+  course. A good bibliography can be found on the ftp site. [KAH67]
+  gives a good introduction.
+
+Cryptography FAQ (10/10: References)
+
+Archive-name: cryptography-faq/part10
+Last-modified: 94/06/13
+
+This is the tenth of ten parts of the sci.crypt FAQ. The parts are
+mostly independent, but you should read the first part before the rest.
+We don't have the time to send out missing parts by mail, so don't ask.
+Notes such as ``[KAH67]'' refer to the reference list in this part.
+
+The sections of this FAQ are available via anonymous FTP to rtfm.mit.edu
+as /pub/usenet/news.answers/cryptography-faq/part[xx]. The Cryptography
+FAQ is posted to the newsgroups sci.crypt, talk.politics.crypto,
+sci.answers, and news.answers every 21 days.
+
+Contents
+
+10.1. Books on history and classical methods
+10.2. Books on modern methods
+10.3. Survey articles
+10.4. Reference articles
+10.5. Journals, conference proceedings
+10.6. Other
+10.7. How may one obtain copies of FIPS and ANSI standards cited herein?
+10.8. Electronic sources
+10.9. RFCs (available from [FTPRF])
+10.10. Related newsgroups
+
+10.1. Books on history and classical methods
+
+  [FRIE1] Lambros D. Callimahos, William F. Friedman, Military Cryptanalytics.
+          Aegean Park Press, ?.
+  [DEA85] Cipher A. Deavours & Louis Kruh, Machine Cryptography and
+          Modern Cryptanalysis. Artech House, 610 Washington St.,
+          Dedham, MA 02026, 1985.
+  [FRIE2] William F. Friedman, Solving German Codes in World War I.
+          Aegean Park Press, ?.
+  [GAI44] H. Gaines, Cryptanalysis, a study of ciphers and their
+          solution. Dover Publications, 1944.
+  [HIN00] F.H.Hinsley, et al., British Intelligence in the Second
+          World War. Cambridge University Press. (vol's 1, 2, 3a, 3b
+          & 4, so far). XXX Years and authors, fix XXX
+  [HOD83] Andrew Hodges, Alan Turing: The Enigma. Burnett Books
+          Ltd., 1983
+  [KAH91] David Kahn, Seizing the Enigma. Houghton Mifflin, 1991.
+  [KAH67] D. Kahn, The Codebreakers. Macmillan Publishing, 1967.
+          [history] [The abridged paperback edition left out most
+          technical details; the original hardcover edition is
+          recommended.]
+  [KOZ84] W. Kozaczuk, Enigma. University Publications of America, 1984
+  [KUL76] S. Kullback, Statistical Methods in Cryptanalysis. Aegean
+          Park Press, 1976.
+  [SIN66] A. Sinkov, Elementary Cryptanalysis. Math. Assoc. Am. 1966.
+  [WEL82] Gordon Welchman, The Hut Six Story. McGraw-Hill, 1982.
+  [YARDL] Herbert O. Yardley, The American Black Chamber. Aegean Park
+          Press, ?.
+
+10.2. Books on modern methods
+
+  [BEK82] H. Beker, F. Piper, Cipher Systems. Wiley, 1982.
+  [BRA88] G. Brassard, Modern Cryptology: a tutorial.
+          Spinger-Verlag, 1988.
+  [DEN82] D. Denning, Cryptography and Data Security. Addison-Wesley
+          Publishing Company, 1982.
+  [KOB89] N. Koblitz, A course in number theory and cryptography.
+          Springer-Verlag, 1987.
+  [KON81] A. Konheim, Cryptography: a primer. Wiley, 1981.
+  [MEY82] C. Meyer and S. Matyas, Cryptography: A new dimension in
+          computer security. Wiley, 1982.
+  [PAT87] Wayne Patterson, Mathematical Cryptology for Computer
+          Scientists and Mathematicians. Rowman & Littlefield, 1987.
+  [PFL89] C. Pfleeger, Security in Computing. Prentice-Hall, 1989.
+  [PRI84] W. Price, D. Davies, Security for computer networks. Wiley, 1984.
+  [RUE86] R. Rueppel, Design and Analysis of Stream Ciphers.
+          Springer-Verlag, 1986.
+  [SAL90] A. Saloma, Public-key cryptography. Springer-Verlag, 1990.
+  [SCH94] B. Schneier, Applied Cryptography. John Wiley & Sons, 1994.
+          [errata avbl from schneier@chinet.com]
+  [WEL88] D. Welsh, Codes and Cryptography. Claredon Press, 1988.
+
+10.3. Survey articles
+
+  [ANG83] D. Angluin, D. Lichtenstein, Provable Security in Crypto-
+          systems: a survey. Yale University, Department of Computer
+          Science, #288, 1983.
+  [BET90] T. Beth, Algorithm engineering for public key algorithms.
+          IEEE Selected Areas of Communication, 1(4), 458--466,
+          1990.
+  [DAV83] M. Davio, J. Goethals, Elements of cryptology. in Secure
+          Digital Communications, G. Longo ed., 1--57, 1983.
+  [DIF79] W. Diffie, M. Hellman, Privacy and Authentication: An
+          introduction to cryptography. IEEE proceedings, 67(3),
+          397--427, 1979.
+  [DIF88] W. Diffie, The first ten years of public key cryptography.
+          IEEE proceedings, 76(5), 560--577, 1988.
+  [FEI73] H. Feistel, Cryptography and Computer Privacy. Scientific
+          American, 228(5), 15--23, 1973.
+  [FEI75] H. Feistel, H, W. Notz, J. Lynn Smith. Some cryptographic
+          techniques for machine-to-machine data communications,
+          IEEE IEEE proceedings, 63(11), 1545--1554, 1975.
+  [HEL79] M. Hellman, The mathematics of public key cryptography.
+          Scientific American, 130--139, 1979.
+  [LAK83] S. Lakshmivarahan, Algorithms for public key
+          cryptosystems. In Advances in Computers, M. Yovtis ed.,
+          22, Academic Press, 45--108, 1983.
+  [LEM79] A. Lempel, Cryptology in transition, Computing Surveys,
+          11(4), 285--304, 1979.
+  [MAS88] J. Massey, An introduction to contemporary cryptology, IEEE
+          proceedings, 76(5), 533--549, 1988.
+  [SIM91] G. Simmons (ed.), Contemporary Cryptology: the Science of
+          Information Integrity. IEEE press, 1991.
+
+10.4. Reference articles
+
+  [AND83] D. Andelman, J. Reeds, On the cryptanalysis of rotor and
+          substitution-permutation networks. IEEE Trans. on Inform.
+          Theory, 28(4), 578--584, 1982.
+  [BEN87] John Bennett, Analysis of the Encryption Algorithm Used in
+          the WordPerfect Word Processing Program. Cryptologia 11(4),
+          206--210, 1987.
+  [BER91] H. A. Bergen and W. J. Caelli, File Security in WordPerfect
+          5.0. Cryptologia 15(1), 57--66, January 1991.
+  [BIH91] E. Biham and A. Shamir, Differential cryptanalysis of
+          DES-like cryptosystems. Journal of Cryptology, vol. 4, #1,
+          3--72, 1991.
+  [BI91a] E. Biham, A. Shamir, Differential cryptanalysis of Snefru,
+          Khafre, REDOC-II, LOKI and LUCIFER. In Proceedings of CRYPTO
+          '91, ed. by J. Feigenbaum, 156--171, 1992.
+  [BOY89] J. Boyar, Inferring Sequences Produced by Pseudo-Random
+          Number Generators. Journal of the ACM, 1989.
+  [BRI86] E. Brickell, J. Moore, M. Purtill, Structure in the
+          S-boxes of DES. In Proceedings of CRYPTO '86, A. M. Odlyzko
+          ed., 3--8, 1987.
+  [BRO89] L. Brown, A proposed design for an extended DES, Computer
+          Security in the Computer Age. Elsevier Science Publishers
+          B.V. (North Holland), IFIP, W. J. Caelli ed., 9--22, 1989.
+  [BRO90] L. Brown, J. Pieprzyk, J. Seberry, LOKI - a cryptographic
+          primitive for authentication and secrecy applications.
+          In Proceedings of AUSTCRYPT 90, 229--236, 1990.
+  [CAE90] H. Gustafson, E. Dawson, W. Caelli, Comparison of block
+          ciphers. In Proceedings of AUSCRYPT '90, J. Seberry and J.
+          Piepryzk eds., 208--220, 1990.
+  [CAM93] K. W. Campbell, M. J. Wiener, Proof the DES is Not a Group.
+          In Proceedings of CRYPTO '92, 1993.
+  [CAR86] John Carrol and Steve Martin, The Automated Cryptanalysis
+          of Substitution Ciphers. Cryptologia 10(4), 193--209, 1986.
+  [CAR87] John Carrol and Lynda Robbins, Automated Cryptanalysis of
+          Polyalphabetic Ciphers. Cryptologia 11(4), 193--205, 1987.
+  [ELL88] Carl M. Ellison, A Solution of the Hebern Messages. Cryptologia,
+          vol. XII, #3, 144-158, Jul 1988.
+  [EVE83] S. Even, O. Goldreich, DES-like functions can generate the
+          alternating group. IEEE Trans. on Inform. Theory, vol. 29,
+          #6, 863--865, 1983.
+  [GAR91] G. Garon, R. Outerbridge, DES watch: an examination of the
+          sufficiency of the Data Encryption Standard for financial
+          institutions in the 1990's. Cryptologia, vol. XV, #3,
+          177--193, 1991.
+  [GIL80] Gillogly, ?. Cryptologia 4(2), 1980.
+  [GM82]  Shafi Goldwasser, Silvio Micali, Probabilistic Encryption and
+          How To Play Mental Poker Keeping Secret All Partial Information.
+          Proceedings of the Fourteenth Annual ACM Symposium on Theory of
+          Computing, 1982.
+  [HUM83] D. G. N. Hunter and A. R. McKenzie, Experiments with
+          Relaxation Algorithms for Breaking Simple Substitution
+          Ciphers. Computer Journal 26(1), 1983.
+  [KAM78] J. Kam, G. Davida, A structured design of substitution-
+          permutation encryption networks. IEEE Trans. Information
+          Theory, 28(10), 747--753, 1978.
+  [KIN78] P. Kinnucan, Data encryption gurus: Tuchman and Meyer.
+          Cryptologia, vol. II #4, 371--XXX, 1978.
+  [KIN92] King and Bahler, Probabilistic Relaxation in the
+          Cryptanalysis of Simple Substitution Ciphers. Cryptologia
+          16(3), 215--225, 1992.
+  [KIN93] King and Bahler, An Algorithmic Solution of Sequential
+          Homophonic Ciphers. Cryptologia 17(2), in press.
+  [KOC87] Martin Kochanski, A Survey of Data Insecurity Packages.
+          Cryptologia 11(1), 1--15, 1987.
+  [KOC88] Martin Kochanski, Another Data Insecurity Package.
+          Cryptologia 12(3), 165--177, 1988.
+  [KRU88] Kruh, ?. Cryptologia 12(4), 1988.
+  [LAI90] X. Lai, J. Massey, A proposal for a new block encryption
+          standard. EUROCRYPT 90, 389--404, 1990.
+  [LUB88] C. Rackoff, M. Luby, How to construct psuedorandom
+          permutations from psuedorandom functions. SIAM Journal of
+          Computing, vol. 17, #2, 373--386, 1988.
+  [LUC88] Michael Lucks, A Constraint Satisfaction Algorithm for the
+          Automated Decryption of Simple Substitution Ciphers. In
+          CRYPTO '88.
+  [MAS88] J. Massey, An introduction to contemporary cryptology.
+          IEEE proceedings, 76(5), 533--549, 1988.
+  [ME91a] R. Merkle, Fast software encryption functions. In Proceedings
+          of CRYPTO '90, Menezes and Vanstone ed., 476--501, 1991.
+  [MEY78] C. Meyer, Ciphertext/plaintext and ciphertext/key
+          dependence vs. number of rounds for the Data Encryption
+          Standard. AFIPS Conference proceedings, 47, 1119--1126,
+          1978.
+  [NBS77] Data Encryption Standard. National Bureau of Standards,
+          FIPS PUB 46, Washington, DC, January 1977.
+  [PEL79] S. Peleg and A. Rosenfeld, Breaking Substitution Ciphers
+          Using a Relaxation Algorithm. CACM 22(11), 598--605, 1979.
+  [REE77] J. Reeds, `Cracking' a Random Number Generator.
+          Cryptologia 1(1), 20--26, 1977.
+  [REE84] J. A. Reeds and P. J. Weinberger, File Security and the UNIX
+          Crypt Command. AT&T Bell Laboratories Technical Journal,
+          Vol. 63 #8, part 2, 1673--1684, October, 1984.
+  [SHA49] C. Shannon, Communication Theory of Secrecy Systems. Bell
+          System Technical Journal 28(4), 656--715, 1949.
+  [SHE88] B. Kaliski, R. Rivest, A. Sherman, Is the Data Encryption
+          Standard a Group. Journal of Cryptology, vol. 1, #1,
+          1--36, 1988.
+  [SHI88] A. Shimizu, S. Miyaguchi, Fast data encipherment algorithm
+          FEAL. EUROCRYPT '87, 267--278, 1988.
+  [SHI92] K. Shirriff, C. Welch, A. Kinsman, Decoding a VCR Controller
+          Code. Cryptologia 16(3), 227--234, 1992.
+  [SOR84] A. Sorkin, LUCIFER: a cryptographic algorithm.
+          Cryptologia, 8(1), 22--35, 1984.
+  [SPI93] R. Spillman et al., Use of Genetic Algorithms in
+          Cryptanalysis of Simple Substitution Ciphers. Cryptologia
+          17(1), 31--44, 1993.
+
+10.5. Journals, conference proceedings
+
+  CRYPTO
+  Eurocrypt
+  IEEE Transactions on Information Theory
+  Cryptologia: a cryptology journal, quarterly since Jan 1977.
+          Cryptologia; Rose-Hulman Institute of Technology; Terre Haute
+          Indiana 47803 [general: systems, analysis, history, ...]
+  Journal of Cryptology; International Association for Cryptologic
+          Research; published by Springer Verlag (quarterly since
+          1988).
+  The Cryptogram (Journal of the American Cryptogram Association);
+          18789 West Hickory Street; Mundelein, IL 60060; [primarily
+          puzzle cryptograms of various sorts]
+  Cryptosystems Journal, Published by Tony Patti, P.O. Box 188,
+          Newtown PA, USA 18940-0188 or tony_s_patti@cup.portal.com.
+          Publisher's comment: Includes complete cryptosystems with
+          source and executable programs on diskettes. Tutorial. The
+          typical cryptosystems supports multi-megabit keys and Galois
+          Field arithmetic. Inexpensive hardware random number
+          generator details.
+  Computer and Communication Security Reviews, published by Ross Anderson.
+          Sample issue available from various ftp sites, including
+          black.ox.ac.uk. Editorial c/o rja14@cl.cam.ac.uk. Publisher's
+          comment: We review all the conference proceedings in this field,
+          including not just Crypto and Eurocrypt, but regional gatherings
+          like Auscrypt and Chinacrypt. We also abstract over 50 journals,
+          and cover computer security as well as cryptology, so readers can
+          see the research trends in applications as well as theory.
+  Infosecurity News, MIS Training Institute Press, Inc. 498 Concord Street
+          Framingham MA 01701-2357. This trade journal is oriented toward
+          administrators and covers viruses, physical security, hackers,
+          and so on more than cryptology. Furthermore, most of the articles
+          are written by vendors and hence are biased.  Nevertheless, there
+          are occasionally some rather good cryptography articles.
+
+10.6. Other
+
+  Address of note: Aegean Park Press, P.O. Box 2837, Laguna Hills, CA
+  92654-0837. Answering machine at 714-586-8811.  Toll Free at 800 736-
+  3587, and FAX at 714 586-8269.
+
+  The ``Orange Book'' is DOD 5200.28-STD, published December 1985 as
+  part of the ``rainbow book'' series. Write to Department of Defense,
+  National Security Agency, ATTN: S332, 9800 Savage Road, Fort Meade, MD
+  20755-6000, and ask for the Trusted Computer System Evaluation
+  Criteria. Or call 301-766-8729.
+
+  The ``Orange Book'' will eventually be replaced by the U.S. Federal
+  Criteria for Information Technology Security (FC) online at the NIST
+  site [FTPNS], which also contains information on other various proposed
+  and active federal standards.
+
+  [BAMFD] Bamford, The Puzzle Palace. Penguin Books, 1982.
+  [GOO83] I. J. Good, Good Thinking: the foundations of probability and
+          its applications. University of Minnesota Press, 1983.
+  [KNU81] D. E. Knuth, The Art of Computer Programming, volume 2:
+          Seminumerical Algorithms. Addison-Wesley, 1981.
+  [KUL68] Soloman Kullback, Information Theory and Statistics.
+          Dover, 1968.
+  [YAO88] A. Yao, Computational Information Theory. In Complexity in
+          Information Theory, ed. by Abu-Mostafa, 1988.
+
+10.7. How may one obtain copies of FIPS and ANSI standards cited herein?
+
+  Many textbooks on cryptography contain complete reprints of the FIPS
+  standards, which are not copyrighted.
+
+  The following standards may be ordered from the
+      U.S. Department of Commerce, National Technical Information Service,
+      Springfield, VA 22161.
+
+      FIPS PUB 46-1 Data Encryption Standard  (this is DES)
+      FIPS PUB 74   Guidelines for Implementing as Using the NBS DES
+      FIPS PUB 81   DES Modes of Operation
+      FIPS PUB 113  Computer Data Authentication (using DES)
+
+  [Note: The address below has been reported as invalid.]
+  The following standards may be ordered from the
+      American National Standards Institute Sales Office,
+      1430 Broadway, New York, NY 10018.
+      Phone 212.642.4900
+
+      ANSI X3.92-1981  Data Encryption Algorithm (identical to FIPS 46-1)
+      ANSI X3.106-1983 DEA Modes of Operation    (identical to FIPS 113)
+
+  Notes:  Figure 3 in FIPS PUB 46-1 is in error, but figure 3 in X3.92-1981
+      is correct. The text is correct in both publications.
+
+10.8. Electronic sources
+
+  Anonymous ftp:
+
+  [FTPAL] kampi.hut.fi:alo/des-dist.tar.Z
+  [FTPBK] ftp.uu.net:bsd-sources/usr.bin/des/
+  [FTPCB] ftp.uu.net:usenet/comp.sources.unix/volume10/cbw/
+  [FTPCP] soda.berkeley.edu:/pub/cypherpunks
+  [FTPDF] ftp.funet.fi:pub/unix/security/destoo.tar.Z
+  [FTPDQ] rsa.com:pub/faq/
+  [FTPEY] ftp.psy.uq.oz.au:pub/DES/
+  [FTPMD] rsa.com:?
+  [FTPMR] ripem.msu.edu:pub/crypt/newdes.tar.Z
+  [FTPNS] csrc.nist.gov:/bbs/nistpubs
+  [FTPOB] ftp.3com.com:Orange-Book
+  [FTPPF] prep.ai.mit.edu:pub/lpf/
+  [FTPPK] ucsd.edu:hamradio/packet/tcpip/crypto/des.tar.Z
+  [FTPPX] ripem.msu.edu:pub/crypt/other/tran-and-prngxor.shar
+  [FTPRF] nic.merit.edu:documents/rfc/
+  [FTPSF] beta.xerox.com:pub/hash/
+  [FTPSO] chalmers.se:pub/unix/des/des-2.2.tar.Z
+  [FTPTR] ripem.msu.edu:pub/crypt/other/tran-and-prngxor.shar
+  [FTPUF] ftp.uu.net:usenet/comp.sources.unix/volume28/ufc-crypt/
+  [FTPWP] garbo.uwasa.fi:pc/util/wppass2.zip
+
+  World Wide Web pages:
+
+  [WWWQC] http://www.quadralay.com/www/Crypt/Crypt.html
+          Quadralay Cryptography archive
+  [WWWVC] ftp://furmint.nectar.cs.cmu.edu/security/README.html
+          Vince Cate's Cypherpunk Page
+
+10.9. RFCs (available from [FTPRF])
+
+  [1424]  B. Kaliski, Privacy Enhancement for Internet Electronic Mail:
+          Part IV: Key Certification and Related Services. RFC 1424,
+          February 1993.
+  [1423]  D. Balenson, Privacy Enhancement for Internet Electronic Mail:
+          Part III: Algorithms, Modes, and Identifiers. RFC 1423,
+          February 1993.
+  [1422]  S. Kent, Privacy Enhancement for Internet Electronic Mail:
+          Part II: Certificate-Based Key Management. RFC 1422, February
+          1993.
+  [1421]  J. Linn, Privacy Enhancement for Internet Electronic Mail:
+          Part I: Message Encryption and Authentication Procedures. RFC
+          1421, February 1993.
+
+10.10. Related newsgroups
+
+  There are other newsgroups which a sci.crypt reader might want also to
+  read. Some have their own FAQs as well.
+
+  alt.privacy.clipper           Clipper, Capstone, Skipjack, Key Escrow
+  alt.security                  general security discussions
+  alt.security.index            index to alt.security
+  alt.security.pgp              discussion of PGP
+  alt.security.ripem            discussion of RIPEM
+  alt.society.civil-liberty     general civil liberties, including privacy
+  comp.compression              discussion of compression algorithms and code
+  comp.org.eff.news             News reports from EFF
+  comp.org.eff.talk             discussion of EFF related issues
+  comp.patents                  discussion of S/W patents, including RSA
+  comp.risks                    some mention of crypto and wiretapping
+  comp.society.privacy          general privacy issues
+  comp.security.announce        announcements of security holes
+  misc.legal.computing          software patents, copyrights, computer laws
+  sci.math                      general math discussion
+  talk.politics.crypto          politics of cryptography
+
+[Image]  Privacy in the Cyberspace
+
+[Image]  Homepage of Ho King-hong
+
+  ------------------------------------------------------------------------
+Last Updated: 19/12/95 by Ho King-hong.

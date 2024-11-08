@@ -1,0 +1,553 @@
+ChangeLog
+
+v1.11 2018/07/27
+	(2018/07/26) PS1 - portability: check for more C compilers,
+	including clang.
+	(2018/07/26) PS1 - portability: use AC_USE_SYSTEM_EXTENSIONS
+	instead of individual feature test macros.
+	(2018/07/26) PS1 - include config.h before other header files.
+	(2018/07/26) PS1 - intl: updated tools
+	(2018/07/26) PS1 - autoconf: added --with-included-getopt to avoid
+	using the system-wide getopt library (it may still end up being
+	used on GNU systems).
+	(2018/07/26) PS1 - portability: moved getopt.h to a subdirectory,
+	to be included only when needed.
+	(2018/07/25) PS1 - emacs support: compatibility with Emacs 26,
+	reported by Zhang Jun and Duncan Bayne (bug #24).
+	(2017/03/08) PS1 - portability: fixed some pedantic warnings.
+	(2017/02/22) PS1 - emacs support: fixed warnings.
+	(2017/02/22) PS1 - fixed some compiler and configuration warnings.
+	(2016/11/13) PS1 - intl: added Estonian translations, thanks to
+	Estprog.
+	(2016/11/13) PS1 - emacs support: delete password from environment
+	after each use, reported by d8uoba (bug #23).
+	(2016/06/30) PS1 - ccguess: fixed a bug in the --non-printable option,
+	reported by dcb314 (bug #22).
+	(2014/09/07) PS1 - allow "-" as a filename meaning standard input
+	in cat and unixcrypt modes.
+	(2014/03/30) PS1 - man pages: fixed leading blank page with
+	groff -man -Tps, reported by Hugh McDonald.
+	(2012/12/28) PS1 - intl: updated tools
+
+v1.10 2012/10/18
+	(2012/10/16) PS1 - ccguess: tweaked the ordering of guesses
+	(2012/10/16) PS1 - ccguess: added -t option
+	(2012/10/15) PS1 - ccguess: use a 64-bit counter
+	(2012/10/14) PS1 - ccguess: updated exit status
+	(2012/10/14) PS1 - ccguess: added -n option
+	(2012/10/14) PS1 - ccguess: do not turn off character echoing on
+	password entry.
+	(2012/10/14) PS1 - ccguess: allow multiple files to be tested
+	simultaneously.
+	(2012/10/12) PS1 - ccguess: added -c option
+	(2012/10/11) PS1 - removed intltool build dependency
+	(2012/10/11) PS1 - fixed fchown() compiler warning, again
+	(2012/10/10) PS1 - added ccguess program
+	(2012/08/31) PS1 - man page: fixed name and usage of emacs package
+	(2011/05/13) PS1 - autoconf: new CADD variable to add to CFLAGS
+	(2011/01/08) PS1 - more error handling improvements: check output
+	of fflush, crypt
+	(2011/01/07) PS1 - fixed potential buffer overrun in make_nonce()
+	(2011/01/07) PS1 - better separation of i/o errors and other
+	system errors
+	(2011/01/07) PS1 - test suite: added environment variable
+	CHECK_CCRYPT to allow binaries outside the build tree to be tested
+	(2010/12/28) PS1 - emacs support: use existing buffer password
+	when re-reading a file; improved status messages
+	(2010/12/24) PS1 - more handling of unlikely errors
+	(2010/12/23) PS1 - fixed Rijndael reference code compiler warnings
+	(2010/12/23) PS1 - check for i/o errors in stream mode
+	(2010/12/23) PS1 - added frees in error handlers and at top level
+	(2010/12/23) PS1 - fixed fchown() compiler warning
+	(2010/11/10) PS1 - emacs support: fixed mapcar compiler warnings
+	(2010/08/08) PS1 - build a convenience library libccrypt.a
+	(2009/11/16) PS1 - rpm.spec: fix deprecated copyright tag,
+	reported by Johannes Ruscheinski.
+	(2009/09/09) PS1 - portability: made sources C++ compatible.
+	(2009/09/04) PS1 - autoconf: added --disable-emacs option.
+	(2009/09/04) PS1 - portability: fixed $EXEEXT error (bug
+	#2851058).
+
+v1.9 2009/08/28
+	(2009/06/15) PS1 - inlined functions, dropped -O3 compiler flag
+	(2009/06/14) PS1 - portability: fixed syntax in shell scripts
+	(2009/06/12) PS1 - portability: improved setmode() compatibility
+	(2009/06/12) PS1 - portability: work around /tmp bug on EMX-OS/2
+
+v1.8 2009/06/05
+	(2008/09/28) PS1 - autoconf: added test for crypt.h
+	(2008/07/29) PS1 - portability: moved platform-specific code to
+	platform.h and platform.h.
+	(2008/07/26) PS1 - autoconf: check if -lsocket is needed for
+	gethostname(), required by SCO OpenServer (reported by Predrag
+	Blagec).
+	(2008/05/01) PS1 - documentation: don't install html file.
+	(2008/02/07) PS1 - autoconf: renamed configure.in as configure.ac
+	(2008/02/07) PS1 - portability: avoid __argc and __argv
+	(2008/02/07) PS1 - intl: updated tools, disabled XML configuration
+	(2008/02/06) PS1 - if "key" does not match, try "key\r" for
+	backward compatibility with files encrypted under bug #1872759.
+	(2008/02/05) PS1 - ccryptlib: added multiple key capability.
+	(2008/02/04) PS1 - emacs support: better error message if ccrypt
+	command not found (in response to bug #1886118 by Jonathan Swartz)
+	(2008/01/18) PS1 - ccryptlib: invalidate state on error, to guard
+	against applications that fail to check for errors.
+	(2008/01/16) PS1 - recognize "\r\n" as an end-of-line marker for
+	password files and user input, in case automatic text mode
+	conversion fails (bug #1872759).
+	(2007/10/03) PS1 - added <locale.h> to src/main.c
+	(2007/06/11) PS1 - removed translatable strings from ccryptlib.c
+	(2007/06/10) PS1 - autoconf: simplified test for lispdir.
+	(2007/06/10) PS1 - added short option -y for --keyref.
+	(2007/04/08) PS1 - portability: use 'test' instead of '[' in shell
+	scripts.
+	(2007/04/07) PS1 - intl: added French translations.
+	(2007/04/01) PS1 - intl: updated tools
+	(2006/11/29) PS1 - portability: enabled large file support in AIX
+	(reported by Jon Hardt)
+	(2006/08/11) PS1 - emacs support: removed compression functions,
+	renamed emacs package as ps-ccrypt. This can now peacefully
+	coexist with jka-compr.
+	(2006/04/02) PS1 - fixed missing breaks in "switch" statement in
+	traverse.c.
+	(2006/04/02) PS1 - added --keyref option.
+	(2006/04/02) PS1 - intl: made gettext optional in ccryptlib.c
+	(2006/04/02) PS1 - added "unimplemented option" handler
+	(2006/02/04) PS1 - intl: added intl subdirectory.
+	(2006/02/04) PS1 - added "const" keyword to many strings, to
+	emphasize that translated strings can't be modified.
+	(2006/02/04) PS1 - man page: removed reference to MD5 hash
+	function, since it has been broken.
+	(2006/02/03) PS1 - emacs support: fixed bug where password was
+	lost on change of editing mode (reported by Steve Sullivan).
+	(2006/01/17) PS1 - intl: added German translations.
+	(2006/01/17) PS1 - intl: added internationalization support.
+	(2006/01/13) PS1 - fixed bug #1358164: new exit code 9 in case the
+	user did not enter a key, or in case the given keyfile or
+	environment variable could not be read.
+	(2006/01/13) PS1 - include generated file tables.c in distribution
+	(2006/01/13) PS1 - made rijndael.c and maketables.c more
+	architecture independent by fixing word alignment issues
+	(2006/01/13) PS1 - test suite: better quoting in shell scripts to
+	be more robust against spaces in filenames etc.
+	(2006/01/13) PS1 - test suite: respect TEMPDIR environment
+	variable, if set.
+	(2005/10/27) PS1 - updated Makefiles for Bourne shell
+	compatibility on Tru64 (reported by Hoshi Sepai).
+	(2005/10/13) PS1 - test suite: fixed bug where some versions of
+	diff refuse to read /dev/null (reported by Hoshi Sepai).
+	(2005/10/13) PS1 - commented out some dead code from rijndael.c,
+	to reduce compiler warnings.
+	(2005/10/13) PS1 - removed __const keyword from unixcrypt3.c, as
+	it bothered the Tru64 ANSI compiler (reported by Hoshi Sepai).
+	(2005/03/09) PS1 - fixed bug where --keyfile ignored its argument,
+	reported by Stefan Alfredsson.
+
+v1.7 2004/03/28
+	(2004/02/04) PS1 - large file support now works under cygwin due
+	to a newer cygwin version.
+	(2004/02/04) PS1 - configure: added --disable-libcrypt option.
+	(2003/12/12) PS1 - minor changes to wording of warning messages.
+	(2003/10/29) PS1 - as requested by many users, made --timid the
+	default behavior and added new --brave option to turn it off.
+
+v1.6 2003/08/26
+	(2003/08/26) PS1 - fixed potential segfault in
+	traverse.c:file_action, due to buffer freed too early.
+	(2003/08/26) PS1 - improved mktemp replacement in check/missing.sh
+	(2003/08/25) PS1 - removed a blank line in man page for better
+	whatis support
+
+v1.5 2003/08/25
+        (2003/08/25) PS1 - added check/missing.sh to supply missing
+	"mktemp" command on Solaris.
+	(2003/08/25) PS1 - new exit status 8 for non-fatal i/o
+	error. Also, exit status 4 is now also given in file mode, even if
+	processing continues after the failure (thanks to Juergen Klasen
+	for suggesting the change).
+	(2003/08/25) PS1 - emacs support: fixed a bug in
+	jka-compr-ccrypt.el
+	(2003/08/14) PS1 - made non-public procedures static
+	(2003/08/14) PS1 - eliminated exit status 5.
+	(2003/08/14) PS1 - made some minor changes so it will compile
+	under cc on HP-UX. Use char* instead of void* for buffers,
+	eliminate static allocation of non-constant sized arrays. Thanks
+	to Simon Chung for help with the HP-UX port.
+	(2003/08/13) JR1 - emacs support: provide jka-compr existence
+	functions in jka-compr-ccrypt.el, to keep info.el happy.
+	(2003/08/12) PS1 - CFLAGS are now set in ./configure and can be
+	overridden - not that I recommend it.
+	(2003/08/12) PS1 - new --with-lispdir=DIR configuration option
+	(2003/06/16) PS1 - re-enabled --mismatch option which was
+	inadvertently disabled when switching to ccryptlib in v1.3.  Also
+	added a test for this to "check" target.
+	(2003/05/31) PS1 - removed unescaped newline characters in string
+	constants to compile under gcc-3.3.
+	(2003/05/30) PS1 - changed scripts in "check" target to be
+	independent of /dev/zero and put temporary files in /tmp.
+	(2003/03/31) PS1 - changed rpm.spec file to be more Mandrake
+	acceptable. Binaries will from now on be installed in /usr/bin,
+	man pages in /usr/share/man.
+	(2003/03/30) PS1 - fixed typo in usage message
+
+v1.4 2003/03/29
+	(2003/03/29) PS1 - added missing mode argument to open(2) calls.
+	(2003/03/29) PS1 - made custom sigint handlers for overwrite and
+	tmpfiles modes.
+	(2003/03/28) PS1 - added --tmpfiles option to use temporary files,
+	rather than in-place update, when overwriting a file
+	(2003/03/28) PS1 - removed a potential race condition for
+	chown/chmod.
+	(2003/03/28) PS1 - fixed unreachable "free" in prompt().
+	(2003/03/28) PS1 - simplified logic in traverse.c:file_action(),
+	and broke it into several functions.
+	(2003/03/28) PS1 - eliminated perror(); included ccrypt program
+	name in all error messages and warnings (except verbose messages
+	and interactive prompts)
+	(2003/03/28) PS1 - allow unixcrypt mode to decrypt symbolic links,
+	and to use the -m option
+	(2002/12/14) PS1 - added support for large (>2GB) files.
+	(2002/12/14) PS1 - removed unnecessary "include"s from rijndael.c
+
+v1.3 2002/09/26
+	(2002/09/26) PS1 - added check/length-check.sh to the test suite
+	and added some tests to check/ccrypt-check.sh. Fixed bug where
+	some files were truncated on non-matching key.
+	(2002/09/24) PS1 - allow to operate on write-protected files with
+	user's permission, or if -f option is given.
+	(2002/09/24) PS1 - fixed behavior on some errors; don't rename
+	files or symlinks that could not be opened; don't rename hardlinks
+	if encryption/decryption of their inode has failed.
+	(2002/09/24) PS1 - added --strictsuffix option for refusing to
+	encrypt files that already have a .cpt suffix.
+	(2002/09/24) PS1 - added keychange test to check/ccrypt-check.sh.
+	(2002/09/24) PS1 - added command line options -F, -H, -Q for
+	handling the second keyword in keychange mode.
+	(2002/09/24) PS1 - linked ccryptlib into ccrypt sources and
+	abandoned old character-based i/o interface. This speeds up ccrypt
+	by about 20-30% (in file mode), 45-50% (in filter mode), and a
+	breathtaking 85% in unix crypt mode.
+	(2002/09/20) PS1 - started implementing ccryptlib, a buffer-based
+	encryption/decryption library.
+	(2002/08/22) PS1 - fixed bug #598800: result of xreadline
+	unchecked in traverse.c:prompt.
+	(2002/06/24) PS1 - renamed "no error" as "success".
+	(2002/04/09) PS1 - changed RPMs to use symlinks, rather than hard
+	links for ccdecrypt, ccencrypt, ccat.
+	(2002/04/09) PS1 - changed autoconf script to determine 32-bit
+	unsigned integer type at configure time.
+	(2002/04/09) PS1 - changed --timid option to prompt for encryption
+	keys twice even when operating as a filter.
+	(2002/04/09) PS1 - made nonce generation more random by using
+	microseconds, not just seconds, in the seed.
+
+v1.2 2002/01/29
+	(2002/01/28) PS1 - improved autoconf configuration in the case
+	where getopt is present but getopt_long is missing
+	(2002/01/22) PS1 - used profiling to make ccrypt about 55-65%
+	faster by optimizing one critical inner loop.
+        (2001/11/29) PS1 - updated man page to include new exit code 7.
+	(2001/11/29) PS1 - fixed bug #486857 - replace == by = in
+	{src,doc}/Makefile.am
+
+v1.1 2001/11/28
+	(2001/11/28) PS1 - added --timid option to prevent loss of data
+	from accidentally mistyped keys. This option causes ccrypt to
+	prompt twice for an encryption keys that will be used to update a
+	file destructively. If the two entered keys are not equal, ccrypt
+	will not proceed.
+	(2001/11/27) PS1 - added autoconf magic for SunOS, FreeBSD, MacOS,
+	AIX, and CygWin.
+	(2001/11/27) PS1 - added optional replacements for getopt and/or
+	crypt(3) libraries.
+	(2001/11/26) PS1 - added check targets for testing correctness of
+	binary
+	(2001/11/26) PS1 - major reorganization of sources, added
+	automake/autoconf configuration.
+	(2001/11/24) PS1 - ensured that data is treated as binary under
+	cygwin.
+        (2001/11/24) PS1 - changed signal handler for Ctrl-C.
+	(2001/11/24) PS1 - added --unixcrypt mode to simulate old unix
+	style "crypt" program.
+	(2001/11/24) PS1 - changed cat mode to operate as a filter when 0
+	filenames are given.
+
+v1.0 2001/10/30
+	(2001/10/30) PS1 - created web page, created html man page,
+	created RedHat rpms, upped version number to 1.0. First public
+	release.
+	(2001/10/30) PS1 - added signal handler for SIGINT. In overwrite
+	mode, delay exit on SIGINT until after the current file is
+	processed. Immediate exit can be forced by pressing SIGINT twice.
+	(2001/10/27) PS1 - updated man page.
+	(2001/10/27) PS1 - added exit code 5 for file format; this leaves
+	4 for non-matching key, thus enabling emacs mode to re-prompt for
+	the key.
+	(2001/10/27) PS1 - added option --keyfile to read key from a
+	file. "-" is a special case which replaces the old --pipekey
+	option.
+	(2001/10/27) PS1 - emacs support: pass keyword to ccrypt in
+	environment variable, not on command line. Renamed package as
+	jka-compr-ccrypt.el.
+	(2001/10/27) PS1 - changed main.c to erase password from command
+	line or environment (as displayed by "ps") immediately after
+	copying it.
+	(2001/10/26) PS1 - renamed -k option as -p
+	(2001/10/26) PS1 - added -m option to allow decryption with
+	mismatched key
+	(2001/10/26) PS1 - added --license option and kept --version short
+	(2001/10/26) PS1 - cleaned up concept of "modes" - now ccrypt is
+	always in precisely one of -e, -d, -c, -x. In particular, cat mode
+	is always decryption, since it does not make sense to concatenate
+	encrypted data, and a pipeline can be used for a single file.
+	(2001/10/26) PS1 - made a user interface for keychange feature -
+	prompt for keys as appropriate etc. Note that there is currently
+	no way to specify the second key on the command line or in an
+	environment variable, or to specify a prompt for it.
+	(2001/10/26) PS1 - changed implementation of --pipekey option to
+	not read the key immediately, but after some checks.
+	(2001/10/26) PS1 - converted to getopt()
+	(2001/10/26) PS1 - changed cipher mode to Cipher Feedback (CFB) -
+	this has the advantage that corrupted files may still be partially
+	decrypted. Also, CFB is an ANSI standard mode with well-understood
+	properties, which will encourage confidence in the security of the
+	encryption provided. This is an incompatible change; thus,
+	incrementing version number to 0.51 and magic cookie to c051.
+	Note that this mode is identical to that provided by ccrypt0.5,
+	except we omitted the 8-byte checksum at the end of the file.
+
+----------------------------
+date: 2001/10/27 05:27:31;  author: selinger;  state: Exp;  lines: +98 -285
+* ccrypt0.5, which was committed on 2001/02/13 without adequate log
+message, was a version of ccrypt which used a checksum to suggest file
+integrity. I since decided to discontinue this feature, since it is
+not provably safe and might thus be misleading.
+* the current commit is again called ccrypt0.4, because the file
+format was reverted to format 0.4. All file format changing
+features of 0.5 were reversed.
+* changes relative to ccrypt0.4 as committed on 2000/11/30:
+  * added Makefile as a dependency to some targets in Makefile
+  * changed usage of "unsigned long" to word32 etc
+  * changes to some comments and variable names in ccrypt.c
+  * if in filemode and 0 filenames follow, don't prompt for password
+  * updated todo file
+  * exit immediately on i/o error, rather than continuing with the
+    next file. This does not apply to non-existing files, but to
+    errors on read/write.
+  * added cypfaq01.txt to documentation
+  * added emacs mode for ccrypt
+* changes relative to ccrypt0.5 as committed on 2001/02/13:
+  * undid version number change and magic string change
+  * undid checksumming code
+  * edited comments in emacs mode
+----------------------------
+date: 2001/02/27 03:46:12;  author: selinger;  state: Exp;  lines: +10 -3
+* added check for empty list of filenames - in this case, print a
+  warning and don't prompt for keyword
+----------------------------
+date: 2001/02/13 05:49:48;  author: selinger;  state: Exp;  lines: +307 -98
+* across-the-board commit of versions existing on caiaphas
+----------------------------
+date: 2000/11/30 07:49:16;  author: selinger;  state: Exp;  lines: +172 -55
+Major changes:
+* Command line interface: discontinued --file and --filter options,
+  made semantics of --cat and -- more uniform.
+* Added a --keychange mode (command line interface still experimental).
+* Fixed a bug where file was deleted if wrong key given in overwrite
+  mode.
+----------------------------
+date: 2000/11/17 02:14:42;  author: selinger;  state: Exp;  lines: +3 -3
+Added LICENSE, modified manpage. Renamed --filemode option as --file.
+----------------------------
+date: 2000/11/14 20:43:41;  author: selinger;  state: Exp;  lines: +37 -210
+* separated stream/file handling from encryption: object-oriented
+  interface "readwriter" is now in io.c and io.h.
+----------------------------
+date: 2000/11/06 16:08:06;  author: selinger;  state: Exp;  lines: +13 -14
+* updated to new algorithm which uses a 1-1 state function relative to
+  fixed input or fixed output
+* small update of user interface: now complain if 0 files are given in
+  cat mode, or if >=1 files are given in filter mode
+* small changes to man page and paper
+----------------------------
+date: 2000/10/04 10:31:38;  author: selinger;  state: Exp;  lines: +10 -10
+* minor update to command line interface.
+* started paper stream.tex
+----------------------------
+date: 2000/10/03 19:27:17;  author: selinger;  state: Exp;  lines: +50 -25
+Improvements to command line interface and man page.
+----------------------------
+date: 2000/10/01 14:22:45;  author: selinger;  state: Exp;  lines: +304 -114
+* changed encryption algorithm to use seed
+* canceled keep mode
+* introduced aliases ccencrypt, ccdecrypt, ccat
+* now refuse to write/read encrypted data to/from terminal
+----------------------------
+date: 2000/05/29 18:50:40;  author: selinger;  state: Exp;  lines: +23 -322
+* Moved all the gory file logic into traverse.c; main.c now concentrates
+  on reading the command line.
+* Changed traverse.c so that directories are read in their entirety
+  before being traversed; there were some problems on Solaris.
+* Changes in defaults for symlinks in cat and keep modes.
+* Updated manpage and other minor changes.
+----------------------------
+date: 2000/05/29 03:25:00;  author: selinger;  state: Exp;  lines: +2 -2
+Edited man page
+----------------------------
+date: 2000/05/29 03:13:44;  author: selinger;  state: Exp;  lines: +2 -2
+Updated manpage to reflect new command line interface.
+----------------------------
+date: 2000/05/29 02:47:07;  author: selinger;  state: Exp;  lines: +15 -1
+New feature: preserve timestamp, modes and ownership whenever possible.
+----------------------------
+date: 2000/05/29 02:13:16;  author: selinger;  state: Exp;  lines: +247 -130
+Implemented behavior of symbolic links.
+Added proper keep and cat modes.
+cat follows symbolic links by default.
+Added check before overwriting existing files, and --force option.
+----------------------------
+date: 2000/05/28 16:32:49;  author: selinger;  state: Exp;  lines: +61 -71
+Added command line options for symlinks (functinoality yet unimplemented)
+Added long command line options
+----------------------------
+date: 2000/05/28 04:21:55;  author: selinger;  state: Exp;  lines: +5 -2
+Added global state for on/off of symbolic links
+----------------------------
+date: 2000/05/25 17:56:14;  author: selinger;  state: Exp;  lines: +51 -48
+Changed ccrypt to allow parallel encryption of many streams by
+localizing the state.
+----------------------------
+date: 2000/05/18 02:48:50;  author: selinger;  state: Exp;  lines: +109 -62
+Started working on suffix-adding and -removing in destroy mode.
+Maybe should ignore symlinks as gzip does?
+----------------------------
+date: 2000/05/16 06:28:32;  author: selinger;  state: Exp;  lines: +17 -13
+started re-vamping user interface. Renamed many command-line option to
+be similar to those of gzip. All file-reading commands now operate on
+multiple files. Explicit output file naming is no longer possible -
+use filter mode for this.
+The file-reading modes still need to be implemented.
+----------------------------
+date: 2000/05/16 03:44:30;  author: selinger;  state: Exp;  lines: +64 -22
+added -r and -m to main to allow traversal of files. Presently only in
+update mode. Need to rewrite command line interface completely.
+----------------------------
+date: 2000/05/15 17:15:24;  author: selinger;  state: Exp;  lines: +56 -46
+Added command line struct to main.c
+Added experimental file traverse.c (currently standalone) for
+traversing through a list of files, and optionally recursively through
+directories.
+----------------------------
+date: 2000/05/15 03:11:53;  author: selinger;  state: Exp;  lines: +2 -2
+Fixed bug in ccrypt.c which scrambled state rather than state+8. This
+changes encryption behavior, thus advanced to v0.2.
+----------------------------
+date: 2000/04/26 04:33:51;  author: selinger;  state: Exp;  lines: +8 -22
+Fixed bug in guess_outfile, where ".cpt" was removed even if it was
+not at the end of the infile name. (as in xxx.cpt2).
+----------------------------
+date: 2000/04/26 03:59:16;  author: selinger;  state: Exp;  lines: +85 -17
+Threw out most of the code in main.c that dealt with files, temporary
+files, renaming, checking for hard links, and all that. Instead, added
+the ability to update a file in place by using read/write mode on it.
+
+Also implemented the new OFB mode. Benchmarks yielded that if 32 state
+bytes were used in the non-linear function that encodes each byte,
+then the time spent in Rijndael and the time spent on calculating this
+non-linear function would be about equal. This seems too much overhead
+in return for the security of a single byte. Thus, I reduced the
+number of state bytes used in this calculation to 9. This makes an
+exhaustive search possible in the near future, but such a search is
+probably not worth the effort, especially considering it only helps to
+decrypt one byte, namely the first byte where a given ciphertext
+differs from one with known plaintext.
+
+Benchmark testing also showed that fseek is extremely expensive. The
+original implementation of in-place update called fseek twice per
+byte, which took 8 times more time that encryption itself. By using a
+1000 byte buffer, I reduced this overhead to about 0.8%.
+----------------------------
+date: 2000/04/25 19:29:12;  author: selinger;  state: Exp;  lines: +11 -16
+* Changed rijndael interface to operate on unsigned long arrays instead
+  of char arrays - this ensures that the arrays are aligned properly on
+  word boundaries.
+* Also made many changes to the user interface. Now use "stat" to check
+  inode of input and output file, test that they are regular files, and
+  use (manual) copy, rather than rename, to copy the temporary file to
+  the output (this overwrites all hardlink references).
+----------------------------
+date: 2000/04/24 18:02:04;  author: selinger;  state: Exp;  lines: +10 -3
+Changes to file handling. ccrypt now checks for input/output errors,
+and if such an error occurs, any partial output is deleted and the
+original file retained. Also, in file mode, we now output to a
+temporary file by default, since checking for identical filenames is
+not sufficient to detect physical equality of input and output file.
+----------------------------
+date: 2000/04/18 07:59:41;  author: selinger;  state: Exp;  lines: +5 -41
+Changed Makefile to run in directory rijndael recursively.
+Linked sboxes into ccrypt rather than repeating them.
+----------------------------
+date: 2000/04/17 17:44:36;  author: selinger;  state: Exp;  lines: +81 -40
+Updated ccrypt but it contains a bug: block cipher operates in
+electronic dictionary mode. Also streamlined rijndael.c decryption,
+and changed external interface to operate on strings rather than
+2-dimensional arrays.
+----------------------------
+date: 2000/04/16 17:58:39;  author: selinger;  state: Exp;  lines: +3 -1
+Fixed array index bug in ccrypt.init_random. Also added fflush to main.
+----------------------------
+date: 2000/04/16 17:16:25;  author: selinger;  state: Exp;  lines: +2 -1
+added "return 0" at end of main
+----------------------------
+date: 2000/04/14 08:50:27;  author: selinger;  state: Exp;  lines: +10 -12
+Improved hashing. It is now infeasible to find two passwords that hash
+to the same key.
+----------------------------
+date: 2000/04/14 08:41:50;  author: selinger;  state: Exp;  lines: +22 -15
+Changed password hashing to use rijndael instead of an ad hoc method.
+----------------------------
+date: 2000/04/12 20:46:54;  author: selinger;  state: Exp;  lines: +10 -14
+removed arbitrary line length on password read from terminal (but
+notice that Solaris still imposes 1024 character limit).
+Added #ifdef lines to .h files.
+Added Id tag to .in files.
+----------------------------
+date: 2000/04/12 07:06:30;  author: selinger;  state: Exp;  lines: +10 -6
+fixed bug where OFB mode was not self-inverse. Also updated manpage
+after reading more about block ciphers and modes.
+----------------------------
+date: 2000/04/11 09:44:49;  author: selinger;  state: Exp;  lines: +13 -13
+Added GNU license to man page, and updated Makefile and main.c to
+compile correctly on Solaris. Removed double global variable "key".
+----------------------------
+date: 2000/04/11 09:25:37;  author: selinger;  state: Exp;  lines: +49 -27
+Complete rewrite of encryption algorithm based on Rijndael.
+----------------------------
+date: 2000/04/10 01:36:19;  author: selinger;  state: Exp;  lines: +163 -30
+Added a man page, updated user interface, added config file and
+install script.
+----------------------------
+date: 2000/04/09 22:09:39;  author: selinger;  state: Exp;  lines: +3 -108
+Added Id headers, and separated ccrypt from main.
+----------------------------
+date: 2000/04/09 21:40:20;  author: selinger;  state: Exp;  lines: +26 -63
+Created custom random number generator, both for portability and
+because the GNU one is really bad. Also moved readkey to a separate
+module.
+----------------------------
+date: 2000/04/09 06:30:21;  author: selinger;  state: Exp;  lines: +12 -6
+Made it work with SUN rand() which produces 15-bit random integers.
+----------------------------
+date: 2000/04/09 06:21:54;  author: selinger;  state: Exp;  lines: +13 -4
+Added debug mode
+----------------------------
+date: 2000/04/09 00:17:55;  author: selinger;  state: Exp;  lines: +151 -12
+First working version.
+----------------------------
+date: 2000/04/08 21:53:25;  author: selinger;  state: Exp;
+branches:  1.1.1;
+Initial revision
+----------------------------
+date: 2000/04/08 21:53:25;  author: selinger;  state: Exp;  lines: +0 -0
+Imported sources
+=============================================================================

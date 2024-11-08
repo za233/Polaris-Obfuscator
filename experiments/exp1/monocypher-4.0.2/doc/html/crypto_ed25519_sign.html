@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<!-- This is an automatically generated file.  Do not edit.
+   This file is dual-licensed.  Choose whichever you want.
+  
+   The first licence is a regular 2-clause BSD licence.  The second licence
+   is the CC-0 from Creative Commons. It is intended to release Monocypher
+   to the public domain.  The BSD licence serves as a fallback option.
+  
+   SPDX-License-Identifier: BSD-2-Clause OR CC0-1.0
+  
+   ----------------------------------------------------------------------------
+  
+   Copyright (c) 2019-2020, 2022-2023 Fabio Scotoni
+   Copyright (c) 2023 Loup Vaillant
+   All rights reserved.
+  
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are
+   met:
+  
+   1. Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+  
+   2. Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the
+      distribution.
+  
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+   HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  
+   ----------------------------------------------------------------------------
+  
+   Written in 2019-2020 and 2022-2023 by Fabio Scotoni and Loup Vaillant
+  
+   To the extent possible under law, the author(s) have dedicated all copyright
+   and related neighboring rights to this software to the public domain
+   worldwide.  This software is distributed without any warranty.
+  
+   You should have received a copy of the CC0 Public Domain Dedication along
+   with this software.  If not, see
+   <https://creativecommons.org/publicdomain/zero/1.0/>
+   -->
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="style.css" type="text/css" media="all"/>
+  <title>CRYPTO_ED25519_SIGN(3MONOCYPHER)</title>
+</head>
+<body>
+<table class="head">
+  <tr>
+    <td class="head-ltitle">CRYPTO_ED25519_SIGN(3MONOCYPHER)</td>
+    <td class="head-vol">3MONOCYPHER</td>
+    <td class="head-rtitle">CRYPTO_ED25519_SIGN(3MONOCYPHER)</td>
+  </tr>
+</table>
+<div class="manual-text">
+<section class="Sh">
+<h1 class="Sh" id="NAME"><a class="permalink" href="#NAME">NAME</a></h1>
+<p class="Pp"><code class="Nm">crypto_ed25519_sign</code>,
+    <code class="Nm">crypto_ed25519_check</code>,
+    <code class="Nm">crypto_ed25519_key_pair</code>,
+    <code class="Nm">crypto_ed25519_ph_sign</code>,
+    <code class="Nm">crypto_ed25519_ph_check</code> &#x2014;
+    <span class="Nd">public key signatures</span></p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SYNOPSIS"><a class="permalink" href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p class="Pp"><code class="In">#include
+    &lt;<a class="In">monocypher-ed25519.h</a>&gt;</code></p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_ed25519_sign</code>(<var class="Fa">uint8_t
+    signature[64]</var>, <var class="Fa">const uint8_t secret_key[64]</var>,
+    <var class="Fa">const uint8_t *message</var>, <var class="Fa">size_t
+    message_size</var>);</p>
+<p class="Pp"><var class="Ft">int</var>
+  <br/>
+  <code class="Fn">crypto_ed25519_check</code>(<var class="Fa">const uint8_t
+    signature[64]</var>, <var class="Fa">const uint8_t public_key[32]</var>,
+    <var class="Fa">const uint8_t *message</var>, <var class="Fa">size_t
+    message_size</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_ed25519_key_pair</code>(<var class="Fa">uint8_t
+    secret_key[64]</var>, <var class="Fa">uint8_t public_key[32]</var>,
+    <var class="Fa">uint8_t seed[32]</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_ed25519_ph_sign</code>(<var class="Fa">uint8_t
+    signature[64]</var>, <var class="Fa">const uint8_t secret_key[64]</var>,
+    <var class="Fa">const uint8_t message_hash[64]</var>);</p>
+<p class="Pp"><var class="Ft">int</var>
+  <br/>
+  <code class="Fn">crypto_ed25519_ph_check</code>(<var class="Fa">const uint8_t
+    signature[64]</var>, <var class="Fa">const uint8_t public_key[32]</var>,
+    <var class="Fa">const uint8_t message_hash[64]</var>);</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="DESCRIPTION"><a class="permalink" href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p class="Pp">The
+    <a class="permalink" href="#crypto_ed25519_sign"><code class="Fn" id="crypto_ed25519_sign">crypto_ed25519_sign</code></a>()
+    and
+    <a class="permalink" href="#crypto_ed25519_check"><code class="Fn" id="crypto_ed25519_check">crypto_ed25519_check</code></a>()
+    functions provide Ed25519 public key signatures and verification with
+    SHA-512 as the underlying hash function. They are interoperable with other
+    Ed25519 implementations. If you have no interoperability requirements,
+    prefer
+    <a class="Xr" href="crypto_eddsa_sign.html">crypto_eddsa_sign(3monocypher)</a>.</p>
+<p class="Pp">The arguments and security considerations are the same as those
+    described in
+    <a class="Xr" href="crypto_eddsa_sign.html">crypto_eddsa_sign(3monocypher)</a>.</p>
+<p class="Pp" id="crypto_ed25519_ph_sign"><a class="permalink" href="#crypto_ed25519_ph_sign"><code class="Fn">crypto_ed25519_ph_sign</code></a>()
+    and
+    <a class="permalink" href="#crypto_ed25519_ph_check"><code class="Fn" id="crypto_ed25519_ph_check">crypto_ed25519_ph_check</code></a>()
+    implement Ed25519ph. To sign or check a message, first hash the message with
+    <a class="Xr" href="crypto_sha512.html">crypto_sha512(3monocypher)</a>, then
+    process the resulting <var class="Fa">message_hash</var>.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="RETURN_VALUES"><a class="permalink" href="#RETURN_VALUES">RETURN
+  VALUES</a></h1>
+<p class="Pp"><code class="Fn">crypto_ed25519_key_pair</code>(),
+    <code class="Fn">crypto_ed25519_sign</code>(), and
+    <code class="Fn">crypto_ed25519_ph_sign</code>() return nothing.</p>
+<p class="Pp"><code class="Fn">crypto_ed25519_check</code>() and
+    <code class="Fn">crypto_ed25519_ph_check</code>() returns 0 for legitimate
+    messages and -1 for forgeries.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SEE_ALSO"><a class="permalink" href="#SEE_ALSO">SEE
+  ALSO</a></h1>
+<p class="Pp"><a class="Xr" href="crypto_eddsa_sign.html">crypto_eddsa_sign(3monocypher)</a>,
+    <a class="Xr" href="crypto_x25519.html">crypto_x25519(3monocypher)</a>,
+    <a class="Xr" href="crypto_aead_lock.html">crypto_aead_lock(3monocypher)</a>,
+    <a class="Xr" href="crypto_sha512.html">crypto_sha512(3monocypher)</a>,
+    <a class="Xr" href="intro.html">intro(3monocypher)</a></p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="STANDARDS"><a class="permalink" href="#STANDARDS">STANDARDS</a></h1>
+<p class="Pp">These functions implement Ed25519 as described in RFC 8032.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="HISTORY"><a class="permalink" href="#HISTORY">HISTORY</a></h1>
+<p class="Pp">The <code class="Fn">crypto_ed25519_sign</code>(),
+    <code class="Fn">crypto_ed25519_check</code>(), and
+    <code class="Fn">crypto_ed25519_public_key</code>() functions appeared in
+    Monocypher 3.0.0. They replace recompilation of Monocypher with the
+    <code class="Dv">ED25519_SHA512</code> preprocessor definition.</p>
+<p class="Pp">In Monocypher 4.0.0, the incremental and custom hash API removed.
+    The main interface was also reworked to avoid misuse, and
+    <code class="Fn">crypto_ed25519_key_pair</code>() replaced
+    <code class="Fn">crypto_ed25519_public_key</code>().</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="CAVEATS"><a class="permalink" href="#CAVEATS">CAVEATS</a></h1>
+<p class="Pp">Monocypher does not perform any input validation. Any deviation
+    from the specified input and output length ranges results in
+    <a class="permalink" href="#undefined"><b class="Sy" id="undefined">undefined
+    behaviour</b></a>. Make sure your inputs are correct.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SECURITY_CONSIDERATIONS"><a class="permalink" href="#SECURITY_CONSIDERATIONS">SECURITY
+  CONSIDERATIONS</a></h1>
+<section class="Ss">
+<h2 class="Ss" id="Signature_malleability"><a class="permalink" href="#Signature_malleability">Signature
+  malleability</a></h2>
+<p class="Pp">Signature malleability is the ability of an attacker to produce a
+    valid signature with knowledge of only an existing signature and the public
+    key. Monocypher prevents that by checking the encoding of the signature, and
+    guarantees that generating new signatures requires the private key.</p>
+<p class="Pp">On the other hand, EdDSA signatures are not unique like
+    cryptographic hashes. The signing procedure is deterministic by
+    specification and <code class="Fn">crypto_ed25519_sign</code>() follows this
+    specification. However, someone with the private key can generate
+    arbitrarily many valid, canonical, and different signatures of the same
+    message. Because of this, never assume that signatures are unique.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Fault_injection_and_power_analysis"><a class="permalink" href="#Fault_injection_and_power_analysis">Fault
+  injection and power analysis</a></h2>
+<p class="Pp">Fault injection (also known as glitching) and power analysis may
+    be used to manipulate the resulting signature and recover the secret key in
+    some cases. This requires hardware access. We can try to mitigate this
+    attack by prefixing all hashes a random data block, in a construction
+    similar to Ed25519ctx. Note that there may still be other power-related side
+    channels (such as if the CPU leaks information when an operation overflows a
+    register) that must be considered.</p>
+</section>
+</section>
+</div>
+<table class="foot">
+  <tr>
+    <td class="foot-date">March 1, 2022</td>
+    <td class="foot-os">Debian</td>
+  </tr>
+</table>
+</body>
+</html>

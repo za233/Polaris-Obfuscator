@@ -1,0 +1,6 @@
+rijndael.o: rijndael.c /usr/include/stdc-predef.h rijndael.h ../config.h \
+ tables.h
+/usr/include/stdc-predef.h:
+rijndael.h:
+../config.h:
+tables.h:

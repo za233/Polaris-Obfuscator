@@ -1,0 +1,190 @@
+
+                                   ccrypt
+
+   Secure encryption and decryption of files and streams
+     _________________________________________________________________
+
+  Description
+
+   ccrypt is a tool for encrypting and decrypting files and streams.
+   It is based on the Rijndael block cipher, a version of which is
+   also used in the Advanced Encryption Standard (AES, see
+   http://www.nist.gov/aes). This cipher is believed to provide very
+   strong cryptographic security.
+
+   The algorithm provided by ccrypt is not symmetric, i.e., one must
+   specify whether to encrypt or decrypt. The most common way to
+   invoke ccrypt is via the commands ccencrypt and ccdecrypt.  There
+   is also a ccat command for decrypting a file directly to the
+   terminal, thus reducing the likelihood of leaving temporary
+   plaintext files around.  In addition, there is a compatibility mode
+   for decrypting legacy files from the ancient Unix crypt(1) command.
+   An emacs mode is also supplied for editing encrypted text files.
+
+   Encryption and decryption depends on a keyword (or key phrase)
+   supplied by the user.  By default, the user is prompted to enter a
+   keyword from the terminal.  Keywords can consist of any number of
+   characters, and all characters are significant (although ccrypt
+   internally hashes the key to 256 bits). Longer keywords provide better
+   security than short ones, since they are less likely to be discovered
+   by exhaustive search.
+
+   For a detailed description of the encryption algorithm used by ccrypt,
+   see the man page.
+
+  Downloading and Installing from Source
+
+   The following instructions are for compiling ccrypt from source
+   code; if you have downloaded one of the precompiled binary
+   distributions, please skip to "Downloading and Installing Precompiled
+   Distributions" below.
+
+   The source distribution of the current version of ccrypt can be
+   downloaded as a gzipped tar archive from
+   http://ccrypt.sourceforge.net/. You can unpack the archive with a
+   command such as
+
+       tar -zxf ccrypt-XXX.tar.gz
+
+   For compiling and installation, please follow the instructions in
+   the file INSTALL. The basic installation sequence is:
+
+       ./configure
+       make
+       make check
+
+   The only non-standard configuration options are --disable-libcrypt
+   and --disable-emacs. Normally, ccrypt will be linked against the
+   libcrypt library, if available. If this library is not available,
+   or if the --disable-libcrypt option is given to ./configure, then
+   we will use our own replacement for this library. This is useful
+   for creating binary distributions when we don't want to distribute
+   libcrypt.so. The --disable-emacs configuation option can be used to
+   disable emacs support.
+
+  Downloading and Installing Precompiled Distributions
+
+   ccrypt is also available in precompiled formats for a number of
+   popular platforms, including Linux, MacOS X, and Windows under
+   CygWin.  In each case, just install the binaries in one of the
+   places where the operating system usually looks for them, such as
+   /usr/bin. You should also create symbolic links to the ccrypt
+   binary named ccencrypt, ccdecrypt, and ccat; when ccrypt is invoked
+   by one of these names, its default behavior changes. To create the
+   appropriate links, change to the directory where you have installed
+   ccrypt, and run the commands
+
+       ln -s ccrypt ccencrypt 
+       ln -s ccrypt ccdecrypt 
+       ln -s ccrypt ccat
+
+   You may also want to install the man page by copying ccrypt.1 to an
+   appropriate directory, such as /usr/share/man/man1.
+
+   The precompiled distributions are usually prepared without
+   internationalization support.
+
+   Windows users see the file README-WIN.
+
+  Usage
+
+Usage: ccrypt [mode] [options] [file...]
+       ccencrypt [options] [file...]
+       ccdecrypt [options] [file...]
+       ccat [options] file...
+
+Modes:
+    -e, --encrypt         encrypt
+    -d, --decrypt         decrypt
+    -c, --cat             cat; decrypt files to stdout
+    -x, --keychange       change key
+    -u, --unixcrypt       decrypt old unix crypt files
+
+Options:
+    -h, --help            print this help message and exit
+    -V, --version         print version info and exit
+    -L, --license         print license info and exit
+    -v, --verbose         print progress information to stderr
+    -q, --quiet           run quietly; suppress warnings
+    -f, --force           overwrite existing files without asking
+    -m, --mismatch        allow decryption with non-matching key
+    -E, --envvar var      read keyword from environment variable (unsafe)
+    -K, --key key         give keyword on command line (unsafe)
+    -k, --keyfile file    read keyword(s) as first line(s) from file
+    -P, --prompt prompt   use this prompt instead of default
+    -S, --suffix .suf     use suffix .suf instead of default .cpt
+    -s, --strictsuffix    refuse to encrypt files which already have suffix
+    -F, --envvar2 var     as -E for second keyword (for keychange mode)
+    -H, --key2 key        as -K for second keyword (for keychange mode)
+    -Q, --prompt2 prompt  as -P for second keyword (for keychange mode)
+    -t, --timid           prompt twice for encryption keys (default)
+    -b, --brave           prompt only once for encryption keys
+    -y, --keyref file     encryption key must match this encrypted file
+    -r, --recursive       recurse through directories
+    -R, --rec-symlinks    follow symbolic links as subdirectories
+    -l, --symlinks        dereference symbolic links
+    -T, --tmpfiles        use temporary files instead of overwriting (unsafe)
+    --                    end of options, filenames follow
+
+   For detailed usage information, see the man page.
+
+  Emacs support
+
+   ccrypt comes with an emacs package for reading and writing
+   encrypted files. The package is called ps-ccrypt, and it is based
+   on the jka-compr package which is part of GNU Emacs.  Unlike
+   previous versions of this package, it can be used in addition to,
+   and not instead of, jka-compr, to handle both encrypted and
+   compressed files.  (However, files that are both encrypted and
+   compressed are not currently handled correctly).
+
+   To use the package, simply load ps-ccrypt and edit as usual.  When
+   you open a file with the ".cpt" extension, emacs will prompt you
+   for a password for the file. It will remember the password for the
+   buffer, and when you save the file later, it will be automatically
+   encrypted again (provided you save it with a ".cpt"
+   extension). Except for the password prompt, the operation of the
+   package should be transparent to the user. The command M-x
+   ccrypt-set-buffer-password can be used to change the current
+   password of a buffer.
+
+   The simplest way to use this package is to include the lines
+
+       (setq load-path (cons "path" load-path))
+       (require 'ps-ccrypt "ps-ccrypt.el")
+
+   in your .emacs file, where path is the directory which holds the file
+   ps-ccrypt.el.
+
+  Support and Reporting Bugs
+
+   Ccrypt has a project page on SourceForge at
+   http://sourceforge.net/projects/ccrypt/. There you will find facilities
+   for reporting bugs, submitting patches, asking for support, asking for
+   features, or discussing ccrypt in general. You are encouraged to use
+   these facilities. You can also send email to the author.
+
+  Author
+
+   Copyright (C) 2000-2018 Peter Selinger <selinger at users.sourceforge.net>
+
+  License
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
+
+   This program is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+   General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software Foundation,
+   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+  GPG Key
+
+   Peter Selinger's GPG key fingerprint is:
+   12A2 4B3C 3790 B688 E484  7A98 A68B CC37 CA31 696A

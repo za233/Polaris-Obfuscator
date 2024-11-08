@@ -1,0 +1,64 @@
+
+                                   ccrypt
+
+   Secure encryption and decryption of files and streams
+     _________________________________________________________________
+
+This file contains instructions specific to the Windows distribution
+of ccrypt. Please see README and the man page for general information
+on usage etc.
+
+USAGE for Windows:
+==================
+
+Please note that ccrypt is a *command line* program. It can only be
+run from the DOS prompt or from a shell. It is not the kind of program
+you run by double-clicking.
+
+INSTALLATION for Windows:
+=========================
+
+Download the file ccrypt-XXX.cygwin-x86.zip, and unpack it using your
+favorite tool. Often, double-clicking on the archive will allow you to
+extract the contents. 
+
+The windows distribution includes an executable file ccrypt.exe, and a
+dynamically linked library cygwin1.dll.  You need to put both
+ccrypt.exe and cygwin1.dll in a place where Windows can find them. One
+such place is C:\Windows.
+
+If you already have a different version of cygwin installed, you
+cannot use this binary unless you up/downgrade to the version of
+cygwin that comes with the ccrypt distribution. However, there should be
+no problem re-compiling ccrypt under your version of cygwin.
+
+The default executable file is called ccrypt.exe. You should also
+create files ccencrypt.exe, ccdecrypt.exe, and ccat.exe in the same
+directory. These files are identical to ccrypt.exe, but when ccrypt is
+invoked by one of these filenames, its default behavior changes. Under
+Windows, the most fool-proof solution is to make four copies of
+ccrypt.exe and rename them appropriately.
+
+RUNNING:
+==================================================
+
+For non-Windows specific usage information, see the file README.
+
+Ccrypt on Windows runs in much the same way as under Linux and other
+Unix-like operating systems, due to the amazing magic of cygwin
+(http://sources.redhat.com/cygwin/), which simulates a Unix
+environment under Windows.
+
+Note on wildcards: The following command line does not work as
+expected under Windows:
+
+ ccrypt h:\data\*.*
+
+However, each of the following two commands will work as it should:
+
+ ccrypt h:\data\file.txt
+
+ ccrypt h:/data/*.*
+
+I am not sure what causes this behavior. Apparently an inconsistency
+between backslash conversion and wildcard expansion.

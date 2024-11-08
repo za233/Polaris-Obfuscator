@@ -1,0 +1,420 @@
+# Estonian translations for the ccrypt package.
+# Copyright (C) 2007-2018 Peter Selinger.
+# This file is distributed under the same license as the ccrypt package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ccrypt 1.10\n"
+"Report-Msgid-Bugs-To: selinger@users.sourceforge.net\n"
+"POT-Creation-Date: 2018-07-27 17:25-0300\n"
+"PO-Revision-Date: 2018-07-25 22:27-0300\n"
+"Last-Translator: Estprog <estprog@hot.ee>\n"
+"Language-Team: estonian <et@li.org>\n"
+"Language: et\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: src/ccrypt.c:56
+msgid "bad file format"
+msgstr "halb failiformaat"
+
+#: src/ccrypt.c:59
+msgid "key does not match"
+msgstr "võti ei sobi kokku"
+
+#: src/ccrypt.c:62
+msgid "buffer overflow"
+msgstr "puhvri ülevõimendus"
+
+#: src/ccrypt.c:69
+msgid "unknown error"
+msgstr "tundmatu viga"
+
+#: src/main.c:43 src/main.c:88 src/main.c:93
+#, c-format
+msgid "%s %s. Secure encryption and decryption of files and streams.\n"
+msgstr ""
+"%s %s. Turvaline krüpteerimine ja lahtikrüpteerimine failide ja striimide "
+"jaoks.\n"
+
+#: src/main.c:46
+#, c-format
+msgid ""
+"Usage: %s [mode] [options] [file...]\n"
+"       %s [options] [file...]\n"
+"       %s [options] [file...]\n"
+"       %s [options] file...\n"
+"\n"
+msgstr ""
+
+#: src/main.c:51
+#, c-format
+msgid ""
+"Modes:\n"
+"    -e, --encrypt         encrypt\n"
+"    -d, --decrypt         decrypt\n"
+"    -c, --cat             cat; decrypt files to stdout\n"
+"    -x, --keychange       change key\n"
+"    -u, --unixcrypt       decrypt old unix crypt files\n"
+"\n"
+"Options:\n"
+"    -h, --help            print this help message and exit\n"
+"    -V, --version         print version info and exit\n"
+"    -L, --license         print license info and exit\n"
+"    -v, --verbose         print progress information to stderr\n"
+"    -q, --quiet           run quietly; suppress warnings\n"
+"    -f, --force           overwrite existing files without asking\n"
+"    -m, --mismatch        allow decryption with non-matching key\n"
+"    -E, --envvar var      read keyword from environment variable (unsafe)\n"
+"    -K, --key key         give keyword on command line (unsafe)\n"
+"    -k, --keyfile file    read keyword(s) as first line(s) from file\n"
+"    -P, --prompt prompt   use this prompt instead of default\n"
+"    -S, --suffix .suf     use suffix .suf instead of default %s\n"
+"    -s, --strictsuffix    refuse to encrypt files which already have suffix\n"
+"    -F, --envvar2 var     as -E for second keyword (for keychange mode)\n"
+"    -H, --key2 key        as -K for second keyword (for keychange mode)\n"
+"    -Q, --prompt2 prompt  as -P for second keyword (for keychange mode)\n"
+"    -t, --timid           prompt twice for encryption keys (default)\n"
+"    -b, --brave           prompt only once for encryption keys\n"
+"    -y, --keyref file     encryption key must match this encrypted file\n"
+"    -r, --recursive       recurse through directories\n"
+"    -R, --rec-symlinks    follow symbolic links as subdirectories\n"
+"    -l, --symlinks        dereference symbolic links\n"
+"    -T, --tmpfiles        use temporary files instead of overwriting "
+"(unsafe)\n"
+"    --                    end of options, filenames follow\n"
+msgstr ""
+
+#: src/main.c:89 src/main.c:94
+#, c-format
+msgid "Copyright (C) 2000-2018 Peter Selinger.\n"
+msgstr "Copyright (C) 2000-2018 Peter Selinger.\n"
+
+#: src/main.c:97
+#, c-format
+msgid ""
+"For the full text of the GNU General Public License, see the file\n"
+"COPYING distributed with this software.\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software Foundation,\n"
+"Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n"
+msgstr ""
+
+#: src/main.c:124
+#, c-format
+msgid ""
+"\n"
+"Command line:\n"
+msgstr ""
+"\n"
+"Käsurida:\n"
+
+#: src/main.c:128 src/main.c:129
+msgid "(known)"
+msgstr "(tuntud)"
+
+#: src/main.c:128 src/main.c:129
+msgid "(unknown)"
+msgstr "(tundmatu)"
+
+#: src/main.c:134 src/main.c:135 src/main.c:140 src/main.c:142
+msgid "(none)"
+msgstr "(ei ole)"
+
+#: src/main.c:257
+#, c-format
+msgid "%s: environment variable %s does not exist.\n"
+msgstr ""
+
+#: src/main.c:363
+#, c-format
+msgid "Try --help for more information.\n"
+msgstr ""
+
+#: src/main.c:367
+#, c-format
+msgid "%s: unimplemented option -- %c\n"
+msgstr ""
+
+#: src/main.c:395
+#, c-format
+msgid "%s: option -m can only be used with -c or when running as a filter.\n"
+msgstr ""
+
+#: src/main.c:402
+#, c-format
+msgid "%s: warning: empty list of filenames given\n"
+msgstr ""
+
+#: src/main.c:412
+#, c-format
+msgid ""
+"%s: encrypted data not written to a terminal. Use -f to force encryption.\n"
+"Try --help for more information.\n"
+msgstr ""
+
+#: src/main.c:420
+#, c-format
+msgid ""
+"%s: encrypted data not read from a terminal. Use -f to force decryption.\n"
+"Try --help for more information.\n"
+msgstr ""
+
+#: src/main.c:463
+#, c-format
+msgid "%s: could not read key from %s: %s\n"
+msgstr ""
+
+#: src/main.c:471 src/main.c:478
+#, c-format
+msgid "%s: error reading keyfile\n"
+msgstr "%s: viga võtmefaili lugemisel\n"
+
+#: src/main.c:493
+msgid "Enter encryption key: "
+msgstr "Sisesta krüpteerimise võti: "
+
+#: src/main.c:497
+msgid "Enter decryption key: "
+msgstr "Sisesta lahtikrüpteerimise jaoks võti: "
+
+#: src/main.c:501
+msgid "Enter old key: "
+msgstr "Sisesta vana võti: "
+
+#: src/main.c:505
+msgid "Enter key: "
+msgstr "Sisesta võti: "
+
+#: src/main.c:512 src/main.c:535
+#, c-format
+msgid "%s: no key given\n"
+msgstr "%s: võtit ei ole antud\n"
+
+#: src/main.c:519 src/main.c:542
+msgid "(repeat) "
+msgstr "(kordamine) "
+
+#: src/main.c:521 src/main.c:544
+#, c-format
+msgid "Sorry, the keys you entered did not match.\n"
+msgstr "Vabandust, võtit mida sisestasid ei sobi kokku.\n"
+
+#: src/main.c:530
+msgid "Enter new key: "
+msgstr "Sisesta uus võti: "
+
+#: src/main.c:558
+#, c-format
+msgid "%s: could not open %s: %s\n"
+msgstr ""
+
+#: src/main.c:567
+#, c-format
+msgid "The encryption key does not match the reference file.\n"
+msgstr ""
+
+#: src/readkey.c:34
+#, c-format
+msgid "%s: cannot open /dev/tty: %s\n"
+msgstr ""
+
+#: src/traverse.c:238
+#, c-format
+msgid "%s: interrupted.\n"
+msgstr ""
+
+#: src/traverse.c:248
+#, c-format
+msgid ""
+"Interrupt - will exit after current file.\n"
+"Press CTRL-C twice to exit now (warning: this can lead to loss of data).\n"
+msgstr ""
+
+#: src/traverse.c:279
+#, c-format
+msgid "%s: encrypt write-protected file %s (y or n)? "
+msgstr ""
+
+#: src/traverse.c:282
+#, c-format
+msgid "%s: decrypt write-protected file %s (y or n)? "
+msgstr ""
+
+#: src/traverse.c:285
+#, c-format
+msgid "%s: perform keychange on write-protected file %s (y or n)? "
+msgstr ""
+
+#: src/traverse.c:290
+#, c-format
+msgid "Not changed.\n"
+msgstr ""
+
+#: src/traverse.c:302
+#, c-format
+msgid "Already visited inode %s.\n"
+msgstr ""
+
+#: src/traverse.c:314
+#, c-format
+msgid "%s: warning: %s has %d links\n"
+msgstr ""
+
+#: src/traverse.c:340 src/traverse.c:530
+#, c-format
+msgid "Encrypting %s\n"
+msgstr "Krüpteerimine %s\n"
+
+#: src/traverse.c:347 src/traverse.c:536 src/traverse.c:641
+#, c-format
+msgid "Decrypting %s\n"
+msgstr "Lahtikrüpteerimine: %s\n"
+
+#: src/traverse.c:354 src/traverse.c:542
+#, c-format
+msgid "Changing key for %s\n"
+msgstr ""
+
+#: src/traverse.c:388 src/traverse.c:575
+#, c-format
+msgid "%s: %s: %s -- unchanged\n"
+msgstr ""
+
+#: src/traverse.c:408 src/traverse.c:595
+#, c-format
+msgid "%s: could not rename %s to %s: %s\n"
+msgstr ""
+
+#: src/traverse.c:487
+#, c-format
+msgid "%s: could not create temporary file for %s: %s\n"
+msgstr ""
+
+#: src/traverse.c:605
+#, c-format
+msgid "%s: could not remove %s: %s\n"
+msgstr ""
+
+#: src/traverse.c:665
+#, c-format
+msgid "%s: %s: %s -- ignored\n"
+msgstr ""
+
+#: src/traverse.c:687
+#, c-format
+msgid "Decrypting standard input\n"
+msgstr ""
+
+#: src/traverse.c:708
+#, c-format
+msgid "%s: standard input: %s -- ignored\n"
+msgstr ""
+
+#: src/traverse.c:784
+#, c-format
+msgid "%s: %s: is a symbolic link -- ignored\n"
+msgstr ""
+
+#: src/traverse.c:791
+#, c-format
+msgid "%s: %s: is not a regular file -- ignored\n"
+msgstr ""
+
+#: src/traverse.c:807
+#, c-format
+msgid "%s: %s already has %s suffix -- ignored\n"
+msgstr ""
+
+#: src/traverse.c:830
+#, c-format
+msgid "%s: %s already exists; overwrite (y or n)? "
+msgstr ""
+
+#: src/traverse.c:834
+#, c-format
+msgid "Not overwritten.\n"
+msgstr ""
+
+#: src/traverse.c:879
+#, c-format
+msgid "%s: %s: directory is a symbolic link -- ignored\n"
+msgstr ""
+
+#: src/traverse.c:887
+#, c-format
+msgid "%s: %s: is a directory -- ignored\n"
+msgstr ""
+
+#: src/traverse.c:897
+#, c-format
+msgid "Already visited directory %s -- skipped.\n"
+msgstr ""
+
+#: src/getopt.c:688
+#, c-format
+msgid "%s: option `%s' is ambiguous\n"
+msgstr ""
+
+#: src/getopt.c:713
+#, c-format
+msgid "%s: option `--%s' doesn't allow an argument\n"
+msgstr ""
+
+#: src/getopt.c:718
+#, c-format
+msgid "%s: option `%c%s' doesn't allow an argument\n"
+msgstr ""
+
+#: src/getopt.c:736 src/getopt.c:909
+#, c-format
+msgid "%s: option `%s' requires an argument\n"
+msgstr ""
+
+#: src/getopt.c:765
+#, c-format
+msgid "%s: unrecognized option `--%s'\n"
+msgstr ""
+
+#: src/getopt.c:769
+#, c-format
+msgid "%s: unrecognized option `%c%s'\n"
+msgstr ""
+
+#: src/getopt.c:795
+#, c-format
+msgid "%s: illegal option -- %c\n"
+msgstr ""
+
+#: src/getopt.c:798
+#, c-format
+msgid "%s: invalid option -- %c\n"
+msgstr ""
+
+#: src/getopt.c:828 src/getopt.c:958
+#, c-format
+msgid "%s: option requires an argument -- %c\n"
+msgstr ""
+
+#: src/getopt.c:875
+#, c-format
+msgid "%s: option `-W %s' is ambiguous\n"
+msgstr ""
+
+#: src/getopt.c:893
+#, c-format
+msgid "%s: option `-W %s' doesn't allow an argument\n"
+msgstr ""

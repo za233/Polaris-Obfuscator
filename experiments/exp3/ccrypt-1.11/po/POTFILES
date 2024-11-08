@@ -1,0 +1,7 @@
+     ../src/ccrypt.c \
+     ../src/ccryptlib.c \
+     ../src/main.c \
+     ../src/readkey.c \
+     ../src/traverse.c \
+     ../src/xalloc.c \
+     ../src/getopt.c

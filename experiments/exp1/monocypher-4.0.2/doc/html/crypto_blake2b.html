@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+<!-- This is an automatically generated file.  Do not edit.
+   This file is dual-licensed.  Choose whichever you want.
+  
+   The first licence is a regular 2-clause BSD licence.  The second licence
+   is the CC-0 from Creative Commons. It is intended to release Monocypher
+   to the public domain.  The BSD licence serves as a fallback option.
+  
+   SPDX-License-Identifier: BSD-2-Clause OR CC0-1.0
+  
+   ----------------------------------------------------------------------------
+  
+   Copyright (c) 2017-2023 Loup Vaillant
+   Copyright (c) 2018 Michael Savage
+   Copyright (c) 2017, 2020-2023 Fabio Scotoni
+   All rights reserved.
+  
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are
+   met:
+  
+   1. Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+  
+   2. Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the
+      distribution.
+  
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+   HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  
+   ----------------------------------------------------------------------------
+  
+   Written in 2017-2023 by Loup Vaillant, Michael Savage and Fabio Scotoni
+  
+   To the extent possible under law, the author(s) have dedicated all copyright
+   and related neighboring rights to this software to the public domain
+   worldwide.  This software is distributed without any warranty.
+  
+   You should have received a copy of the CC0 Public Domain Dedication along
+   with this software.  If not, see
+   <https://creativecommons.org/publicdomain/zero/1.0/>
+   -->
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="style.css" type="text/css" media="all"/>
+  <title>CRYPTO_BLAKE2B(3MONOCYPHER)</title>
+</head>
+<body>
+<table class="head">
+  <tr>
+    <td class="head-ltitle">CRYPTO_BLAKE2B(3MONOCYPHER)</td>
+    <td class="head-vol">3MONOCYPHER</td>
+    <td class="head-rtitle">CRYPTO_BLAKE2B(3MONOCYPHER)</td>
+  </tr>
+</table>
+<div class="manual-text">
+<section class="Sh">
+<h1 class="Sh" id="NAME"><a class="permalink" href="#NAME">NAME</a></h1>
+<p class="Pp"><code class="Nm">crypto_blake2b</code>,
+    <code class="Nm">crypto_blake2b_keyed</code>,
+    <code class="Nm">crypto_blake2b_init</code>,
+    <code class="Nm">crypto_blake2b_keyed_init</code>,
+    <code class="Nm">crypto_blake2b_update</code>,
+    <code class="Nm">crypto_blake2b_final</code> &#x2014;
+    <span class="Nd">hashing, message authentication, and key derivation with
+    BLAKE2b</span></p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SYNOPSIS"><a class="permalink" href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p class="Pp"><code class="In">#include
+    &lt;<a class="In">monocypher.h</a>&gt;</code></p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_blake2b</code>(<var class="Fa">uint8_t hash[64]</var>,
+    <var class="Fa">size_t hash_size</var>, <var class="Fa">const uint8_t
+    *message</var>, <var class="Fa">size_t message_size</var>);</p>
+<p class="Pp"><code class="Fn">crypto_blake2b_keyed</code>(<var class="Fa">uint8_t
+    hash[64]</var>, <var class="Fa">size_t hash_size</var>,
+    <var class="Fa">uint8_t key[64]</var>, <var class="Fa">size_t
+    key_size</var>, <var class="Fa">const uint8_t *message</var>,
+    <var class="Fa">size_t message_size</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_blake2b_init</code>(<var class="Fa">crypto_blake2b_ctx
+    *ctx</var>, <var class="Fa">size_t hash_size</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_blake2b_keyed_init</code>(<var class="Fa">crypto_blake2b_ctx
+    *ctx</var>, <var class="Fa">size_t hash_size</var>, <var class="Fa">uint8_t
+    key[64]</var>, <var class="Fa">size_t key_size</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_blake2b_update</code>(<var class="Fa">crypto_blake2b_ctx
+    *ctx</var>, <var class="Fa">const uint8_t *message</var>,
+    <var class="Fa">size_t message_size</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_blake2b_final</code>(<var class="Fa">crypto_blake2b_ctx
+    *ctx</var>, <var class="Fa">uint8_t *hash</var>);</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="DESCRIPTION"><a class="permalink" href="#DESCRIPTION">DESCRIPTION</a></h1>
+<section class="Ss">
+<h2 class="Ss" id="Hashing"><a class="permalink" href="#Hashing">Hashing</a></h2>
+<p class="Pp"><a class="permalink" href="#crypto_blake2b"><code class="Fn" id="crypto_blake2b">crypto_blake2b</code></a>(),
+    <a class="permalink" href="#crypto_blake2b_init"><code class="Fn" id="crypto_blake2b_init">crypto_blake2b_init</code></a>(),
+    <a class="permalink" href="#crypto_blake2b_update"><code class="Fn" id="crypto_blake2b_update">crypto_blake2b_update</code></a>(),
+    and
+    <a class="permalink" href="#crypto_blake2b_final"><code class="Fn" id="crypto_blake2b_final">crypto_blake2b_final</code></a>()
+    implement BLAKE2b, a cryptographically secure hash based on the ideas of
+    ChaCha20. It is faster than MD5, yet just as secure as SHA-3.</p>
+<p class="Pp">Note that BLAKE2b itself is not suitable for hashing passwords and
+    deriving keys from them; use the
+    <a class="Xr" href="crypto_argon2.html">crypto_argon2(3monocypher)</a>
+    family of functions for that purpose instead.</p>
+<p class="Pp" id="crypto_blake2b_keyed">While BLAKE2b is immune to length
+    extension attacks, and as such requires fewer precautions than older hashes,
+    we do recommend avoiding prefix-MAC and using keyed mode with
+    <a class="permalink" href="#crypto_blake2b_keyed"><code class="Fn">crypto_blake2b_keyed</code></a>()
+    instead. Doing so enables better security arguments when using BLAKE2b as a
+    random oracle.</p>
+<p class="Pp">The arguments are:</p>
+<dl class="Bl-tag">
+  <dt><var class="Fa">config</var></dt>
+  <dd>The configuration parameter structure, see below.</dd>
+  <dt><var class="Fa">hash</var></dt>
+  <dd>The output hash.</dd>
+  <dt><var class="Fa">hash_size</var></dt>
+  <dd>Length of <var class="Fa">hash</var>, in bytes. Must be between 1 and 64.
+      Anything below 32 is discouraged when using BLAKE2b as a general-purpose
+      hash function.</dd>
+  <dt><var class="Fa">message</var></dt>
+  <dd>The message to hash. May overlap with <var class="Fa">hash</var>. May be
+      <code class="Dv">NULL</code> if <var class="Fa">message_size</var> is
+    0.</dd>
+  <dt><var class="Fa">message_size</var></dt>
+  <dd>Length of <var class="Fa">message</var>, in bytes.</dd>
+</dl>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Message_authentication_codes"><a class="permalink" href="#Message_authentication_codes">Message
+  authentication codes</a></h2>
+<p class="Pp"><a class="permalink" href="#crypto_blake2b_keyed~2"><code class="Fn" id="crypto_blake2b_keyed~2">crypto_blake2b_keyed</code></a>(),
+    <a class="permalink" href="#crypto_blake2b_keyed_init"><code class="Fn" id="crypto_blake2b_keyed_init">crypto_blake2b_keyed_init</code></a>(),
+    <a class="permalink" href="#crypto_blake2b_update~2"><code class="Fn" id="crypto_blake2b_update~2">crypto_blake2b_update</code></a>(),
+    and
+    <a class="permalink" href="#crypto_blake2b_final~2"><code class="Fn" id="crypto_blake2b_final~2">crypto_blake2b_final</code></a>()
+    implement keyed BLAKE2b, and can be used for message authentication codes or
+    as a random oracle, just like HMAC. The arguments are:</p>
+<dl class="Bl-tag">
+  <dt><var class="Fa">hash</var></dt>
+  <dd>The output message authentication code (MAC). To avoid timing attacks, use
+      <a class="Xr" href="crypto_verify16.html">crypto_verify16(3monocypher)</a>,
+      <a class="Xr" href="crypto_verify32.html">crypto_verify32(3monocypher)</a>,
+      or
+      <a class="Xr" href="crypto_verify64.html">crypto_verify64(3monocypher)</a>
+      to compare (possibly truncated) MACs.</dd>
+  <dt><var class="Fa">hash_size</var></dt>
+  <dd>Length of <var class="Fa">hash</var>, in bytes. Must be between 1 and 64.
+      Anything below 16 is discouraged when using BLAKE2b as a message
+      authentication code. Anything below 32 is discouraged when using BLAKE2b
+      as a key derivation function (KDF).</dd>
+  <dt><var class="Fa">key</var></dt>
+  <dd>Some secret key. When uniformly random, one cannot predict the final hash
+      without it. Users may want to wipe the key with
+      <a class="Xr" href="crypto_wipe.html">crypto_wipe(3monocypher)</a> once
+      they are done with it. May overlap with <var class="Fa">hash or</var>
+      <var class="Fa">message</var>. May be <code class="Dv">NULL</code> if
+      <var class="Fa">key_size</var> is 0, in which case no key is used. Can
+      also be used as a random salt in the context of KDF extraction, or as
+      pre-shared-key in the context of KDF expansion.</dd>
+  <dt><var class="Fa">key_size</var></dt>
+  <dd>Length of <var class="Fa">key</var>, in bytes. Must be between 0 and 64.
+      32 is a good default.</dd>
+  <dt><var class="Fa">message</var></dt>
+  <dd>The message to compute the MAC for. May overlap with <var class="Fa">hash
+      or</var> <var class="Fa">key</var>. May be <code class="Dv">NULL</code> if
+      <var class="Fa">message_size</var> is 0. Can also be used as input key
+      material in the context of KDF extraction, or to host a counter and domain
+      separation string in the context of KDF expansion.</dd>
+  <dt><var class="Fa">message_size</var></dt>
+  <dd>Length of <var class="Fa">message</var>, in bytes.</dd>
+</dl>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Key_derivation"><a class="permalink" href="#Key_derivation">Key
+  derivation</a></h2>
+<p class="Pp">BLAKE2b can be used to implement &#x201C;key derivation
+    functions&#x201D; (KDF) very similar to HKDF. The typical parameters of a
+    KDF are:</p>
+<dl class="Bl-tag">
+  <dt id="IKM"><a class="permalink" href="#IKM"><i class="Em">IKM</i></a></dt>
+  <dd>Input key material containing enough secret entropy to derive uniformly
+      random keys from, such as the shared secret of a key exchange performed
+      with
+      <a class="Xr" href="crypto_x25519.html">crypto_x25519(3monocypher)</a>.
+      Passwords do
+      <a class="permalink" href="#not"><b class="Sy" id="not">not</b></a>
+      contain enough entropy to be used as input key material. Hash them with
+      <a class="Xr" href="crypto_argon2.html">crypto_argon2(3monocypher)</a>
+      instead.</dd>
+  <dt id="salt"><a class="permalink" href="#salt"><i class="Em">salt</i></a></dt>
+  <dd>An optional random salt, used to increase the security of the output key
+      material (OKM) in some settings. It should be either absent, constant, or
+      contain at least 16 random bytes.</dd>
+  <dt id="info"><a class="permalink" href="#info"><i class="Em">info</i></a></dt>
+  <dd>Optional domain separation string for key derivation.</dd>
+</dl>
+<p class="Pp">From these parameters, the KDF derives an arbitrary amount of
+    independent random bytes, also called &#x201C;output key material&#x201D;
+    (OKM), that can be used as regular encryption or secret keys.</p>
+<p class="Pp" id="or">In practice, KDFs are often separated in two steps:
+    &#x201C;extraction&#x201D; and &#x201C;expansion&#x201D;. The extraction
+    step reads the IKM (and optional salt) to derive a &#x201C;pseudo-random
+    key&#x201D; (PRK), which can be used either directly as a regular key,
+    <a class="permalink" href="#or"><i class="Em">or</i></a> as an input for the
+    extraction step. The expansion step then reads the PRK (and optional info)
+    to make the OKM.</p>
+<p class="Pp" id="crypto_blake2b_keyed~3">To implement KDF extraction, just call
+    <a class="permalink" href="#crypto_blake2b_keyed~3"><code class="Fn">crypto_blake2b_keyed</code></a>()
+    with the <var class="Fa">message</var> as the IKM and
+    <var class="Fa">key</var> as the salt, or
+    <code class="Fn">crypto_blake2b</code>() if there is no salt. This is
+    unintuitive, but having the IKM in the <var class="Fa">message</var>
+    argument lets us input arbitrary amounts of data. It is also the HMAC and
+    HKDF way.</p>
+<p class="Pp" id="crypto_blake2b_keyed~4">For KDF expansion any
+    pseudo-random-function (PRF) can be used. You can call
+    <a class="permalink" href="#crypto_blake2b_keyed~4"><code class="Fn">crypto_blake2b_keyed</code></a>()
+    in counter mode with <var class="Fa">key</var> as the PRK (though doing it
+    manually is a bit tedious), or
+    <a class="Xr" href="crypto_chacha20_djb.html">crypto_chacha20_djb(3monocypher)</a>
+    with its <var class="Fa">key</var> as the PRK and its
+    <var class="Fa">nonce</var> for domain separation.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Incremental_interface"><a class="permalink" href="#Incremental_interface">Incremental
+  interface</a></h2>
+<p class="Pp">An incremental interface is provided. It is useful for handling
+    streams of data or large files without using too much memory. This interface
+    uses three steps:</p>
+<ul class="Bl-bullet">
+  <li id="crypto_blake2b_init~2">Initialisation with
+      <a class="permalink" href="#crypto_blake2b_init~2"><code class="Fn">crypto_blake2b_init</code></a>()
+      or <code class="Fn">crypto_blake2b_keyed_init</code>(), which set up a
+      context with the hashing parameters;</li>
+  <li>Update with <code class="Fn">crypto_blake2b_update</code>(), which hashes
+      the message chunk by chunk and keeps the intermediary result in the
+      context;</li>
+  <li>and Finalisation with <code class="Fn">crypto_blake2b_final</code>(),
+      which produces the final hash. The
+      <var class="Ft">crypto_blake2b_ctx</var> is automatically wiped upon
+      finalisation.</li>
+</ul>
+<p class="Pp" id="crypto_blake2b~2">Calling
+    <a class="permalink" href="#crypto_blake2b~2"><code class="Fn">crypto_blake2b</code></a>()
+    is the same as calling
+    <a class="permalink" href="#crypto_blake2b_init~3"><code class="Fn" id="crypto_blake2b_init~3">crypto_blake2b_init</code></a>(),
+    <a class="permalink" href="#crypto_blake2b_update~3"><code class="Fn" id="crypto_blake2b_update~3">crypto_blake2b_update</code></a>(),
+    and
+    <a class="permalink" href="#crypto_blake2b_final~3"><code class="Fn" id="crypto_blake2b_final~3">crypto_blake2b_final</code></a>().
+    Calling <code class="Fn">crypto_blake2b_keyed</code>() is the same as
+    calling <code class="Fn">crypto_blake2b_keyed_init</code>(),
+    <code class="Fn">crypto_blake2b_update</code>(), and
+    <code class="Fn">crypto_blake2b_final</code>().</p>
+<p class="Pp" id="crypto_blake2b~3">Calling
+    <a class="permalink" href="#crypto_blake2b~3"><code class="Fn">crypto_blake2b</code></a>()
+    is the same as calling <code class="Fn">crypto_blake2b_keyed</code>() with
+    an empty key.</p>
+</section>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="RETURN_VALUES"><a class="permalink" href="#RETURN_VALUES">RETURN
+  VALUES</a></h1>
+<p class="Pp">These functions return nothing.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="EXAMPLES"><a class="permalink" href="#EXAMPLES">EXAMPLES</a></h1>
+<p class="Pp">The following examples assume the existence of
+    <code class="Fn">arc4random_buf</code>(), which fills the given buffer with
+    cryptographically secure random bytes. If
+    <code class="Fn">arc4random_buf</code>() does not exist on your system, see
+    <a class="Xr" href="intro.html">intro(3monocypher)</a> for advice about how
+    to generate cryptographically secure random bytes.</p>
+<p class="Pp">Hashing a message all at once:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>uint8_t hash   [64]; /* Output hash (64 bytes)          */
+uint8_t message[12] = &quot;Lorem ipsum&quot;; /* Message to hash */
+crypto_blake2b(hash, sizeof(hash), message, sizeof(message));</pre>
+</div>
+<p class="Pp">Computing a message authentication code all at once:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>uint8_t hash   [16];
+uint8_t key    [32];
+uint8_t message[11] = &quot;Lorem ipsu&quot;; /* Message to authenticate */
+arc4random_buf(key, sizeof(key));
+crypto_blake2b_keyed(hash   , sizeof(hash),
+                     key    , sizeof(key),
+                     message, sizeof(message));
+/* Wipe secrets if they are no longer needed */
+crypto_wipe(message, sizeof(message));
+crypto_wipe(key,     sizeof(key));</pre>
+</div>
+<p class="Pp">Hashing a message incrementally (without a key):</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>uint8_t hash   [ 64]; /* Output hash (64 bytes) */
+uint8_t message[500] = {1}; /* Message to hash  */
+crypto_blake2b_ctx ctx;
+crypto_blake2b_init(&amp;ctx, sizeof(hash));
+for (size_t i = 0; i &lt; 500; i += 100) {
+	crypto_blake2b_update(&amp;ctx, message + i, 100);
+}
+crypto_blake2b_final(&amp;ctx, hash);</pre>
+</div>
+<p class="Pp">Computing a message authentication code incrementally:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>uint8_t hash   [ 16];
+uint8_t key    [ 32];
+uint8_t message[500] = {1}; /* Message to authenticate */
+arc4random_buf(key, sizeof(key));
+crypto_blake2b_ctx ctx;
+crypto_blake2b_keyed_init(&amp;ctx, sizeof(hash), key,
+                          sizeof(key));
+/* Wipe the key */
+crypto_wipe(key, sizeof(key));
+for (size_t i = 0; i &lt; 500; i += 100) {
+	crypto_blake2b_update(&amp;ctx, message + i, 100);
+	/* Wipe secrets if they are no longer needed */
+	crypto_wipe(message + i, 100);
+}
+crypto_blake2b_final(&amp;ctx, hash);</pre>
+</div>
+<p class="Pp">Computing key derivation with BLAKE2b and ChaCha20:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>void kdf(uint8_t *okm,  size_t okm_size,  /* unlimited   */
+         uint8_t *ikm,  size_t ikm_size,  /* unlimited   */
+         uint8_t *salt, size_t salt_size, /* &lt;= 64 bytes */
+         uint8_t info[8])                 /* ==  8 bytes */
+{
+	/* Extract */
+	uint8_t prk[32];
+	crypto_blake2b_keyed(prk , sizeof(prk),
+	                     salt, salt_size,
+	                     ikm , ikm_size);
+	/* Expand */
+	crypto_chacha20_djb(okm, NULL, okm_size, prk, info, 0);
+}</pre>
+</div>
+<p class="Pp">Computing key derivation with BLAKE2b and XChaCha20:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>void xkdf(uint8_t *okm,  size_t okm_size,  /* unlimited   */
+          uint8_t *ikm,  size_t ikm_size,  /* unlimited   */
+          uint8_t *salt, size_t salt_size, /* &lt;= 64 bytes */
+          uint8_t *info, size_t info_size) /* unlimited   */
+{
+	/* Extract */
+	uint8_t prk[32];
+	crypto_blake2b_keyed(prk , sizeof(prk),
+	                     salt, salt_size,
+	                     ikm , ikm_size);
+	/* Expand */
+	uint8_t nonce[24];
+	crypto_blake2b(nonce, sizeof(nonce), info, info_size);
+	crypto_chacha20_x(okm, NULL, okm_size, prk, nonce, 0);
+}</pre>
+</div>
+<p class="Pp">Computing key derivation with BLAKE2b alone (a little tedious
+    indeed):</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>#define MIN(a, b) ((a) &lt; (b) ? (a) : (b))
+
+void b2kdf(uint8_t *okm,  size_t okm_size,  /* unlimited   */
+           uint8_t *ikm,  size_t ikm_size,  /* unlimited   */
+           uint8_t *salt, size_t salt_size, /* &lt;= 64 bytes */
+           uint8_t *info, size_t info_size) /* unlimited   */
+{
+	/* Extract */
+	uint8_t prk[64];
+	crypto_blake2b_keyed(prk , sizeof(prk),
+	                     salt, salt_size,
+	                     ikm , ikm_size);
+	/* Expand */
+	uint8_t ctr[8] = {0};
+	while(okm_size &gt; 0) {
+		size_t size = MIN(okm_size, 64);
+		crypto_blake2b_ctx ctx;
+		crypto_blake2b_keyed_init(&amp;ctx, size, prk, 64);
+		crypto_blake2b_update(&amp;ctx, ctr, sizeof(ctr));
+		crypto_blake2b_update(&amp;ctx, info, info_size);
+		crypto_blake2b_final(&amp;ctx, okm);
+		okm      += size;
+		okm_size -= size;
+		/* increment ctr */
+		unsigned acc = 1;
+		for (size_t i = 0; i &lt; sizeof(ctr); i++) {
+			acc    = ctr[i] + acc;
+			ctr[i] = acc &amp; 0xff;
+			acc  &gt;&gt;= 8;
+		}
+	}
+}</pre>
+</div>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SEE_ALSO"><a class="permalink" href="#SEE_ALSO">SEE
+  ALSO</a></h1>
+<p class="Pp"><a class="Xr" href="crypto_x25519.html">crypto_x25519(3monocypher)</a>,
+    <a class="Xr" href="crypto_aead_lock.html">crypto_aead_lock(3monocypher)</a>,
+    <a class="Xr" href="intro.html">intro(3monocypher)</a></p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="STANDARDS"><a class="permalink" href="#STANDARDS">STANDARDS</a></h1>
+<p class="Pp">These functions implement BLAKE2b, described in RFC 7693.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="HISTORY"><a class="permalink" href="#HISTORY">HISTORY</a></h1>
+<p class="Pp">The <code class="Fn">crypto_blake2b</code>(),
+    <code class="Fn">crypto_blake2b_init</code>(),
+    <code class="Fn">crypto_blake2b_update</code>(), and
+    <code class="Fn">crypto_blake2b_final</code>() functions first appeared in
+    Monocypher 0.1. In Monocypher 4.0.0,
+    <code class="Fn">crypto_blake2b_general</code>() and
+    <code class="Fn">crypto_blake2b_general_init</code>() were removed,
+    <code class="Fn">crypto_blake2b_keyed</code>() and
+    <code class="Fn">crypto_blake2b_keyed_init</code>() were added, and the
+    <var class="Fa">hash_size</var> argument were added to
+    <code class="Fn">crypto_blake2b</code>() and
+    <code class="Fn">crypto_blake2b_init</code>().</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="CAVEATS"><a class="permalink" href="#CAVEATS">CAVEATS</a></h1>
+<p class="Pp">Monocypher does not perform any input validation. Any deviation
+    from the specified input and output length ranges results in
+    <a class="permalink" href="#undefined"><b class="Sy" id="undefined">undefined
+    behaviour</b></a>. Make sure your inputs are correct.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SECURITY_CONSIDERATIONS"><a class="permalink" href="#SECURITY_CONSIDERATIONS">SECURITY
+  CONSIDERATIONS</a></h1>
+<p class="Pp">BLAKE2b is a general-purpose cryptographic hash function; this
+    means that it is not suited for hashing passwords and deriving cryptographic
+    keys from passwords. While cryptographic keys usually have hundreds of bits
+    of entropy, passwords are often much less complex. When storing passwords as
+    hashes or when deriving keys from them, the goal is normally to prevent
+    attackers from quickly iterating all possible passwords. Because passwords
+    tend to be simple, it is important to artificially slow down attackers by
+    using computationally difficult hashing algorithms. Monocypher therefore
+    provides
+    <a class="Xr" href="crypto_argon2.html">crypto_argon2(3monocypher)</a> for
+    password hashing and deriving keys from passwords.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="IMPLEMENTATION_DETAILS"><a class="permalink" href="#IMPLEMENTATION_DETAILS">IMPLEMENTATION
+  DETAILS</a></h1>
+<p class="Pp">The core loop is unrolled by default. This speeds up BLAKE2b by
+    about 20% on modern processors. On the other hand, this inflates the binary
+    size by several kilobytes, and is slower on some embedded platforms. To roll
+    the loop and generate a smaller binary, compile Monocypher with the
+    -DBLAKE2_NO_UNROLLING option.</p>
+</section>
+</div>
+<table class="foot">
+  <tr>
+    <td class="foot-date">February 2, 2023</td>
+    <td class="foot-os">Debian</td>
+  </tr>
+</table>
+</body>
+</html>

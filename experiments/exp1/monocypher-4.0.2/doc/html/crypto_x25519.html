@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<!-- This is an automatically generated file.  Do not edit.
+   This file is dual-licensed.  Choose whichever you want.
+  
+   The first licence is a regular 2-clause BSD licence.  The second licence
+   is the CC-0 from Creative Commons. It is intended to release Monocypher
+   to the public domain.  The BSD licence serves as a fallback option.
+  
+   SPDX-License-Identifier: BSD-2-Clause OR CC0-1.0
+  
+   ----------------------------------------------------------------------------
+  
+   Copyright (c) 2017-2021, 2022-2023 Loup Vaillant
+   Copyright (c) 2017-2018 Michael Savage
+   Copyright (c) 2017, 2019-2020, 2022 Fabio Scotoni
+   Copyright (c) 2020 Richard Walmsley
+   Copyright (c) 2022 Samuel Lucas
+   All rights reserved.
+  
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are
+   met:
+  
+   1. Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+  
+   2. Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the
+      distribution.
+  
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+   HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  
+   ----------------------------------------------------------------------------
+  
+   Written in 2017-2023 by Loup Vaillant, Michael Savage, Fabio Scotoni,
+   Richard Walmsley and Samuel Lucas
+  
+   To the extent possible under law, the author(s) have dedicated all copyright
+   and related neighboring rights to this software to the public domain
+   worldwide.  This software is distributed without any warranty.
+  
+   You should have received a copy of the CC0 Public Domain Dedication along
+   with this software.  If not, see
+   <https://creativecommons.org/publicdomain/zero/1.0/>
+   -->
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="style.css" type="text/css" media="all"/>
+  <title>CRYPTO_X25519(3MONOCYPHER)</title>
+</head>
+<body>
+<table class="head">
+  <tr>
+    <td class="head-ltitle">CRYPTO_X25519(3MONOCYPHER)</td>
+    <td class="head-vol">3MONOCYPHER</td>
+    <td class="head-rtitle">CRYPTO_X25519(3MONOCYPHER)</td>
+  </tr>
+</table>
+<div class="manual-text">
+<section class="Sh">
+<h1 class="Sh" id="NAME"><a class="permalink" href="#NAME">NAME</a></h1>
+<p class="Pp"><code class="Nm">crypto_x25519</code>,
+    <code class="Nm">crypto_x25519_public_key</code>,
+    <code class="Nm">crypto_x25519_dirty_fast</code>,
+    <code class="Nm">crypto_x25519_dirty_small</code>,
+    <code class="Nm">crypto_x25519_inverse</code>,
+    <code class="Nm">crypto_x25519_to_eddsa</code> &#x2014;
+    <span class="Nd">X25519 key exchange (Public Key Cryptography)</span></p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SYNOPSIS"><a class="permalink" href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p class="Pp"><code class="In">#include
+    &lt;<a class="In">monocypher.h</a>&gt;</code></p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_x25519</code>(<var class="Fa">uint8_t
+    raw_shared_secret[32]</var>, <var class="Fa">const uint8_t
+    your_secret_key[32]</var>, <var class="Fa">const uint8_t
+    their_public_key[32]</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_x25519_public_key</code>(<var class="Fa">uint8_t
+    your_public_key[32]</var>, <var class="Fa">const uint8_t
+    your_secret_key[32]</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_x25519_dirty_fast</code>(<var class="Fa">uint8_t
+    your_public_key[32]</var>, <var class="Fa">const uint8_t
+    your_secret_key[32]</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_x25519_dirty_small</code>(<var class="Fa">uint8_t
+    your_public_key[32]</var>, <var class="Fa">const uint8_t
+    your_secret_key[32]</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_x25519_inverse</code>(<var class="Fa">uint8_t
+    blind_salt[32]</var>, <var class="Fa">const uint8_t private_key[32]</var>,
+    <var class="Fa">const uint8_t curve_point[32]</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_x25519_to_eddsa</code>(<var class="Fa">uint8_t
+    eddsa[32]</var>, <var class="Fa">const uint8_t x25519[32]</var>);</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="DESCRIPTION"><a class="permalink" href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p class="Pp"><a class="permalink" href="#crypto_x25519"><code class="Fn" id="crypto_x25519">crypto_x25519</code></a>()
+    performs an X25519 key exchange between
+    <var class="Fa">your_secret_key</var> and
+    <var class="Fa">their_public_key</var>. It is a low-level building block for
+    protocols such as X3DH.
+    <a class="permalink" href="#crypto_x25519_public_key"><code class="Fn" id="crypto_x25519_public_key">crypto_x25519_public_key</code></a>()
+    Generates a public key from a secret key. The arguments are:</p>
+<dl class="Bl-tag">
+  <dt><var class="Fa">raw_shared_secret</var></dt>
+  <dd>The shared secret, known only to those who know a relevant secret key
+      (yours or theirs). It is not cryptographically random. Do not use it
+      directly as a key. Hash it concatenated with
+      <var class="Fa">your_public_key</var> and
+      <var class="Fa">their_public_key</var> using
+      <a class="Xr" href="crypto_blake2b.html">crypto_blake2b(3monocypher)</a>
+      for key derivation.</dd>
+  <dt><var class="Fa">your_secret_key</var></dt>
+  <dd>A 32-byte secret random number. See
+      <a class="Xr" href="intro.html">intro(3monocypher)</a> for advice about
+      generating random bytes (use the operating system's random number
+      generator).</dd>
+  <dt><var class="Fa">your_public_key</var></dt>
+  <dd>Your public key, generated by
+      <code class="Fn">crypto_x25519_public_key</code>().</dd>
+  <dt><var class="Fa">their_public_key</var></dt>
+  <dd>The public key of the other party.</dd>
+</dl>
+<p class="Pp"><var class="Fa">raw_shared_secret</var> and
+    <var class="Fa">your_secret_key</var> may overlap if your secret is no
+    longer required.</p>
+<p class="Pp" id="crypto_x25519~2">Some protocols, such as some
+    password-authenticated key exchange (PAKE) protocols and oblivious
+    pseudo-random functions (OPRF), may require &#x201C;contributory&#x201D;
+    behaviour, which ensures that no untrusted party forces the shared secret to
+    a known constant. If a protocol requires contributory behaviour, compare the
+    output of
+    <a class="permalink" href="#crypto_x25519~2"><code class="Fn">crypto_x25519</code></a>()
+    to an all-zero buffer using
+    <a class="Xr" href="crypto_verify32.html">crypto_verify32(3monocypher)</a>,
+    then abort the protocol if the output and the all-zero buffer are equal.</p>
+<p class="Pp" id="crypto_x25519_to_eddsa">Do not use the same secret key for
+    both key exchanges and signatures. The public keys are different and
+    revealing both may leak information. If there really is no room to store or
+    derive two different secret keys, consider generating a key pair for
+    signatures and then converting the private half with
+    <a class="Xr" href="crypto_blake2b.html">crypto_blake2b(3monocypher)</a> or
+    <a class="Xr" href="crypto_sha512.html">crypto_sha512(3monocypher)</a>, and
+    the public half with
+    <a class="Xr" href="crypto_eddsa_to_x25519.html">crypto_eddsa_to_x25519(3monocypher)</a>.
+    Or go the other way and implement XEdDSA with the help of
+    <a class="permalink" href="#crypto_x25519_to_eddsa"><code class="Fn">crypto_x25519_to_eddsa</code></a>().</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="RETURN_VALUES"><a class="permalink" href="#RETURN_VALUES">RETURN
+  VALUES</a></h1>
+<p class="Pp"><code class="Fn">crypto_x25519</code>() and
+    <code class="Fn">crypto_x25519_public_key</code>() return nothing.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="EXAMPLES"><a class="permalink" href="#EXAMPLES">EXAMPLES</a></h1>
+<p class="Pp">The following example assumes the existence of
+    <code class="Fn">arc4random_buf</code>(), which fills the given buffer with
+    cryptographically secure random bytes. If
+    <code class="Fn">arc4random_buf</code>() does not exist on your system, see
+    <a class="Xr" href="intro.html">intro(3monocypher)</a> for advice about how
+    to generate cryptographically secure random bytes.</p>
+<p class="Pp">Generate a pair of shared keys with your secret key and their
+    public key (this can help nonce management for full duplex
+  communications).</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>const uint8_t their_pk     [32]; /* Their public key          */
+uint8_t       your_sk      [32]; /* Your secret key           */
+uint8_t       your_pk      [32]; /* Your public key           */
+uint8_t       shared_secret[32]; /* Shared secret (NOT a key) */
+arc4random_buf(your_sk, 32);
+crypto_x25519_public_key(your_pk, your_sk);
+crypto_x25519(shared_secret, your_sk, their_pk);
+/* Wipe secrets if they are no longer needed */
+crypto_wipe(your_sk, 32);
+
+uint8_t shared_keys[64]; /* Two shared session keys */
+crypto_blake2b_ctx ctx;
+crypto_blake2b_init  (&amp;ctx, 64);
+crypto_blake2b_update(&amp;ctx, shared_secret, 32);
+crypto_blake2b_update(&amp;ctx, your_pk      , 32);
+crypto_blake2b_update(&amp;ctx, their_pk     , 32);
+crypto_blake2b_final (&amp;ctx, shared_keys);
+const uint8_t *key_1 = shared_keys;      /* Shared key 1 */
+const uint8_t *key_2 = shared_keys + 32; /* Shared key 2 */
+/* Wipe secrets if they are no longer needed */
+crypto_wipe(shared_secret, 32);</pre>
+</div>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="INVERSE_SCALAR_MULTIPLICATION"><a class="permalink" href="#INVERSE_SCALAR_MULTIPLICATION">INVERSE
+  SCALAR MULTIPLICATION</a></h1>
+<p class="Pp">The
+    <a class="permalink" href="#crypto_x25519_inverse"><code class="Fn" id="crypto_x25519_inverse">crypto_x25519_inverse</code></a>()
+    function performs the scalar multiplication of the multiplicative inverse of
+    a scalar for X25519. It is basically the reverse of
+    <code class="Fn">crypto_x25519</code>():</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>uint8_t b    [32];       /* Random scalar                        */
+uint8_t base [32];       /* Point on the prime order subgroup    */
+crypto_x25519_public_key(base, b);
+
+uint8_t private_key[32]; /* Random secret key                    */
+uint8_t curve_point[32]; /* Point on the prime order subgroup    */
+uint8_t blind_salt [32];
+crypto_x25519(curve_point, private_key, base);
+crypto_x25519_inverse(blind_salt, private_key, curve_point);
+assert(memcmp(blind_salt, base, 32) == 0); /* blind_salt == base */</pre>
+</div>
+<p class="Pp">We can think of it as a scalar division that also clears the
+    cofactor. The arguments are:</p>
+<dl class="Bl-tag">
+  <dt><var class="Fa">blind_salt</var></dt>
+  <dd>The output point. Guaranteed to be on the prime order subgroup. The only
+      possible low order result is a buffer full of zeroes.</dd>
+  <dt><var class="Fa">private_key</var></dt>
+  <dd>The private key (scalar) to use. It is clamped, inverted modulo the prime
+      order of Curve25519, cleared of its cofactor, and finally used to multiply
+      <var class="Fa">curve_point</var>.</dd>
+  <dt><var class="Fa">curve_point</var></dt>
+  <dd>The curve point to divide by <var class="Fa">private_key</var>.</dd>
+</dl>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="DIRTY_PUBLIC_KEY_GENERATION"><a class="permalink" href="#DIRTY_PUBLIC_KEY_GENERATION">DIRTY
+  PUBLIC KEY GENERATION</a></h1>
+<p class="Pp"><a class="permalink" href="#crypto_x25519_dirty_fast"><code class="Fn" id="crypto_x25519_dirty_fast">crypto_x25519_dirty_fast</code></a>()
+    and
+    <a class="permalink" href="#crypto_x25519_dirty_small"><code class="Fn" id="crypto_x25519_dirty_small">crypto_x25519_dirty_small</code></a>()
+    do the same as <code class="Fn">crypto_x25519_public_key</code>(), with one
+    key difference: they also add a low order point to the public key. Such
+    public keys can be on the
+    <a class="permalink" href="#whole"><i class="Em" id="whole">whole</i></a>
+    curve, rather than just the main prime-order subgroup. Yet they are fully
+    compatible with <code class="Fn">crypto_x25519</code>(), and will generate
+    the same shared secrets as regular public keys.
+    <a class="permalink" href="#They"><i class="Em" id="They">They do however
+    leak information about the private key</i></a>. Only use them for ephemeral
+    keys that need to be hidden as random noise, in conjunction with
+    <a class="Xr" href="crypto_elligator_rev.html">crypto_elligator_rev(3monocypher)</a>.</p>
+<p class="Pp" id="crypto_x25519_dirty_fast~2">Both functions do the same with
+    different code size and memory characteristics:
+    <a class="permalink" href="#crypto_x25519_dirty_fast~2"><code class="Fn">crypto_x25519_dirty_fast</code></a>()
+    uses multiple large temporary variables and functions that are normally used
+    internally for
+    <a class="Xr" href="crypto_eddsa_sign.html">crypto_eddsa_sign(3monocypher)</a>.
+    Accordingly, it uses both more stack memory and more code (unless the
+    signing code is already compiled in elsewhere).
+    <a class="permalink" href="#crypto_x25519_dirty_small~2"><code class="Fn" id="crypto_x25519_dirty_small~2">crypto_x25519_dirty_small</code></a>()
+    yields the same result with less code, less memory, and about twice as much
+    time as <code class="Fn">crypto_x25519_dirty_fast</code>().</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="CONVERSION_TO_EDDSA"><a class="permalink" href="#CONVERSION_TO_EDDSA">CONVERSION
+  TO EDDSA</a></h1>
+<p class="Pp">The <code class="Fn">crypto_x25519_to_eddsa</code>() converts an
+    X25519 public key to the corresponding EdDSA public key. The sign bit of the
+    resulting EdDSa key is set to zero (positive). This can be used to implement
+    the XEdDSA protocol from Signal.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SEE_ALSO"><a class="permalink" href="#SEE_ALSO">SEE
+  ALSO</a></h1>
+<p class="Pp"><a class="Xr" href="intro.html">intro(3monocypher)</a></p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="STANDARDS"><a class="permalink" href="#STANDARDS">STANDARDS</a></h1>
+<p class="Pp">This function implements X25519, described in RFC 7748.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="HISTORY"><a class="permalink" href="#HISTORY">HISTORY</a></h1>
+<p class="Pp">The <code class="Fn">crypto_x25519</code>() and
+    <code class="Fn">crypto_x25519_public_key</code>() functions first appeared
+    in Monocypher 0.1. The <code class="Fn">crypto_x25519_inverse</code>(),
+    <code class="Fn">crypto_x25519_dirty_fast</code>(),
+    <code class="Fn">crypto_x25519_dirty_small</code>(), and
+    <code class="Fn">crypto_x25519_to_eddsa</code>() functions first appeared in
+    Monocypher 3.1.0.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="CAVEATS"><a class="permalink" href="#CAVEATS">CAVEATS</a></h1>
+<p class="Pp">Monocypher does not perform any input validation. Any deviation
+    from the specified input and output length ranges results in
+    <a class="permalink" href="#undefined"><b class="Sy" id="undefined">undefined
+    behaviour</b></a>. Make sure your inputs are correct.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SECURITY_CONSIDERATIONS"><a class="permalink" href="#SECURITY_CONSIDERATIONS">SECURITY
+  CONSIDERATIONS</a></h1>
+<p class="Pp">If either of the long-term secret keys leaks, it may compromise
+    <a class="permalink" href="#all"><i class="Em" id="all">all past
+    messages</i></a>. This can be avoided by using protocols that provide
+    forward secrecy, such as the X3DH key agreement protocol.</p>
+<p class="Pp">Many (private, public) key pairs produce the same shared secret.
+    Therefore, not including the public keys in the key derivation can lead to
+    subtle vulnerabilities. This can be avoided by hashing the shared secret
+    concatenated with both public keys. For example,</p>
+<div class="Bd Bd-indent">BLAKE2b(shared_secret || your_pk || their_pk)</div>
+using <a class="Xr" href="crypto_blake2b.html">crypto_blake2b(3monocypher)</a>.
+</section>
+<section class="Sh">
+<h1 class="Sh" id="IMPLEMENTATION_DETAILS"><a class="permalink" href="#IMPLEMENTATION_DETAILS">IMPLEMENTATION
+  DETAILS</a></h1>
+<p class="Pp">The most significant bit of the public key is systematically
+    ignored. It is not needed because every public key should be smaller than
+    2^255-19, which fits in 255 bits. If another implementation of X25519 gives
+    you a key that is not fully reduced and has its high bit set, the
+    computation will fail. On the other hand, it also means you may use this bit
+    for other purposes (such as parity flipping for Ed25519 compatibility).</p>
+</section>
+</div>
+<table class="foot">
+  <tr>
+    <td class="foot-date">January 26, 2023</td>
+    <td class="foot-os">Debian</td>
+  </tr>
+</table>
+</body>
+</html>

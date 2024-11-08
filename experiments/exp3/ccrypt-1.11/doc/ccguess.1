@@ -1,0 +1,139 @@
+.\" Copyright (C) 2000-2018 Peter Selinger.
+.\" This file is part of ccrypt. It is free software and it is covered
+.\" by the GNU general public license. See the file COPYING for details.
+.TH CCGUESS 1 "July 2018" "Version 1.11" "Encryption"
+.SH NAME
+ccguess \- search for ccrypt encryption keys
+.SH SYNOPSIS
+
+.nf
+.B ccguess [\fIoptions\fP] \fIfile\fP...
+.fi
+.SH DESCRIPTION
+
+The \fBccguess\fP program attempts to guess \fBccrypt\fP(1) encryption
+keys by searching the relevant part of the key space. This is done by
+prompting the user for an \fIapproximate key\fP and then trying many
+variations of this key. This is intended to assist \fBccrypt\fP users
+in recovering mistyped or forgotten keys, provided that they remember
+at least part of the key.
+
+Note that \fBccrypt\fP provides strong cryptographic security: there
+are no special back doors or shortcuts to recovering forgotten
+keys. Therefore, the \fBccguess\fP program does not have any special
+powers. It simply works by trying different keys until a possible
+match is found.
+
+A search of the entire key space is not usually a practical option.
+\fBccguess\fP therefore works by prompting the user for an approximate
+key. It then tries all variations that can be obtained by applying a
+small number of changes. Here, each change is either a deletion of one
+letter, an insertion of one letter, a replacement of one letter by
+another, or a transposition of two adjacent letters. By default,
+\fBccguess\fP searches all keys that differ from the approximate key
+by up to 5 changes. The number of changes searched can be adjusted
+with the \fB--depth\fP option.
+
+The mechanism by which \fBccguess\fP determines whether a key is a
+"possible match" is the same as that used by \fBccrypt\fP to reject
+non-matching decryption keys. There is a small chance of a false
+match, i.e., \fBccguess\fP may find a key that turns out not to be the
+true encryption key and does not decrypt the file correctly. A false
+match happens approximately once for every 4.3 billion keywords tried,
+so the longer your search goes on, the higher the likelihood that a
+false match is found. Normally, \fBccguess\fP stops after the first
+possible match is found, but the \fB-c\fP option can be used to search
+for additional keys. The possibility of a false match can be
+further reduced by supplying multiple files that have been encrypted
+with the same key. In this case, \fBccguess\fP will search for keys
+that match \fIany\fP of the files, but will print a warning for keys
+that do not match \fIall\fP of the files.
+.SH OPTIONS
+
+The following options are supported:
+.TP 10
+.B -h, --help
+Help. Print usage information and exit.
+.TP
+.B -L, --license
+Print license info and exit.
+.TP
+.B -V, --version
+Print version info and exit.
+.TP
+.B -K \fIkey\fP, --key \fIkey\fP
+Specify the approximate key on the command line, rather than prompting
+the user for it.
+.TP
+.B -d \fIn\fP, --depth \fIn\fP
+Search keys that contain up to \fIn\fP changes. The default is 5.
+.TP
+.B -c, --continue
+Keep trying more keys even after the first match is found. By default,
+\fBccguess\fP will stop after the first key is found that matches all
+input files.
+.TP
+.B -t \fIchars\fP, --chartable \fIchars\fP
+Specify the list of characters to try for replacements and
+insertions. By default, \fBccguess\fP will try all printable ASCII
+characters. If you know, for example, that your key only used
+lowercase letters and numbers, you can speed up the search by
+specifying a list of characters explicitly. This option is mutually
+exclusive with \fB-n\fP.
+.TP
+.B -n, --non-printable
+Allow non-printable characters in keys. By default, \fBccguess\fP will
+only try printable ASCII characters. Note that the use of this option
+slows down the search significantly. This option is mutually exclusive
+with \fB-t\fP.
+.PD
+.SH ARGUMENTS
+
+.TP 10
+.I file
+The name of a file that has been encrypted with the unknown key. This
+file is only read from, not written to. The special filename "-" is
+used to denote standard input.
+
+If multiple files are specified, \fBccguess\fP will search for keys
+that match \fIany\fP of the files, but will print a warning for keys
+that do not match \fIall\fP of the files.
+.PD
+.SH EXAMPLE
+
+Suppose the file \fImyfile.cpt\fP has been encrypted with the key
+"gardenhouse", but the user remembers "gardenhose". The command
+.nf
+
+   ccguess -K gardenhose myfile.cpt
+
+.fi
+will find the correct key after 2318 guesses. 
+.SH EXIT STATUS
+
+The exit status is 0 if at least one possible match is found, 1 if no
+matches are found, and >=2 if an error occurred.
+.SH VERSION
+
+1.11
+.SH AUTHOR
+
+Peter Selinger <selinger at users.sourceforge.net>
+.SH COPYRIGHT
+
+Copyright (C) 2000-2018 Peter Selinger
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software Foundation, 
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+See also http://www.gnu.org/.

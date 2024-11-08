@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<!-- This is an automatically generated file.  Do not edit.
+   This file is dual-licensed.  Choose whichever you want.
+  
+   The first licence is a regular 2-clause BSD licence.  The second licence
+   is the CC-0 from Creative Commons. It is intended to release Monocypher
+   to the public domain.  The BSD licence serves as a fallback option.
+  
+   SPDX-License-Identifier: BSD-2-Clause OR CC0-1.0
+  
+   ----------------------------------------------------------------------------
+  
+   Copyright (c) 2020, 2022 Fabio Scotoni
+   Copyright (c) 2023 Loup Vaillant
+   All rights reserved.
+  
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are
+   met:
+  
+   1. Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+  
+   2. Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the
+      distribution.
+  
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+   HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  
+   ----------------------------------------------------------------------------
+  
+   Written in 2020, 2022, and 2023 by Fabio Scotoni and Loup Vaillant
+  
+   To the extent possible under law, the author(s) have dedicated all copyright
+   and related neighboring rights to this software to the public domain
+   worldwide.  This software is distributed without any warranty.
+  
+   You should have received a copy of the CC0 Public Domain Dedication along
+   with this software.  If not, see
+   <https://creativecommons.org/publicdomain/zero/1.0/>
+   -->
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="style.css" type="text/css" media="all"/>
+  <title>CRYPTO_ELLIGATOR_MAP(3MONOCYPHER)</title>
+</head>
+<body>
+<table class="head">
+  <tr>
+    <td class="head-ltitle">CRYPTO_ELLIGATOR_MAP(3MONOCYPHER)</td>
+    <td class="head-vol">3MONOCYPHER</td>
+    <td class="head-rtitle">CRYPTO_ELLIGATOR_MAP(3MONOCYPHER)</td>
+  </tr>
+</table>
+<div class="manual-text">
+<section class="Sh">
+<h1 class="Sh" id="NAME"><a class="permalink" href="#NAME">NAME</a></h1>
+<p class="Pp"><code class="Nm">crypto_elligator_map</code>,
+    <code class="Nm">crypto_elligator_rev</code>,
+    <code class="Nm">crypto_elligator_key_pair</code> &#x2014;
+    <span class="Nd">hiding of X25519 public keys</span></p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SYNOPSIS"><a class="permalink" href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p class="Pp"><code class="In">#include
+    &lt;<a class="In">monocypher.h</a>&gt;</code></p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_elligator_map</code>(<var class="Fa">uint8_t
+    curve[32]</var>, <var class="Fa">const uint8_t hidden[32]</var>);</p>
+<p class="Pp"><var class="Ft">int</var>
+  <br/>
+  <code class="Fn">crypto_elligator_rev</code>(<var class="Fa">uint8_t
+    hidden[32]</var>, <var class="Fa">const uint8_t curve[32]</var>,
+    <var class="Fa">uint8_t tweak</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_elligator_key_pair</code>(<var class="Fa">uint8_t
+    hidden[32]</var>, <var class="Fa">uint8_t secret_key[32]</var>,
+    <var class="Fa">uint8_t seed[32]</var>);</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="DESCRIPTION"><a class="permalink" href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p class="Pp">These functions allow obfuscating X25519 public keys by making
+    them appear effectively indistinguishable from random noise. This is of
+    interest for key exchange protocols that require indistinguishability from
+    randomness, such as padded uniform random blobs (PURBs). They are intended
+    for ephemeral (short-lived, possibly just one-time) X25519 keys, not for
+    long-term public keys. After an initial key exchange involving hidden keys,
+    subsequent key exchange messages should be encrypted instead; see, for
+    example, the Noise Protocol Framework. This is an
+    <a class="permalink" href="#advanced"><i class="Em" id="advanced">advanced
+    feature</i></a>. Unless you are implementing an protocol that requires
+    indistinguishability of all communications from random noise, consider
+    <a class="Xr" href="crypto_x25519.html">crypto_x25519(3monocypher)</a>
+    instead. Both this family of functions and
+    <a class="Xr" href="crypto_x25519.html">crypto_x25519(3monocypher)</a>
+    should be used as a building block to implement a key exchange protocol.</p>
+<p class="Pp" id="point">For understanding what these functions do, it is
+    important to note that a &#x201C;public key&#x201D; in this context refers
+    to a <a class="permalink" href="#point"><i class="Em">point on
+    Curve25519</i></a>. This also means that these functions are not compatible
+    with
+    <a class="Xr" href="crypto_eddsa_sign.html">crypto_eddsa_sign(3monocypher)</a>
+    and related functions.</p>
+<p class="Pp" id="crypto_elligator_rev"><a class="permalink" href="#crypto_elligator_rev"><code class="Fn">crypto_elligator_rev</code></a>()
+    takes a public key <var class="Fa">curve</var> and a
+    <var class="Fa">tweak</var>, hiding the public key so that it is effectively
+    indistinguishable from random noise. Note that only
+    <a class="Xr" href="crypto_x25519_dirty_fast.html">crypto_x25519_dirty_fast(3monocypher)</a>
+    or
+    <a class="Xr" href="crypto_x25519_dirty_small.html">crypto_x25519_dirty_small(3monocypher)</a>
+    can generate a suitable public key; the
+    <a class="Xr" href="crypto_x25519.html">crypto_x25519(3monocypher)</a>
+    function is insufficient. The <var class="Fa">tweak</var> must be chosen at
+    random. Even then, this operation
+    <a class="permalink" href="#may"><i class="Em" id="may">may</i></a> fail
+    because not all curve points are capable of being hidden. In this case,
+    <code class="Fn">crypto_elligator_rev</code>() must be tried again with a
+    new key pair, though <var class="Fa">tweak</var> does not need to be
+    changed. On average, two attempts are needed. Once a suitable public key has
+    been found, <code class="Fn">crypto_elligator_rev</code>() always succeeds
+    for it. Given the same values for <var class="Fa">tweak</var> and
+    <var class="Fa">curve</var>, <code class="Fn">crypto_elligator_rev</code>()
+    yields the same output value <var class="Fa">hidden</var>.</p>
+<p class="Pp" id="crypto_elligator_map"><a class="permalink" href="#crypto_elligator_map"><code class="Fn">crypto_elligator_map</code></a>()
+    performs the inverse operation: It decodes a hidden point to a curve point
+    on Curve25519.</p>
+<p class="Pp" id="crypto_elligator_key_pair"><a class="permalink" href="#crypto_elligator_key_pair"><code class="Fn">crypto_elligator_key_pair</code></a>()
+    is a convenience function that generates a secret key and its corresponding
+    public key, which is effectively indistinguishable from random noise, from a
+    random seed. <a class="permalink" href="#The"><i class="Em" id="The">The
+    execution time of this function is unpredictable</i></a> because it may take
+    many failures until a key pair could be generated successfully.
+    <code class="Fn">crypto_elligator_key_pair</code>() uses
+    <a class="Xr" href="crypto_x25519_dirty_fast.html">crypto_x25519_dirty_fast(3monocypher)</a>
+    internally; if code size is an important concern, its functionality can be
+    replicated with
+    <a class="Xr" href="crypto_x25519_dirty_small.html">crypto_x25519_dirty_small(3monocypher)</a>
+    instead.</p>
+<p class="Pp">The arguments are:</p>
+<dl class="Bl-tag">
+  <dt><var class="Fa">curve</var></dt>
+  <dd>A point on the curve which is a Curve25519 public key generated with
+      either
+      <a class="Xr" href="crypto_x25519_dirty_fast.html">crypto_x25519_dirty_fast(3monocypher)</a>
+      or
+      <a class="Xr" href="crypto_x25519_dirty_small.html">crypto_x25519_dirty_small(3monocypher)</a>.</dd>
+  <dt><var class="Fa">hidden</var></dt>
+  <dd>The hidden encoding of a point on the curve which is effectively
+      indistinguishable from random.</dd>
+  <dt><var class="Fa">secret_key</var></dt>
+  <dd>The secret key that was generated from the given
+      <var class="Fa">seed</var>.</dd>
+  <dt><var class="Fa">seed</var></dt>
+  <dd>A 32-byte random number from which to derive a key pair. See
+      <a class="Xr" href="intro.html">intro(3monocypher)</a> for advice about
+      generating random bytes (use the operating system's random number
+      generator). The <var class="Fa">seed</var> is wiped automatically.</dd>
+  <dt id="crypto_elligator_rev~2"><var class="Fa">tweak</var></dt>
+  <dd>A 1-byte random number, which influences the final output of
+      <a class="permalink" href="#crypto_elligator_rev~2"><code class="Fn">crypto_elligator_rev</code></a>().</dd>
+</dl>
+<p class="Pp">The <var class="Fa">hidden</var> and <var class="Fa">curve</var>
+    arguments may overlap or point at the same buffer.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="RETURN_VALUES"><a class="permalink" href="#RETURN_VALUES">RETURN
+  VALUES</a></h1>
+<p class="Pp"><code class="Fn">crypto_elligator_rev</code>() returns 0 on
+    success and -1 if the given <var class="Fa">curve</var> argument is
+    unsuitable for hiding.</p>
+<p class="Pp"><code class="Fn">crypto_elligator_map</code>() and
+    <code class="Fn">crypto_elligator_key_pair</code>() return nothing. They
+    cannot fail.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="EXAMPLES"><a class="permalink" href="#EXAMPLES">EXAMPLES</a></h1>
+<p class="Pp">Generate a key pair manually using
+    <a class="Xr" href="crypto_x25519_dirty_small.html">crypto_x25519_dirty_small(3monocypher)</a>
+    instead of its fast variant:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>uint8_t sk  [32]; /* Secret key output        */
+uint8_t pk  [32]; /* Hidden public key output */
+uint8_t tweak;    /* Random tweak input       */
+arc4random_buf(&amp;tweak, 1);
+for (;;) {
+    arc4random_buf(sk, 32);
+    crypto_x25519_dirty_small(pk, sk);
+    if (crypto_elligator_rev(pk, pk, tweak) == 0)
+        break;
+}
+/* Now save the secret key and send the hidden public key. */</pre>
+</div>
+<p class="Pp">Performing a key exchange with the other party's public key having
+    been hidden:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>uint8_t hidden_pk [32]; /* Their hidden public key   */
+uint8_t their_pk  [32]; /* Their unhidden public key */
+uint8_t your_sk   [32]; /* Your secret key           */
+uint8_t shared_key[32]; /* Shared session key        */
+crypto_elligator_map(their_pk, hidden_pk);
+crypto_x25519(shared_key, your_sk, their_pk);
+/* Wipe secrets if they are no longer needed */
+crypto_wipe(your_sk, 32);</pre>
+</div>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SEE_ALSO"><a class="permalink" href="#SEE_ALSO">SEE
+  ALSO</a></h1>
+<p class="Pp"><a class="Xr" href="crypto_x25519.html">crypto_x25519(3monocypher)</a>,
+    <a class="Xr" href="crypto_x25519_dirty_small.html">crypto_x25519_dirty_small(3monocypher)</a>,
+    <a class="Xr" href="intro.html">intro(3monocypher)</a></p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="STANDARDS"><a class="permalink" href="#STANDARDS">STANDARDS</a></h1>
+<p class="Pp">These functions implement the Elligator 2 mapping for Curve25519.
+    This mapping is incompatible with both the hash-to-curve Internet draft and
+    the implementation of Elligator 2 in libsodium. Elligator 2 was described
+    in: <cite class="Rs"><span class="RsA">Daniel J. Bernstein</span>,
+    <span class="RsA">Mike Hamburg</span>, <span class="RsA">Anna
+    Krasnova</span>, and <span class="RsA">Tanja Lange</span>,
+    <span class="RsT">Elligator: Elliptic-curve points indistinguishable from
+    uniform random strings</span>, <i class="RsI">Association for Computing
+    Machinery</i>, <i class="RsJ">CCS '13: Proceedings of the 2013 ACM SIGSAC
+    conference on Computer &amp; communications security</i>,
+    <span class="RsP">pp. 967&#x2013;980</span>,
+    <span class="RsD">2013</span>.</cite></p>
+<p class="Pp">Monocypher's Elligator 2 representatives are encoded as
+    little-endian 254-bit numbers. The two most significant bits (254 and 255)
+    are not used. <code class="Fn">crypto_elligator_map</code>() ignores them,
+    and <code class="Fn">crypto_elligator_rev</code>() sets them at random. The
+    mapping uses 2 as the non-square <var class="Va">Z</var>, and [0..2^254-10]
+    as the set of non-negative field elements. See
+    <a class="Lk" href="https://elligator.org/map">https://elligator.org/map</a>
+    for more details.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="HISTORY"><a class="permalink" href="#HISTORY">HISTORY</a></h1>
+<p class="Pp">The <code class="Fn">crypto_curve_to_hidden</code>(),
+    <code class="Fn">crypto_hidden_to_curve</code>(), and
+    <code class="Fn">crypto_hidden_key_pair</code>() functions first appeared in
+    Monocypher 3.1.0. In Monocypher 4.1.0, they were renamed
+    <code class="Fn">crypto_elligator_rev</code>(),
+    <code class="Fn">crypto_elligator_map</code>(), and
+    <code class="Fn">crypto_elligator_key_pair</code>() respectively.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="CAVEATS"><a class="permalink" href="#CAVEATS">CAVEATS</a></h1>
+<p class="Pp">Monocypher does not perform any input validation. Any deviation
+    from the specified input and output length ranges results in
+    <a class="permalink" href="#undefined"><b class="Sy" id="undefined">undefined
+    behaviour</b></a>. Make sure your inputs are correct.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SECURITY_CONSIDERATIONS"><a class="permalink" href="#SECURITY_CONSIDERATIONS">SECURITY
+  CONSIDERATIONS</a></h1>
+<p class="Pp">The secret keys for the public keys fed into
+    <code class="Fn">crypto_elligator_rev</code>()
+    <a class="permalink" href="#must"><b class="Sy" id="must">must be chosen
+    randomly</b></a> rather than deterministically. Otherwise, the timing
+    information given by the required number of retries also leaks information
+    on the secret keys.</p>
+<p class="Pp" id="help">These functions
+    <a class="permalink" href="#help"><i class="Em">help</i></a> build highly
+    difficult-to-analyse protocols but are insufficient by themselves: Other
+    metadata, such as the number of bytes sent in a packet or the size of the
+    32-byte random looking string that represents the curve point itself, can be
+    very strong indicators of the use of cryptography. Consider using
+    appropriate padding algorithms, such as PADME, and obscure other metadata as
+    much as possible.</p>
+</section>
+</div>
+<table class="foot">
+  <tr>
+    <td class="foot-date">March 6, 2023</td>
+    <td class="foot-os">Debian</td>
+  </tr>
+</table>
+</body>
+</html>

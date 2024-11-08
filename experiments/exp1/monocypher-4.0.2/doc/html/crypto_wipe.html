@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<!-- This is an automatically generated file.  Do not edit.
+   This file is dual-licensed.  Choose whichever you want.
+  
+   The first licence is a regular 2-clause BSD licence.  The second licence
+   is the CC-0 from Creative Commons. It is intended to release Monocypher
+   to the public domain.  The BSD licence serves as a fallback option.
+  
+   SPDX-License-Identifier: BSD-2-Clause OR CC0-1.0
+  
+   ----------------------------------------------------------------------------
+  
+   Copyright (c) 2017-2019 Loup Vaillant
+   Copyright (c) 2017-2018 Michael Savage
+   Copyright (c) 2017, 2019 Fabio Scotoni
+   All rights reserved.
+  
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are
+   met:
+  
+   1. Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+  
+   2. Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the
+      distribution.
+  
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+   HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  
+   ----------------------------------------------------------------------------
+  
+   Written in 2017-2019 by Loup Vaillant, Michael Savage and Fabio Scotoni
+  
+   To the extent possible under law, the author(s) have dedicated all copyright
+   and related neighboring rights to this software to the public domain
+   worldwide.  This software is distributed without any warranty.
+  
+   You should have received a copy of the CC0 Public Domain Dedication along
+   with this software.  If not, see
+   <https://creativecommons.org/publicdomain/zero/1.0/>
+   -->
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="style.css" type="text/css" media="all"/>
+  <title>CRYPTO_WIPE(3MONOCYPHER)</title>
+</head>
+<body>
+<table class="head">
+  <tr>
+    <td class="head-ltitle">CRYPTO_WIPE(3MONOCYPHER)</td>
+    <td class="head-vol">3MONOCYPHER</td>
+    <td class="head-rtitle">CRYPTO_WIPE(3MONOCYPHER)</td>
+  </tr>
+</table>
+<div class="manual-text">
+<section class="Sh">
+<h1 class="Sh" id="NAME"><a class="permalink" href="#NAME">NAME</a></h1>
+<p class="Pp"><code class="Nm">crypto_wipe</code> &#x2014; <span class="Nd">wipe
+    data from memory</span></p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SYNOPSIS"><a class="permalink" href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p class="Pp"><code class="In">#include
+    &lt;<a class="In">monocypher.h</a>&gt;</code></p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_wipe</code>(<var class="Fa">void *secret</var>,
+    <var class="Fa">size_t secret_size</var>);</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="DESCRIPTION"><a class="permalink" href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p class="Pp"><a class="permalink" href="#crypto_wipe"><code class="Fn" id="crypto_wipe">crypto_wipe</code></a>()
+    securely erases sensitive data in memory.</p>
+<p class="Pp">Sensitive data (such as cryptographic keys or secret plaintexts)
+    should be erased from memory as early as possible to minimise the window in
+    which it can be leaked. Standard functions like memset and bzero are not
+    safe to use as the compiler may decide they have no effect and optimise them
+    out.</p>
+<p class="Pp">The arguments are:</p>
+<dl class="Bl-tag">
+  <dt><var class="Fa">secret</var></dt>
+  <dd>The buffer to erase.</dd>
+  <dt><var class="Fa">secret_size</var></dt>
+  <dd>The number of bytes to erase from the buffer. This is normally the size of
+      the entire buffer.</dd>
+</dl>
+<p class="Pp">Monocypher will wipe its context structs when finalizing an
+    operation such as signing or decrypting. When using direct interfaces like
+    <a class="Xr" href="crypto_aead_lock.html">crypto_aead_lock(3monocypher)</a>,
+    these context structs are invisible to you. However, they are exposed in
+    incremental interfaces like
+    <a class="Xr" href="crypto_blake2b_init.html">crypto_blake2b_init(3monocypher)</a>.
+    The original key buffer does not get automatically wiped. When using
+    incremental interfaces, you may want to wipe the original key buffers
+    immediately after calling the respective init function.</p>
+<p class="Pp" id="crypto_wipe~2">Using
+    <a class="permalink" href="#crypto_wipe~2"><code class="Fn">crypto_wipe</code></a>()
+    alone may not be enough for security. It is recommended to lock down
+    relevant memory regions as well. Refer to
+    <a class="Xr" href="intro.html">intro(3monocypher)</a> for instructions on
+    how to lock down memory on common operating systems.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="RETURN_VALUES"><a class="permalink" href="#RETURN_VALUES">RETURN
+  VALUES</a></h1>
+<p class="Pp">This function returns nothing.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SEE_ALSO"><a class="permalink" href="#SEE_ALSO">SEE
+  ALSO</a></h1>
+<p class="Pp"><a class="Xr" href="intro.html">intro(3monocypher)</a></p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="HISTORY"><a class="permalink" href="#HISTORY">HISTORY</a></h1>
+<p class="Pp">The <code class="Fn">crypto_wipe</code>() function first appeared
+    in Monocypher 1.1.0.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="CAVEATS"><a class="permalink" href="#CAVEATS">CAVEATS</a></h1>
+<p class="Pp">Monocypher does not perform any input validation. Any deviation
+    from the specified input and output length ranges results in
+    <a class="permalink" href="#undefined"><b class="Sy" id="undefined">undefined
+    behaviour</b></a>. Make sure your inputs are correct.</p>
+</section>
+</div>
+<table class="foot">
+  <tr>
+    <td class="foot-date">December 12, 2019</td>
+    <td class="foot-os">Debian</td>
+  </tr>
+</table>
+</body>
+</html>

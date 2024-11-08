@@ -1,0 +1,493 @@
+<!--Copyright (C) 2000-2018 Peter Selinger.-->
+<!--This file is part of ccrypt. It is free software and it is covered-->
+<!--by the GNU general public license. See the file COPYING for details.-->
+<html><body bgcolor=#ffffff><title>Man page for CCRYPT(1)</title><h1>Man page for CCRYPT(1)</h1>
+<h3>NAME</h3>
+ccrypt - encrypt and decrypt files and streams 
+<h3>SYNOPSIS</h3>
+<p>
+<pre>
+<b>ccrypt [<i>mode</i>] [<i>options</i>] [<i>file...</i>]</b>
+<b>ccencrypt [<i>options</i>] [<i>file...</i>]</b>
+<b>ccdecrypt [<i>options</i>] [<i>file...</i>]</b>
+<b>ccat [<i>options</i>] <i>file...</i></b>
+</pre><p>
+<h3>DESCRIPTION</h3>
+<p>
+<b>ccrypt</b> is a tool for encrypting and decrypting files and
+streams. It is based on the Rijndael block cipher, a version
+of which is also used in the Advanced Encryption Standard (AES, see
+http://www.nist.gov/aes). This cipher is believed to provide very
+strong cryptographic security.
+<p>
+The algorithm provided by <b>ccrypt</b> is not symmetric, i.e., one
+must specify whether to encrypt or decrypt. The most common way to
+invoke <b>ccrypt</b> is via the commands <b>ccencrypt</b> and
+<b>ccdecrypt</b>.
+<p>
+Encryption and decryption depends on a keyword (or key phrase)
+supplied by the user. By default, the user is prompted to enter a
+keyword from the terminal. Keywords can consist of any number of
+characters, and all characters are significant (although <b>ccrypt</b>
+internally hashes the key to 256 bits). Longer keywords provide better
+security than short ones, since they are less likely to be discovered
+by exhaustive search.
+<h3>MODES</h3>
+<p>
+<b>ccrypt</b> can operate in five different modes.  If more than one
+mode is specified, the last one specified takes precedence. The
+aliases <b>ccencrypt</b>, <b>ccdecrypt</b>, and <b>ccat</b>
+are provided as a convenience; they are equivalent to <b>ccrypt -e</b>,
+<b>ccrypt -d</b>, and <b>ccrypt -c</b>, respectively.
+<dl><dt><b>-e, --encrypt</b><dd>
+Encrypt. This is the default mode. If filename arguments are given,
+encrypt the files and append the suffix <b>.cpt</b> to their
+names. Otherwise, run as a filter. 
+<p><dt><b>-d, --decrypt</b><dd>
+Decrypt. If filename arguments are given, decrypt the files and strip
+the suffix <b>.cpt</b> from the filenames, if present. Otherwise, run
+as a filter.
+<p><dt><b>-c, --cat</b><dd>
+Decrypt one or more files to standard output. If no filename arguments
+are given, decrypt as a filter. A filename of "-" is interpreted as
+reading from standard input. Implies <b>-l</b>.
+<p><dt><b>-x, --keychange</b><dd>
+Change the key of encrypted data. In this mode, <b>ccrypt</b> prompts
+for two passwords: the old one and the new one.  If filename arguments
+are given, modify the files. Otherwise, run as a filter.
+<p><dt><b>-u, --unixcrypt</b><dd>
+Simulate the <b>crypt</b>(1) command-line encryption tool that used to
+exist on very old Unix systems from about 1979 until the 1990s. Note:
+the cipher used by the old <b>crypt</b>(1) tool is not secure and has
+been broken. This option is provided only for decrypting existing
+files.  If filename arguments are given, decrypt the files to
+stdout. Otherwise, run as a filter. A filename of "-" is interpreted
+as reading from standard input. Since there is no easy way to detect
+whether a given key matches or not, for safety, this mode does not
+overwrite files.
+</dl>
+<h3>OPTIONS</h3>
+<p>
+The following options are supported in addition to the modes described
+above:
+<dl><dt><b>-b, --brave</b><dd>
+When reading an encryption key from the terminal, ask the user only
+once for the key. By default, <b>ccrypt</b> will ask the user to enter
+such keys twice, as a safeguard against accidentally destroying data
+due to a mistyped key. Using the <b>--brave</b> option disables this
+safety check. Never use it, unless you know what you are doing. See
+also <b>--timid</b>.
+<p><dt><b>-E <i>var</i>, --envvar <i>var</i></b><dd>
+Read the keyword from the environment variable <i>var</i>.
+Note that this might be unsafe on certain systems, namely where
+users can use the <b>ps</b> command to see the environment of a process
+owner by another user. On most modern systems, however, such behavior
+of <b>ps</b> is disabled and the <b>-E</b> option should be safe there.
+Also, as an added security measure, <b>ccrypt</b> erases the keyword
+from its environment immediately after reading it.
+<p><dt><b>-f, --force</b><dd>
+Overwrite existing files or operate on write-protected files without
+asking any questions. Also, override <b>ccrypt</b>'s reluctance to
+write or read encrypted data to or from a terminal. 
+<p><dt><b>-F <i>var</i>, --envvar2 <i>var</i></b><dd>
+Same as <b>-E</b>, except for second keyword (in keychange mode).
+<p><dt><b>-h, --help</b><dd>
+Help. Print usage information and exit.
+<p><dt><b>-H <i>key</i>, --key2 <i>key</i></b><dd>
+Same as <b>-K</b>, except for second keyword (in keychange mode).
+<p><dt><b>-k <i>file</i>, --keyfile <i>file</i></b><dd>
+Read the keyword as the first line from the named file. In keychange
+mode, two keywords are read as the first two lines of the file. The
+filename "-" may be given for reading keywords from standard input.
+Using the <b>-k -</b> option and sending the keyword on stdin is
+probably the safest way to pass a keyword to <b>ccrypt</b> from another
+program or script.
+<p><dt><b>-K <i>key</i>, --key <i>key</i></b><dd>
+Specify the keyword on the command line. This is unsafe, because any
+other user can see the command line by running the <b>ps</b> command.
+Only use this option for testing purposes, and never with a real
+keyword.
+<p><dt><b>-y <i>file</i>, --keyref <i>file</i></b><dd>
+In encryption or keychange mode, check the encryption key against the
+named file, which must have been previously encrypted with the same
+key. Exit with an error message if the key does not match. This option
+is useful as an alternative to <b>--timid</b>, to guard against
+mistyped keys in situations where several files are encrypted with the
+same key. This option implies <b>--brave</b>, unless the <b>--timid</b> 
+option is explicitly given after the <b>--keyref</b> option.
+<p><dt><b>-l, --symlinks</b><dd>
+Force encryption/decryption of symbolic links. By default, symbolic
+links are ignored except in cat or unixcrypt mode. Note
+that with the <b>-l</b> option, encryption/decryption of a symbolic
+link causes the suffix <b>.cpt</b> to be added/removed from the name
+of the link, not the name of the file pointed to.
+<p><dt><b>-L, --license</b><dd>
+Print license info and exit.
+<p><dt><b>-m, --mismatch</b><dd>
+Normally, <b>ccrypt</b> refuses to decrypt data with a key that does
+not seem to match. The <b>-m</b> option overrides this restriction. This
+can sometimes be useful in recovering data from a corrupted file (see
+RECOVERING DATA FROM CORRUPTED FILES). To avoid irretrievable loss
+of data when decrypting with a wrong key, this option cannot be used
+with modes that overwrite the input file.
+<p><dt><b>-P <i>prompt</i>, --prompt <i>prompt</i></b><dd>
+Use <i>prompt</i> instead of the default prompt "Enter
+encryption/decryption key: ".  This may be useful in some shell scripts.
+<p><dt><b>-q, --quiet</b><dd>
+Suppress most warnings.
+<p><dt><b>-Q <i>prompt</i>, --prompt2 <i>prompt</i></b><dd>
+Same as <b>-P</b>, except for second keyword (in keychange mode).
+<p><dt><b>-r, --recursive</b><dd>
+Traverse subdirectories recursively.
+<p><dt><b>-R, --rec-symlinks</b><dd>
+Traverse subdirectories recursively, and also follow symbolic links to
+subdirectories.
+<p><dt><b>-s, --strictsuffix</b><dd>
+Refuse to encrypt files that already have the <b>.cpt</b> suffix (or
+that selected with <b>-S</b>). This can be useful when adding some
+files to a directory of already encrypted files. This option has no
+effect in decryption or keychange mode.
+<p><dt><b>-S <i>.suf</i>, --suffix <i>.suf</i></b><dd>
+Use the suffix <i>.suf</i> instead of the default suffix <b>.cpt</b>.
+<p><dt><b>-t, --timid</b><dd>
+When reading an encryption key from the terminal, ask the user to
+enter the key twice. If the two entered keys are not identical, abort.
+This is a safeguard against accidentally destroying data by encrypting
+it with a mistyped key. Note: this behavior is now the default, and
+can be overridden with the <b>--brave</b> option.
+<p><dt><b>-T, --tmpfiles</b><dd>
+This option causes <b>ccrypt</b> to use temporary files during
+encryption/decryption, rather than overwriting the file contents
+destructively. This 
+method leaves the original file contents lying around in unused
+sectors of the file system, and thus is less secure than the default
+behavior. However, in situations where this loss of security is not
+important, the <b>--tmpfiles</b> option can provide a measure of
+protection against data being corrupted due to a system crash in the
+middle of overwriting a file.
+<p><dt><b>-v, --verbose</b><dd>
+Print progress information to stderr.
+<p><dt><b>-V, --version</b><dd>
+Print version info and exit.
+<p><dt><b>--</b><dd>
+End of options. Any remaining arguments are interpreted as filenames.
+This also turns off filter mode, even if zero filenames follow. This
+might be useful in the context of shell pattern expansion;
+<b>ccrypt -- *</b> will behave correctly even if no files match the
+pattern <b>*</b>.
+</dl>
+<h3>NOTES ON USAGE</h3>
+<p>
+The user interface of <b>ccrypt</b> intentionally resembles that of GNU
+<b>gzip</b>, although it is not identical. When invoked with filename
+arguments, <b>ccrypt</b> normally modifies the files in place,
+overwriting their old content. Unlike <b>gzip</b>, the output is not
+first written to a temporary file; instead, the data is literally
+overwritten. For encryption, this is usually the desired behavior,
+since one does not want copies of the unencrypted data to remain in
+hidden places in the file system. The disadvantage is that if
+<b>ccrypt</b> is interrupted in the middle of writing to a file, the
+file will end up in a corrupted, partially encrypted state.  However,
+in such cases it is possible to recover most of the data; see
+RECOVERING DATA FROM CORRUPTED FILES below. If you want to force
+<b>ccrypt</b> to use temporary files, use the <b>--tmpfiles</b> option. 
+<p>
+When <b>ccrypt</b> receives an interrupt signal (Ctrl-C) while updating
+a file in place, it does not exit immediately, but rather delays the
+exit until after it finishes writing to the current file. This is to
+prevent files from being partially overwritten and thus corrupted. If
+you want to force <b>ccrypt</b> to exit immediately, just press Ctrl-C
+twice quickly.
+<p>
+The encryption algorithm used by <b>ccrypt</b> uses a random seed that
+is different each time. As a result, encrypting the same file twice
+will never yield the same result. The advantage of this method is that
+similarities in plaintext do not lead to similarities in ciphertext;
+there is no way of telling whether the content of two encrypted files
+is similar or not.
+<p>
+Because of the use of a random seed, decrypting and re-encrypting a
+file with the same key will not lead to an identical file. It is
+primarily for this reason that <b>ccrypt</b> refuses to decrypt files
+with a non-matching key; if this were allowed, there would be no way
+afterwards to restore the original file, and the data would be
+irretrievably lost.
+<p>
+When overwriting files, special care is taken with hard links and
+symbolic links. Each physical file (i.e., each inode) is processed at
+most once, no matter how many paths to it are encountered on the
+command line or in subdirectories traversed recursively. For each file
+that has multiple hard links, a warning is printed, to alert the user
+that not all paths to the file might have been properly renamed.
+Symbolic links are ignored except in cat mode, or unless the <b>-l</b>
+or <b>-R</b> option is given.
+<p>
+Unlike <b>gzip</b>, <b>ccrypt</b> does not complain about files that
+have improper suffixes. It is legal to doubly encrypt a file. It is
+also legal to decrypt a file that does not have the <b>.cpt</b>
+suffix, provided the file contains valid data for the given decryption
+key. Use the <b>--strictsuffix</b> option if you want to prevent
+<b>ccrypt</b> from encrypting files that already have a <b>.cpt</b>
+suffix. 
+<p>
+Regarding encryption and compression: encrypted data is statistically
+indistinguishable from random data, and thus it cannot be
+compressed. But of course it is possible to compress the data first,
+then encrypt it. Suggested file suffixes are <b>.gz.cpt</b> 
+or <b>.gzc</b>.
+<h3>RECOVERING DATA FROM CORRUPTED FILES</h3>
+<p>
+Encrypted data might be corrupted for a number of reasons. For
+instance, a file might have been partially encrypted or decrypted if
+<b>ccrypt</b> was interrupted while processing the file. Or data might
+be corrupted by a software or hardware error, or during transmission
+over a network. The encryption algorithm used by <b>ccrypt</b> is
+designed to allow recovery from errors. In general, only a few bytes
+of data will be lost near where the error occurred.
+<p>
+Data encrypted by <b>ccrypt</b> can be thought of as a sequence of
+32-byte blocks. To decrypt a particular block, <b>ccrypt</b> only needs
+to know the decryption key, the data of the block itself, and the data
+of the block immediately preceding it. <b>ccrypt</b> cannot tell
+whether a block is corrupted or not, except the very first block,
+which is special. Thus, if the encrypted data has been altered in the
+middle or near the end of a file, <b>ccrypt</b> can be run to decrypt
+it as usual, and most of the data will be decrypted correctly, except
+near where the corruption occurred.
+<p>
+The very first block of encrypted data is special, because it does not
+actually correspond to any plaintext data; this block holds the random
+seed generated at encryption time. <b>ccrypt</b> also uses the very
+first block to decide whether the given keyword matches the data or
+not. If the first block has been corrupted, <b>ccrypt</b> will likely
+decide that the keyword does not match; in such cases, the <b>-m</b>
+option can be used to force <b>ccrypt</b> to decrypt the data anyway.
+<p>
+If a file contains some encrypted and some unencrypted data, or data
+encrypted with two different keys, one should decrypt the entire file
+with each applicable key, and then piece together the meaningful parts
+manually.
+<p>
+Finally, decryption will only produce meaningful results if the data
+is aligned correctly along block boundaries. If the block boundary
+information has been lost, one has to try all 32 possibilities.
+<h3>DESCRIPTION OF THE CIPHER</h3>
+<p>
+<i>Block ciphers</i> operate on data segments of a fixed length.  For
+instance, the Rijndael block cipher used in <b>ccrypt</b> has a block
+length of 32 bytes or 256 bits. Thus, this cipher encrypts 32 bytes
+at a time.
+<p>
+<i>Stream ciphers</i> operate on data streams of any length. There are
+several standard modes for operating a block cipher as a stream
+cipher. One such standard is <i>Cipher Feedback (CFB)</i>, defined in
+NIST Special Publication 800-38A and ANSI X3.106-1983. <b>ccrypt</b>
+implements a stream cipher by operating the Rijndael block cipher in
+CFB mode.
+<p>
+Let <i>P[i]</i> and <i>C[i]</i> be the <i>i</i>th block of
+the plaintext and ciphertext, respectively. CFB mode specifies that 
+<table border=0><tr><td width=30></td><td>
+<pre>
+<i>C[i] = P[i] ^ E(k,C[i-1])</i>
+</pre><p>
+</td></tr></table>
+Here <i>^</i> denotes the bitwise exclusive or function, and
+<i>E(k,x)</i> denotes the encryption of the block <i>x</i> under the key
+<i>k</i> using the block cipher. Thus, each block of the ciphertext is
+calculated from the corresponding block of plaintext and the previous
+block of ciphertext. Note that in fact, each byte of <i>P[i]</i> can
+be calculated from the corresponding byte of <i>C[i]</i>, so that the
+stream cipher can be applied to one byte at a time. In particular, the
+stream length need not be a multiple of the block size.
+<p>
+Assuming that blocks are numbered starting from <i>0</i>, a special
+"initial" ciphertext block <i>C[-1]</i> is needed to provide the base
+case for the above formula. This value <i>C[-1]</i> is called the
+<i>initialization vector</i> or <i>seed</i>. The seed is chosen at
+encryption time and written as the first block of the encrypted
+stream. It is important that the seed is unpredictable; in particular,
+the same seed should never by used more than once.  Otherwise, the two
+resulting ciphertext blocks <i>C[0]</i> could be related by a simple
+xor to obtain information about the corresponding plaintext blocks
+<i>P[0]</i>.  If unpredictable seeds are used, CFB is provably as
+secure as the underlying block cipher.
+<p>
+In <b>ccrypt</b>, the seed is constructed as follows: first, a nonce is
+contructed by hashing a combination of the host name, current time,
+process id, and an internal counter into a 28-byte value, using a
+cryptographic hash function. The nonce is combined with a fixed
+four-byte "magic number", and the resulting 32-byte value is encrypted
+by one round of the Rijndael block cipher with the given key. This
+encrypted block is used as the seed and appended to the beginning of
+the ciphertext. The use of the magic number allows <b>ccrypt</b> to
+detect non-matching keys before decryption.
+<h3>SECURITY</h3>
+<p>
+<b>ccrypt</b> is believed to provide very strong cryptographic
+security, equivalent to that of the Rijndael cipher with 256-bit block
+size and 256-bit key size. Another version of the Rijndael cipher
+(with a smaller block size) is used in the U.S. government's Advanced
+Encryption Standard (AES, see http://www.nist.gov/aes). Therefore,
+this cipher is very well studied and subject to intensive public
+scrutiny.  This scrutiny has a positive effect on the cipher's
+security. In particular, if an exploitable weakness in this cipher
+were ever discovered, this would become widely publicized.
+<p>
+In practical terms, the security of <b>ccrypt</b> means that, without
+knowledge of the encryption key, it is effectively impossible to
+obtain any information about the plaintext from a given
+ciphertext. This is true even if a large number of
+plaintext-ciphertext pairs are already known for the same
+key. Moreover, because <b>ccrypt</b> uses a key size of 256 bits, an
+exhaustive search of the key space is not feasible, at least as long
+as sufficiently long and hard-to-guess keys are actually used in
+practice. No cipher is secure if users choose insecure keywords.
+<p>
+On the other hand, <b>ccrypt</b> does not attempt to provide 
+<i>data integrity</i>, i.e., it will not attempt to detect whether the
+ciphertext was modified after encryption. In particular, encrypted
+data can be truncated, leaving the corresponding decrypted data also
+truncated, but otherwise consistent. If one needs to ensure data
+integrity as well as secrecy, this can be achieved by other
+methods. The recommended method is to prepend a cryptographic hash
+(for instance, an SHA-1 hash) to the data before encryption.
+<p>
+<b>ccrypt</b> does not claim to provide any particular safeguards
+against information leaking via the local operating system. While
+reasonable precautions are taken, there is no guarantee that
+keywords and plaintexts have been physically erased after encryption
+in completed; parts of such data might still exist in memory or on
+disk. <b>ccrypt</b> does not currently use privileged memory pages.
+<p>
+When encrypting files, <b>ccrypt</b> by default accesses them in
+read-write mode. This normally causes the original file to be
+physically overwritten, but on some file systems, this might not be
+the case.
+<p>
+Note that the use of the <b>-K</b> option is unsafe in a multiuser
+environment, because the command line of a process is visible to other
+users running the <b>ps</b> command. The use of the <b>-E</b> option is
+potentially unsafe for the same reason, although recent versions of
+<b>ps</b> don't tend to display environment information to other users.
+The use of the <b>-T</b> option is unsafe for encryption because the
+original plaintext will remain in unused sectors of the file system.
+<h3>EMACS PACKAGE</h3>
+<p>
+There is an emacs package for reading and writing encrypted files.
+(Note that this package currently only works with emacs, not with
+xemacs.)  This package hooks into the low-level file I/O functions of
+emacs, prompting the user for a password where appropriate. It is
+implemented in much the same way as support for compressed files. If
+you have both the ps-ccrypt and jka-compr packages installed, emacs
+can open encrypted files and compressed files; however, it does not
+currently work for files that are encrypted and compressed.
+<p>
+To use the package, simply load ps-ccrypt, then edit as usual.
+When you open a file with the ".cpt" extension, emacs will prompt you
+for a password for the file. It will remember the password for the
+buffer, and when you save the file later, it will be automatically
+encrypted again (provided you save it with a ".cpt" extension). Except
+for the password prompt, the operation of the package should be
+transparent to the user. The command M-x ccrypt-set-buffer-password can
+be used to change the current password of a buffer.
+<p>
+The simplest way to use this package is to include the lines 
+.IP 
+<pre>
+(setq load-path (cons "<i>path</i>" load-path)) 
+(require 'ps-ccrypt "ps-ccrypt.el")
+</pre><p> 
+.LP 
+in your .emacs file, where <i>path</i> is the directory that holds the
+file ps-ccrypt.el.
+<p>
+Limitations of the emacs package: there is no guarantee that
+unencrypted information cannot leak to the file system; in fact, the
+package sometimes writes unencrypted data to temporary files. However,
+auto-saved files are normally treated correctly (i.e., encrypted).
+For details, see the comments in the file ps-ccrypt.el.
+<h3>EXIT STATUS</h3>
+<p>
+The exit status is 0 on successful completion, and non-zero otherwise.
+An exit status of 1 means illegal command line, 2 is out of memory or
+another system error, 3 is a fatal i/o error, 4 is a non-matching key
+or wrong file format, 6 is interrupt, 7 is mistyped key in
+<b>--timid</b> mode, 8 is a non-fatal i/o error, and 9 means that no
+key was obtained because the user failed to enter it, or because the
+specified keyfile or environment variable could not be read. An exit
+status of 10 means that the file specified by the <b>--keyref</b>
+option could not be read, or did not match the requested encryption
+key.
+<p>
+Fatal i/o errors are those that occur while processing a file that
+is already open. Such errors cause ccrypt to abort its operation
+immediately with an exit status of 3. Non-fatal i/o errors are those
+that occur while handling files that are not already open;
+typically, such errors are caused by files that are missing, not
+readable, or can't be created.  When encountering a non-fatal i/o
+error, ccrypt simply continues to process the next available input
+file. The exit status of 8 is delayed until after all the files have
+been processed.
+<p>
+Non-matching keys and wrong file formats are also considered non-fatal
+errors, and cause ccrypt to continue with processing the next
+available input file. In this case, an exit status of 4 is given after
+all the files have been processed. If there is a conflict between exit
+status 4 and 8, then 8 is returned. 
+<p>
+The former exit status 5 ("wrong file format") has been eliminated,
+and is now covered under exit status 4 ("non-matching key or wrong
+file format"). Note that ccrypt does not really have a "file format"
+in the proper sense of the word; any file of length at least 32 bytes
+is potentially a valid encrypted file.
+<h3>LIMITATIONS</h3>
+<p>
+Like all encryption programs that depend on a user-supplied key, the
+encryption is only as strong as the key you provide. You must assume
+that adversaries have the ability to try billions of different keys
+per second, or more. So if you use a key that is too short, or a key
+that is long but easy to guess, you should assume that it can and will
+be broken.
+<p>
+While <b>ccrypt</b> can handle keywords of arbitrary length, some
+operating systems limit the length of an input line to 1024
+characters.
+<p>
+The renaming of files (adding or removing the <b>.cpt</b> suffix) can
+go wrong if a filename is repeated on the command line.  In this case,
+the file is only encrypted/decrypted once, but the suffix may be added
+or removed several times. This is because <b>ccrypt</b> thinks it
+encountered different hardlinks for the same file.
+<p>
+The <b>--strictsuffix</b> option can behave in unexpected ways if one
+file has several hardlinks, some of which have the suffix and some of
+which don't. In this case, the inode will be encrypted/decrypted, but
+the suffix will be changed only for those filenames that allow
+it. Similarly, if a file cannot be renamed because a file of the given
+name already exists, the file may still be encrypted/decrypted if it
+has another hardlink.
+<h3>VERSION</h3>
+<p>
+1.11
+<h3>AUTHOR</h3>
+<p>
+Peter Selinger <selinger at users.sourceforge.net>
+<h3>COPYRIGHT</h3>
+<p>
+Copyright (C) 2000-2018 Peter Selinger
+<p>
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+<p>
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+<p>
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software Foundation,
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+See also http://www.gnu.org/.

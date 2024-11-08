@@ -1,0 +1,292 @@
+/*
+ * This file is dual-licensed.  Choose whichever licence you want from
+ * the two licences listed below.
+ *
+ * The first licence is a regular 2-clause BSD licence.  The second licence
+ * is the CC-0 from Creative Commons. It is intended to release Monocypher
+ * to the public domain.  The BSD licence serves as a fallback option.
+ *
+ * SPDX-License-Identifier: BSD-2-Clause OR CC0-1.0
+ *
+ * ------------------------------------------------------------------------
+ *
+ * Copyright (c) 2017-2019, Loup Vaillant
+ * All rights reserved.
+ *
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * ------------------------------------------------------------------------
+ *
+ * Written in 2017-2019 by Loup Vaillant
+ *
+ * To the extent possible under law, the author(s) have dedicated all copyright
+ * and related neighboring rights to this software to the public domain
+ * worldwide.  This software is distributed without any warranty.
+ *
+ * You should have received a copy of the CC0 Public Domain Dedication along
+ * with this software.  If not, see
+ * <https://creativecommons.org/publicdomain/zero/1.0/>
+ */
+
+/*
+ * This file has been engineered to be compatible with both older mandoc and
+ * newer mandoc.
+ *
+ * mandoc 1.14.1 changed the class named for emph/symb/lit/spacer to
+ * Em/Sy/Li/Pp.
+ * The classes here account for that and are duplicated as necessary.
+ *
+ * The formatting was taken from mandoc.css (mandoc 1.14.5). Assorted changes:
+ * - Liberation Sans was added to the font-family in body.
+ * - added to body:
+ *   margin: 1em auto; max-width: 40em; padding: 0 .62em; font-size: 1.1em;
+ *   line-height: 1.62;
+ * - Removed .Sh and .Ss from h1 (not present in older mandoc)
+ * - Removed html styling breaking centering in body. It was:
+ *   html {     max-width: 100ex; }
+ *
+ * Much of the markup that got moved to CSS (e.g. .Ft) was pure HTML in older
+ * versions (<i class="ftype">) so that few adjustments are necessary.
+ *
+ * Upstream mandoc.css was placed in the public domain in CVS revision 1.39:
+ * ----------------------------------------------------------------------------
+ * Written by Ingo Schwarze <schwarze@openbsd.org>.
+ * I place this file into the public domain.
+ * Permission to use, copy, modify, and distribute it for any purpose
+ * with or without fee is hereby granted, without any conditions.
+ * ----------------------------------------------------------------------------
+ */
+body { margin: 1em auto;
+       max-width: 40em;
+       padding: 0 .62em;
+       font-size: 1.1em;
+       line-height: 1.62;
+       font-size: 125%;
+       font-family: "Liberation Sans", Arial, sans-serif; }
+table {		margin-top: 0em;
+		margin-bottom: 0em; }
+td {		vertical-align: top; }
+ul, ol, dl {	margin-top: 0em;
+		margin-bottom: 0em; }
+li, dt {	margin-top: 1em; }
+
+a.selflink {	border-bottom: thin dotted;
+		color: inherit;
+		font: inherit;
+		text-decoration: inherit; }
+* {		clear: both }
+
+/* Search form and search results. */
+
+fieldset {	border: thin solid silver;
+		border-radius: 1em;
+		text-align: center; }
+input[name=expr] {
+		width: 25%; }
+
+table.results {	margin-top: 1em;
+		margin-left: 2em;
+		font-size: smaller; }
+
+/* Header and footer lines. */
+
+table.head {	width: 100%;
+		border-bottom: 1px dotted #808080;
+		margin-bottom: 1em;
+		font-size: smaller; }
+td.head-vol {	text-align: center; }
+td.head-rtitle {
+		text-align: right; }
+span.Nd { }
+
+table.foot {	width: 100%;
+		border-top: 1px dotted #808080;
+		margin-top: 1em;
+		font-size: smaller; }
+td.foot-os {	text-align: right; }
+
+/* Sections and paragraphs. */
+
+div.manual-text {
+		margin-left: 5ex; }
+h1 {		margin-top: 2ex;
+		margin-bottom: 1ex;
+		margin-left: -4ex;
+		font-size: 110%; }
+h2 {		margin-top: 2ex;
+		margin-bottom: 1ex;
+		margin-left: -2ex;
+		font-size: 105%; }
+div.Pp {	margin: 1ex 0ex; }
+div.spacer {	margin: 1ex 0ex; }
+a.Sx { }
+a.Xr { }
+
+/* Displays and lists. */
+
+div.Bd { }
+div.D1 {	margin-left: 5ex; }
+
+ul.Bl-bullet {	list-style-type: disc;
+		padding-left: 1em; }
+li.It-bullet { }
+ul.Bl-dash {	list-style-type: none;
+		padding-left: 0em; }
+li.It-dash:before {
+		content: "\2014  "; }
+ul.Bl-item {	list-style-type: none;
+		padding-left: 0em; }
+li.It-item { }
+ul.Bl-compact > li {
+		margin-top: 0ex; }
+
+ol.Bl-enum {	padding-left: 2em; }
+li.It-enum { }
+ol.Bl-compact > li {
+		margin-top: 0ex; }
+
+dl.Bl-diag { }
+dt.It-diag { }
+dd.It-diag {	margin-left: 0ex; }
+b.It-diag {	font-style: normal; }
+dl.Bl-hang { }
+dt.It-hang { }
+dd.It-hang {	margin-left: 10.2ex; }
+dl.Bl-inset { }
+dt.It-inset { }
+dd.It-inset {	margin-left: 0ex; }
+dl.Bl-ohang { }
+dt.It-ohang { }
+dd.It-ohang {	margin-left: 0ex; }
+dl.Bl-tag {	margin-left: 10.2ex; }
+dt.It-tag {	float: left;
+		margin-top: 0ex;
+		margin-left: -10.2ex;
+		padding-right: 2ex;
+		vertical-align: top; }
+dd.It-tag {	clear: right;
+		width: 100%;
+		margin-top: 0ex;
+		margin-left: 0ex;
+		vertical-align: top;
+		overflow: auto; }
+dl.Bl-compact > dt {
+		margin-top: 0ex; }
+
+table.Bl-column { }
+tr.It-column { }
+td.It-column {	margin-top: 1em; }
+table.Bl-compact > tbody > tr > td {
+		margin-top: 0ex; }
+
+cite.Rs {	font-style: normal;
+		font-weight: normal; }
+span.RsA { }
+i.RsB {		font-weight: normal; }
+span.RsC { }
+span.RsD { }
+i.RsI {		font-weight: normal; }
+i.RsJ {		font-weight: normal; }
+span.RsN { }
+span.RsO { }
+span.RsP { }
+span.RsQ { }
+span.RsR { }
+span.RsT {	text-decoration: underline; }
+a.RsU { }
+span.RsV { }
+
+span.eqn { }
+table.tbl { }
+
+/* Semantic markup for command line utilities. */
+
+table.Nm { }
+b.Nm {		font-style: normal; }
+b.Fl {		font-style: normal; }
+b.Cm {		font-style: normal; }
+var.Ar {	font-style: italic;
+		font-weight: normal; }
+span.Op { }
+b.Ic {		font-style: normal; }
+code.Ev {	font-style: normal;
+		font-weight: normal;
+		font-family: monospace; }
+i.Pa {		font-weight: normal; }
+
+/* Semantic markup for function libraries. */
+
+span.Lb { }
+b.In {		font-style: normal; }
+a.In { }
+b.Fd {		font-style: normal; }
+var.Ft {	font-style: italic;
+		font-weight: normal; }
+b.Fn {		font-style: normal; }
+var.Fa {	font-style: italic;
+		font-weight: normal; }
+var.Vt {	font-style: italic;
+		font-weight: normal; }
+var.Va {	font-style: italic;
+		font-weight: normal; }
+code.Dv {	font-style: normal;
+		font-weight: normal;
+		font-family: monospace; }
+code.Er {	font-style: normal;
+		font-weight: normal;
+		font-family: monospace; }
+
+/* Various semantic markup. */
+
+span.An { }
+a.Lk { }
+a.Mt { }
+b.Cd {		font-style: normal; }
+i.Ad {		font-weight: normal; }
+b.Ms {		font-style: normal; }
+span.St { }
+a.Ux { }
+
+/* Physical markup. */
+
+.No {		font-style: normal;
+		font-weight: normal; }
+.none {		font-style: normal;
+		font-weight: normal; }
+.Em {		font-style: italic;
+		font-weight: normal; }
+.emph {		font-style: italic;
+		font-weight: normal; }
+.Sy {		font-style: normal;
+		font-weight: bold; }
+.symb {		font-style: normal;
+		font-weight: bold; }
+.Li {		font-style: normal;
+		font-weight: normal;
+		font-family: monospace; }
+.lit {		font-style: normal;
+		font-weight: normal;
+		font-family: monospace; }

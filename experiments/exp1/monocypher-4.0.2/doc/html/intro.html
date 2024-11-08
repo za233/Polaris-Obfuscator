@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<!-- This is an automatically generated file.  Do not edit.
+   This file is dual-licensed.  Choose whichever you want.
+  
+   The first licence is a regular 2-clause BSD licence.  The second licence
+   is the CC-0 from Creative Commons. It is intended to release Monocypher
+   to the public domain.  The BSD licence serves as a fallback option.
+  
+   SPDX-License-Identifier: BSD-2-Clause OR CC0-1.0
+  
+   ----------------------------------------------------------------------------
+  
+   Copyright (c) 2017-2021 Loup Vaillant
+   Copyright (c) 2018 Michael Savage
+   Copyright (c) 2017, 2019-2022 Fabio Scotoni
+   All rights reserved.
+  
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are
+   met:
+  
+   1. Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+  
+   2. Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the
+      distribution.
+  
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+   HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  
+   ----------------------------------------------------------------------------
+  
+   Written in 2017-2022 by Loup Vaillant, Michael Savage and Fabio Scotoni
+  
+   To the extent possible under law, the author(s) have dedicated all copyright
+   and related neighboring rights to this software to the public domain
+   worldwide.  This software is distributed without any warranty.
+  
+   You should have received a copy of the CC0 Public Domain Dedication along
+   with this software.  If not, see
+   <https://creativecommons.org/publicdomain/zero/1.0/>
+   -->
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="style.css" type="text/css" media="all"/>
+  <title>INTRO(3MONOCYPHER)</title>
+</head>
+<body>
+<table class="head">
+  <tr>
+    <td class="head-ltitle">INTRO(3MONOCYPHER)</td>
+    <td class="head-vol">3MONOCYPHER</td>
+    <td class="head-rtitle">INTRO(3MONOCYPHER)</td>
+  </tr>
+</table>
+<div class="manual-text">
+<section class="Sh">
+<h1 class="Sh" id="NAME"><a class="permalink" href="#NAME">NAME</a></h1>
+<p class="Pp"><code class="Nm">intro</code> &#x2014;
+    <span class="Nd">introduction to Monocypher</span></p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="DESCRIPTION"><a class="permalink" href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p class="Pp">Monocypher is a cryptographic library. It provides functions for
+    authenticated encryption, hashing, password hashing and key derivation, key
+    exchange, and public key signatures.</p>
+<section class="Ss">
+<h2 class="Ss" id="Authenticated_encryption"><a class="permalink" href="#Authenticated_encryption">Authenticated
+  encryption</a></h2>
+<p class="Pp"><a class="Xr" href="crypto_aead_lock.html">crypto_aead_lock(3monocypher)</a>
+    and
+    <a class="Xr" href="crypto_aead_unlock.html">crypto_aead_unlock(3monocypher)</a>
+    use the ChaCha20 cipher and the Poly1305 one-time authenticator. There is
+    also an incremental interface to facilitate file encryption and encrypted
+    streams.</p>
+<p class="Pp">ChaCha20 is a stream cipher based on a cryptographic hash
+    function. It runs efficiently on a wide variety of hardware, and unlike AES
+    naturally runs in constant time on all hardware.</p>
+<p class="Pp">Poly1305 is a one-time authenticator, derived from Carter &amp;
+    Wegman universal hashing. It is very fast and very simple.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Hashing"><a class="permalink" href="#Hashing">Hashing</a></h2>
+<p class="Pp"><a class="Xr" href="crypto_blake2b.html">crypto_blake2b(3monocypher)</a>
+    implements the BLAKE2b hash. BLAKE2b combines the security of SHA-3 and the
+    speed of MD5. It is immune to length extension attacks and provides a keyed
+    mode that makes it a safe, easy to use authenticator.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Password_hashing_and_key_derivation"><a class="permalink" href="#Password_hashing_and_key_derivation">Password
+  hashing and key derivation</a></h2>
+<p class="Pp"><a class="Xr" href="crypto_argon2.html">crypto_argon2(3monocypher)</a>
+    implements the Argon2 resource intensive hash algorithm, which can be used
+    to hash passwords for storage and to derive keys from passwords. Argon2 won
+    the password hashing competition in 2015. Unlike scrypt, the Argon2i variant
+    is immune to timing attacks.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Key_exchange_(Public_Key_Cryptography)"><a class="permalink" href="#Key_exchange_(Public_Key_Cryptography)">Key
+  exchange (Public Key Cryptography)</a></h2>
+<p class="Pp"><a class="Xr" href="crypto_x25519.html">crypto_x25519(3monocypher)</a>
+    implements X25519, an elliptic curve Diffie Hellman key exchange algorithm
+    based on Curve25519. X25519 derives a shared secret from two private/public
+    key pairs. It is fast, simple, and relatively easy to implement
+  securely.</p>
+<p class="Pp">For specialised protocols that require indistinguishability from
+    random noise,
+    <a class="Xr" href="crypto_elligator_rev.html">crypto_elligator_rev(3monocypher)</a>
+    gives the option to disguise ephemeral (one-time use) X25519 public keys as
+    random noise.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Public_key_signatures"><a class="permalink" href="#Public_key_signatures">Public
+  key signatures</a></h2>
+<p class="Pp"><a class="Xr" href="crypto_eddsa_sign.html">crypto_eddsa_sign(3monocypher)</a>
+    and
+    <a class="Xr" href="crypto_eddsa_check.html">crypto_eddsa_check(3monocypher)</a>
+    implement EdDSA, with Curve25519 and BLAKE2b. This is the same as the more
+    famous Ed25519, with SHA-512 replaced by the faster BLAKE2b.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Constant_time_comparison"><a class="permalink" href="#Constant_time_comparison">Constant
+  time comparison</a></h2>
+<p class="Pp"><a class="Xr" href="crypto_verify16.html">crypto_verify16(3monocypher)</a>,
+    <a class="Xr" href="crypto_verify32.html">crypto_verify32(3monocypher)</a>,
+    and
+    <a class="Xr" href="crypto_verify64.html">crypto_verify64(3monocypher)</a>
+    compare buffers in constant time. They should be used to compare secrets to
+    prevent timing attacks.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Memory_wipe"><a class="permalink" href="#Memory_wipe">Memory
+  wipe</a></h2>
+<p class="Pp"><a class="Xr" href="crypto_wipe.html">crypto_wipe(3monocypher)</a>
+    wipes a buffer. It is meant to erase secrets when they are no longer needed,
+    to reduce the chances of leaks.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss">Optional code</h2>
+<p class="Pp">If Monocypher was compiled and installed with the provided
+    makefile, SHA-512 functions become available as well. See
+    <a class="Xr" href="crypto_ed25519_sign.html">crypto_ed25519_sign(3monocypher)</a>,
+    and
+  <a class="Xr" href="crypto_sha512.html">crypto_sha512(3monocypher)</a>.</p>
+</section>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SEE_ALSO"><a class="permalink" href="#SEE_ALSO">SEE
+  ALSO</a></h1>
+<p class="Pp"><a class="Xr" href="crypto_aead_init_djb.html">crypto_aead_init_djb(3monocypher)</a>,
+    <a class="Xr" href="crypto_aead_init_ietf.html">crypto_aead_init_ietf(3monocypher)</a>,
+    <a class="Xr" href="crypto_aead_init_x.html">crypto_aead_init_x(3monocypher)</a>,
+    <a class="Xr" href="crypto_aead_lock.html">crypto_aead_lock(3monocypher)</a>,
+    <a class="Xr" href="crypto_aead_read.html">crypto_aead_read(3monocypher)</a>,
+    <a class="Xr" href="crypto_aead_unlock.html">crypto_aead_unlock(3monocypher)</a>,
+    <a class="Xr" href="crypto_aead_write.html">crypto_aead_write(3monocypher)</a>,
+    <a class="Xr" href="crypto_argon2.html">crypto_argon2(3monocypher)</a>,
+    <a class="Xr" href="crypto_blake2b.html">crypto_blake2b(3monocypher)</a>,
+    <a class="Xr" href="crypto_blake2b_final.html">crypto_blake2b_final(3monocypher)</a>,
+    <a class="Xr" href="crypto_blake2b_init.html">crypto_blake2b_init(3monocypher)</a>,
+    <a class="Xr" href="crypto_blake2b_keyed.html">crypto_blake2b_keyed(3monocypher)</a>,
+    <a class="Xr" href="crypto_blake2b_keyed_init.html">crypto_blake2b_keyed_init(3monocypher)</a>,
+    <a class="Xr" href="crypto_blake2b_update.html">crypto_blake2b_update(3monocypher)</a>,
+    <a class="Xr" href="crypto_chacha20_djb.html">crypto_chacha20_djb(3monocypher)</a>,
+    <a class="Xr" href="crypto_chacha20_h.html">crypto_chacha20_h(3monocypher)</a>,
+    <a class="Xr" href="crypto_chacha20_ietf.html">crypto_chacha20_ietf(3monocypher)</a>,
+    <a class="Xr" href="crypto_chacha20_x.html">crypto_chacha20_x(3monocypher)</a>,
+    <a class="Xr" href="crypto_eddsa_check.html">crypto_eddsa_check(3monocypher)</a>,
+    <a class="Xr" href="crypto_eddsa_check_equation.html">crypto_eddsa_check_equation(3monocypher)</a>,
+    <a class="Xr" href="crypto_eddsa_key_pair.html">crypto_eddsa_key_pair(3monocypher)</a>,
+    <a class="Xr" href="crypto_eddsa_mul_add.html">crypto_eddsa_mul_add(3monocypher)</a>,
+    <a class="Xr" href="crypto_eddsa_reduce.html">crypto_eddsa_reduce(3monocypher)</a>,
+    <a class="Xr" href="crypto_eddsa_scalarbase.html">crypto_eddsa_scalarbase(3monocypher)</a>,
+    <a class="Xr" href="crypto_eddsa_sign.html">crypto_eddsa_sign(3monocypher)</a>,
+    <a class="Xr" href="crypto_eddsa_to_x25519.html">crypto_eddsa_to_x25519(3monocypher)</a>,
+    <a class="Xr" href="crypto_eddsa_trim_scalar.html">crypto_eddsa_trim_scalar(3monocypher)</a>,
+    <a class="Xr" href="crypto_elligator_key_pair.html">crypto_elligator_key_pair(3monocypher)</a>,
+    <a class="Xr" href="crypto_elligator_map.html">crypto_elligator_map(3monocypher)</a>,
+    <a class="Xr" href="crypto_elligator_rev.html">crypto_elligator_rev(3monocypher)</a>,
+    <a class="Xr" href="crypto_poly1305.html">crypto_poly1305(3monocypher)</a>,
+    <a class="Xr" href="crypto_poly1305_final.html">crypto_poly1305_final(3monocypher)</a>,
+    <a class="Xr" href="crypto_poly1305_init.html">crypto_poly1305_init(3monocypher)</a>,
+    <a class="Xr" href="crypto_poly1305_update.html">crypto_poly1305_update(3monocypher)</a>,
+    <a class="Xr" href="crypto_verify16.html">crypto_verify16(3monocypher)</a>,
+    <a class="Xr" href="crypto_verify32.html">crypto_verify32(3monocypher)</a>,
+    <a class="Xr" href="crypto_verify64.html">crypto_verify64(3monocypher)</a>,
+    <a class="Xr" href="crypto_wipe.html">crypto_wipe(3monocypher)</a>,
+    <a class="Xr" href="crypto_x25519.html">crypto_x25519(3monocypher)</a>,
+    <a class="Xr" href="crypto_x25519_dirty_fast.html">crypto_x25519_dirty_fast(3monocypher)</a>,
+    <a class="Xr" href="crypto_x25519_dirty_small.html">crypto_x25519_dirty_small(3monocypher)</a>,
+    <a class="Xr" href="crypto_x25519_inverse.html">crypto_x25519_inverse(3monocypher)</a>,
+    <a class="Xr" href="crypto_x25519_public_key.html">crypto_x25519_public_key(3monocypher)</a>,
+    <a class="Xr" href="crypto_x25519_to_eddsa.html">crypto_x25519_to_eddsa(3monocypher)</a></p>
+<section class="Ss">
+<h2 class="Ss">Optional code</h2>
+<p class="Pp"><a class="Xr" href="crypto_ed25519_check.html">crypto_ed25519_check(3monocypher)</a>,
+    <a class="Xr" href="crypto_ed25519_key_pair.html">crypto_ed25519_key_pair(3monocypher)</a>,
+    <a class="Xr" href="crypto_ed25519_ph_check.html">crypto_ed25519_ph_check(3monocypher)</a>,
+    <a class="Xr" href="crypto_ed25519_ph_sign.html">crypto_ed25519_ph_sign(3monocypher)</a>,
+    <a class="Xr" href="crypto_ed25519_sign.html">crypto_ed25519_sign(3monocypher)</a>,
+    <a class="Xr" href="crypto_sha512.html">crypto_sha512(3monocypher)</a>,
+    <a class="Xr" href="crypto_sha512_final.html">crypto_sha512_final(3monocypher)</a>,
+    <a class="Xr" href="crypto_sha512_hkdf.html">crypto_sha512_hkdf(3monocypher)</a>,
+    <a class="Xr" href="crypto_sha512_hkdf_expand.html">crypto_sha512_hkdf_expand(3monocypher)</a>,
+    <a class="Xr" href="crypto_sha512_hmac.html">crypto_sha512_hmac(3monocypher)</a>,
+    <a class="Xr" href="crypto_sha512_hmac_final.html">crypto_sha512_hmac_final(3monocypher)</a>,
+    <a class="Xr" href="crypto_sha512_hmac_init.html">crypto_sha512_hmac_init(3monocypher)</a>,
+    <a class="Xr" href="crypto_sha512_hmac_update.html">crypto_sha512_hmac_update(3monocypher)</a>,
+    <a class="Xr" href="crypto_sha512_init.html">crypto_sha512_init(3monocypher)</a>,
+    <a class="Xr" href="crypto_sha512_update.html">crypto_sha512_update(3monocypher)</a></p>
+</section>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="CAVEATS"><a class="permalink" href="#CAVEATS">CAVEATS</a></h1>
+<p class="Pp">Monocypher does not perform any input validation. Any deviation
+    from the specified input and output length ranges results in
+    <a class="permalink" href="#undefined"><b class="Sy" id="undefined">undefined
+    behaviour</b></a>. Make sure your inputs are correct.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SECURITY_CONSIDERATIONS"><a class="permalink" href="#SECURITY_CONSIDERATIONS">SECURITY
+  CONSIDERATIONS</a></h1>
+<p class="Pp">Using cryptography securely is difficult. Flaws that never
+    manifest under normal use might be exploited by a clever adversary.
+    Cryptographic libraries are easy to catastrophically misuse, and Monocypher
+    is no exception.</p>
+<p class="Pp">Users should follow a formal introduction to cryptography. We
+    currently recommend the
+    <a class="Lk" href="https://www.crypto101.io/">Crypto 101 online
+  course</a>.</p>
+<section class="Ss">
+<h2 class="Ss" id="Random_number_generation"><a class="permalink" href="#Random_number_generation">Random
+  number generation</a></h2>
+<p class="Pp">Use the facilities of your operating system. Avoid user space
+    random number generators, whose misuse has led to countless vulnerabilities
+    in the past. For instance, the random stream may be repeated if one is not
+    careful with multi-threading, and forward secrecy is lost without proper key
+    erasure.</p>
+<p class="Pp">Different system calls are available on different systems:</p>
+<ul class="Bl-bullet">
+  <li>Recent versions of Linux (glibc &gt;= 2.25, Linux &gt;= 3.17), provide
+      <code class="Fn">getrandom</code>() in
+      <code class="In">&lt;<a class="In">sys/random.h</a>&gt;</code>. Do not set
+      any flag.</li>
+  <li>BSD, Darwin/macOS, illumos, and Solaris provide
+      <code class="Fn">arc4random_buf</code>() in
+      <code class="In">&lt;<a class="In">stdlib.h</a>&gt;</code> or
+      <code class="In">&lt;<a class="In">bsd/stdlib.h</a>&gt;</code>. This is
+      easier to use than <code class="Fn">getrandom</code>().</li>
+  <li>Windows provides <code class="Fn">BCryptGenRandom</code>().</li>
+</ul>
+<p class="Pp">The <span class="Pa">/dev/urandom</span> special file may be used
+    on systems that do not provide an easy-to-use system call. Be careful
+    though, being a file makes <span class="Pa">/dev/urandom</span> hard to use
+    correctly and securely. Reads may be interrupted, and more attacks are
+    possible on a file than on a system call.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Timing_attacks"><a class="permalink" href="#Timing_attacks">Timing
+  attacks</a></h2>
+<p class="Pp">Monocypher runs in &#x201C;constant time&#x201D;. There is no flow
+    from secrets to timings. No secret dependent indices, no secret dependent
+    branches. Nevertheless, there are a couple important caveats.</p>
+<p class="Pp">Comparing secrets should be done with constant-time comparison
+    functions, such as
+    <a class="Xr" href="crypto_verify16.html">crypto_verify16(3monocypher)</a>,
+    <a class="Xr" href="crypto_verify32.html">crypto_verify32(3monocypher)</a>,
+    or
+    <a class="Xr" href="crypto_verify64.html">crypto_verify64(3monocypher)</a>.
+    Do not use standard comparison functions. They tend to stop as soon as a
+    difference is spotted. In many cases this enables attackers to recover the
+    secrets and destroy all security.</p>
+<p class="Pp" id="ARM">The Poly1305 authenticator, X25519, and EdDSA use
+    multiplication. Some older processors do not multiply in constant time. If
+    the target platform is something other than Intel or AMD x86_64, double
+    check how it handles multiplication. In particular,
+    <a class="permalink" href="#ARM"><i class="Em">ARM Cortex-M CPUs may lack
+    constant-time multiplication</i></a>. Some VIA Nano x86 and x86_64 CPUs may
+    lack constant-time multiplication as well.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Data_compression"><a class="permalink" href="#Data_compression">Data
+  compression</a></h2>
+<p class="Pp">Encryption does not hide the length of the input plaintext. Most
+    compression algorithms work by using fewer bytes to encode previously seen
+    data or common characters. If an attacker can add data to the input before
+    it is compressed and encrypted, they can observe changes to the ciphertext
+    length to recover secrets from the input. Researchers have demonstrated an
+    attack on HTTPS to steal session cookies when compression is enabled, dubbed
+    &#x201C;CRIME&#x201D;.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Forward_secrecy"><a class="permalink" href="#Forward_secrecy">Forward
+  secrecy</a></h2>
+<p class="Pp">Long-term secrets cannot be expected to stay safe indefinitely.
+    Users may reveal them by mistake, or the host computer might have a
+    vulnerability and be compromised. To mitigate this problem, some protocols
+    guarantee that past messages are not compromised even if the long-term keys
+    are. This is done by generating temporary keys, then encrypting messages
+    using them.</p>
+<p class="Pp">In general, secrets that went through a computer should not be
+    compromised when this computer is stolen or infected at a later point.</p>
+<p class="Pp">A first layer of defence is to explicitly wipe secrets as soon as
+    they are no longer used. Monocypher already wipes its own temporary buffers,
+    and contexts are erased with the <code class="Fn">crypto_*_final</code>()
+    functions. The secret keys and messages however are the responsibility of
+    the user. Use
+    <a class="Xr" href="crypto_wipe.html">crypto_wipe(3monocypher)</a> to erase
+    them.</p>
+<p class="Pp">A second layer of defence is to ensure those secrets are not
+    swapped to disk while they are used. There are several ways to do this. The
+    most secure is to disable swapping entirely. Doing so is recommended on
+    sensitive machines. Another way is to encrypt the swap partition (this is
+    less safe). Finally, swap can be disabled locally &#x2013; this is often the
+    only way.</p>
+<p class="Pp">UNIX systems can disable swap for specific buffers with
+    <code class="Fn">mlock</code>() and disable swap for the whole process with
+    <code class="Fn">mlockall</code>(). Windows can disable swap for specific
+    buffers with <code class="Fn">VirtualLock</code>().</p>
+<p class="Pp">Core dumps cause similar problems. Disable them. Also beware of
+    suspend to disk (deep sleep mode), which writes all RAM to disk regardless
+    of swap policy, as well as virtual machine snapshots. Erasing secrets with
+    <a class="Xr" href="crypto_wipe.html">crypto_wipe(3monocypher)</a> is often
+    the only way to mitigate these dangers.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Undefined_behaviour"><a class="permalink" href="#Undefined_behaviour">Undefined
+  behaviour</a></h2>
+<p class="Pp">Monocypher is a C library. C is notoriously unsafe. Using
+    Monocypher incorrectly can trigger undefined behaviour. This can lead to
+    data corruption, data theft, or even arbitrary code execution.</p>
+<p class="Pp">Consider binding to a safe language if possible.</p>
+</section>
+</section>
+</div>
+<table class="foot">
+  <tr>
+    <td class="foot-date">February 20, 2022</td>
+    <td class="foot-os">Debian</td>
+  </tr>
+</table>
+</body>
+</html>

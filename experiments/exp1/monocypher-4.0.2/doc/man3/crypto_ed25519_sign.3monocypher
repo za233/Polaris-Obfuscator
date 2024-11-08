@@ -1,0 +1,189 @@
+.\" This file is dual-licensed.  Choose whichever you want.
+.\"
+.\" The first licence is a regular 2-clause BSD licence.  The second licence
+.\" is the CC-0 from Creative Commons. It is intended to release Monocypher
+.\" to the public domain.  The BSD licence serves as a fallback option.
+.\"
+.\" SPDX-License-Identifier: BSD-2-Clause OR CC0-1.0
+.\"
+.\" ----------------------------------------------------------------------------
+.\"
+.\" Copyright (c) 2019-2020, 2022-2023 Fabio Scotoni
+.\" Copyright (c) 2023 Loup Vaillant
+.\" All rights reserved.
+.\"
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions are
+.\" met:
+.\"
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\"
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the
+.\"    distribution.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+.\" "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+.\" LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+.\" A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+.\" HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+.\" SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+.\" LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+.\" DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+.\" THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+.\" (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+.\" OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+.\"
+.\" ----------------------------------------------------------------------------
+.\"
+.\" Written in 2019-2020 and 2022-2023 by Fabio Scotoni and Loup Vaillant
+.\"
+.\" To the extent possible under law, the author(s) have dedicated all copyright
+.\" and related neighboring rights to this software to the public domain
+.\" worldwide.  This software is distributed without any warranty.
+.\"
+.\" You should have received a copy of the CC0 Public Domain Dedication along
+.\" with this software.  If not, see
+.\" <https://creativecommons.org/publicdomain/zero/1.0/>
+.\"
+.Dd March 01, 2022
+.Dt CRYPTO_ED25519_SIGN 3MONOCYPHER
+.Os
+.Sh NAME
+.Nm crypto_ed25519_sign ,
+.Nm crypto_ed25519_check ,
+.Nm crypto_ed25519_key_pair ,
+.Nm crypto_ed25519_ph_sign ,
+.Nm crypto_ed25519_ph_check
+.Nd public key signatures
+.Sh SYNOPSIS
+.In monocypher-ed25519.h
+.Ft void
+.Fo crypto_ed25519_sign
+.Fa "uint8_t signature[64]"
+.Fa "const uint8_t secret_key[64]"
+.Fa "const uint8_t *message"
+.Fa "size_t message_size"
+.Fc
+.Ft int
+.Fo crypto_ed25519_check
+.Fa "const uint8_t signature[64]"
+.Fa "const uint8_t public_key[32]"
+.Fa "const uint8_t *message"
+.Fa "size_t message_size"
+.Fc
+.Ft void
+.Fo crypto_ed25519_key_pair
+.Fa "uint8_t secret_key[64]"
+.Fa "uint8_t public_key[32]"
+.Fa "uint8_t seed[32]"
+.Fc
+.Ft void
+.Fo crypto_ed25519_ph_sign
+.Fa "uint8_t signature[64]"
+.Fa "const uint8_t secret_key[64]"
+.Fa "const uint8_t message_hash[64]"
+.Fc
+.Ft int
+.Fo crypto_ed25519_ph_check
+.Fa "const uint8_t signature[64]"
+.Fa "const uint8_t public_key[32]"
+.Fa "const uint8_t message_hash[64]"
+.Fc
+.Sh DESCRIPTION
+The
+.Fn crypto_ed25519_sign
+and
+.Fn crypto_ed25519_check
+functions provide Ed25519 public key signatures and verification
+with SHA-512 as the underlying hash function.
+They are interoperable with other Ed25519 implementations.
+If you have no interoperability requirements, prefer
+.Xr crypto_eddsa_sign 3monocypher .
+.Pp
+The arguments and security considerations are the same as those
+described in
+.Xr crypto_eddsa_sign 3monocypher .
+.Pp
+.Fn crypto_ed25519_ph_sign
+and
+.Fn crypto_ed25519_ph_check
+implement Ed25519ph.
+To sign or check a message,
+first hash the message with
+.Xr crypto_sha512 3monocypher ,
+then process the resulting
+.Fa message_hash .
+.Sh RETURN VALUES
+.Fn crypto_ed25519_key_pair ,
+.Fn crypto_ed25519_sign ,
+and
+.Fn crypto_ed25519_ph_sign
+return nothing.
+.Pp
+.Fn crypto_ed25519_check
+and
+.Fn crypto_ed25519_ph_check
+returns 0 for legitimate messages and -1 for forgeries.
+.Sh SEE ALSO
+.Xr crypto_eddsa_sign 3monocypher ,
+.Xr crypto_x25519 3monocypher ,
+.Xr crypto_aead_lock 3monocypher ,
+.Xr crypto_sha512 3monocypher ,
+.Xr intro 3monocypher
+.Sh STANDARDS
+These functions implement Ed25519 as described in RFC 8032.
+.Sh HISTORY
+The
+.Fn crypto_ed25519_sign ,
+.Fn crypto_ed25519_check ,
+and
+.Fn crypto_ed25519_public_key
+functions appeared in Monocypher 3.0.0.
+They replace recompilation of Monocypher with the
+.Dv ED25519_SHA512
+preprocessor definition.
+.Pp
+In Monocypher 4.0.0,
+the incremental and custom hash API removed.
+The main interface was also reworked to avoid misuse,
+and
+.Fn crypto_ed25519_key_pair
+replaced
+.Fn crypto_ed25519_public_key .
+.Sh CAVEATS
+Monocypher does not perform any input validation.
+Any deviation from the specified input and output length ranges results
+in
+.Sy undefined behaviour .
+Make sure your inputs are correct.
+.Sh SECURITY CONSIDERATIONS
+.Ss Signature malleability
+Signature malleability is the ability of an attacker to produce a valid
+signature with knowledge of only an existing signature and the public
+key.
+Monocypher prevents that by checking the encoding of the signature,
+and guarantees that generating new signatures requires the private key.
+.Pp
+On the other hand, EdDSA signatures are not unique like cryptographic
+hashes.
+The signing procedure is deterministic by specification and
+.Fn crypto_ed25519_sign
+follows this specification.
+However, someone with the private key can generate arbitrarily many
+valid, canonical, and different signatures of the same message.
+Because of this, never assume that signatures are unique.
+.Ss Fault injection and power analysis
+Fault injection (also known as glitching) and power analysis may be used
+to manipulate the resulting signature and recover the secret key in
+some cases.
+This requires hardware access.
+We can try to mitigate this attack by prefixing all hashes a random data
+block,
+in a construction similar to Ed25519ctx.
+Note that there may still be other power-related side channels (such as
+if the CPU leaks information when an operation overflows a register)
+that must be considered.

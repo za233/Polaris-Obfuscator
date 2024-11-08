@@ -1,0 +1,497 @@
+# German translations for the ccrypt package.
+# Copyright (C) 2006-2018 Peter Selinger.
+# Peter Selinger <selinger@users.sourceforge.net>, 2018.
+# This file is distributed under the same license as the ccrypt package.
+msgid ""
+msgstr ""
+"Project-Id-Version: ccrypt VERSION\n"
+"Report-Msgid-Bugs-To: selinger@users.sourceforge.net\n"
+"POT-Creation-Date: 2018-07-27 17:25-0300\n"
+"PO-Revision-Date: 2018-07-25 22:46-0300\n"
+"Last-Translator: Peter Selinger <selinger@users.sourceforge.net>\n"
+"Language-Team: German\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/ccrypt.c:56
+msgid "bad file format"
+msgstr "ungültiges Dateiformat"
+
+#: src/ccrypt.c:59
+msgid "key does not match"
+msgstr "Kennwort passt nicht"
+
+#: src/ccrypt.c:62
+msgid "buffer overflow"
+msgstr "Pufferüberlauf"
+
+#: src/ccrypt.c:69
+msgid "unknown error"
+msgstr "unbekannter Fehler"
+
+#: src/main.c:43 src/main.c:88 src/main.c:93
+#, c-format
+msgid "%s %s. Secure encryption and decryption of files and streams.\n"
+msgstr "%s %s. Sichere Ver- und Entschlüsselung von Dateien und Strömen.\n"
+
+#: src/main.c:46
+#, c-format
+msgid ""
+"Usage: %s [mode] [options] [file...]\n"
+"       %s [options] [file...]\n"
+"       %s [options] [file...]\n"
+"       %s [options] file...\n"
+"\n"
+msgstr ""
+"Aufruf: %s [Modus] [Option]... [Datei]...\n"
+"        %s [Option]... [Datei]...\n"
+"        %s [Option]... [Datei]...\n"
+"        %s [Option]... Datei...\n"
+"\n"
+
+#: src/main.c:51
+#, c-format
+msgid ""
+"Modes:\n"
+"    -e, --encrypt         encrypt\n"
+"    -d, --decrypt         decrypt\n"
+"    -c, --cat             cat; decrypt files to stdout\n"
+"    -x, --keychange       change key\n"
+"    -u, --unixcrypt       decrypt old unix crypt files\n"
+"\n"
+"Options:\n"
+"    -h, --help            print this help message and exit\n"
+"    -V, --version         print version info and exit\n"
+"    -L, --license         print license info and exit\n"
+"    -v, --verbose         print progress information to stderr\n"
+"    -q, --quiet           run quietly; suppress warnings\n"
+"    -f, --force           overwrite existing files without asking\n"
+"    -m, --mismatch        allow decryption with non-matching key\n"
+"    -E, --envvar var      read keyword from environment variable (unsafe)\n"
+"    -K, --key key         give keyword on command line (unsafe)\n"
+"    -k, --keyfile file    read keyword(s) as first line(s) from file\n"
+"    -P, --prompt prompt   use this prompt instead of default\n"
+"    -S, --suffix .suf     use suffix .suf instead of default %s\n"
+"    -s, --strictsuffix    refuse to encrypt files which already have suffix\n"
+"    -F, --envvar2 var     as -E for second keyword (for keychange mode)\n"
+"    -H, --key2 key        as -K for second keyword (for keychange mode)\n"
+"    -Q, --prompt2 prompt  as -P for second keyword (for keychange mode)\n"
+"    -t, --timid           prompt twice for encryption keys (default)\n"
+"    -b, --brave           prompt only once for encryption keys\n"
+"    -y, --keyref file     encryption key must match this encrypted file\n"
+"    -r, --recursive       recurse through directories\n"
+"    -R, --rec-symlinks    follow symbolic links as subdirectories\n"
+"    -l, --symlinks        dereference symbolic links\n"
+"    -T, --tmpfiles        use temporary files instead of overwriting "
+"(unsafe)\n"
+"    --                    end of options, filenames follow\n"
+msgstr ""
+"Verwendungsarten:\n"
+"    -e, --encrypt        verschlüsseln\n"
+"    -d, --decrypt        entschlüsseln\n"
+"    -c, --cat            Dateien zur Standardausgabe entschlüsseln\n"
+"    -x, --keychange      Kennwort ändern\n"
+"    -u, --unixcrypt      alte Unix-crypt-Dateien entschlüsseln\n"
+"\n"
+"Optionen:\n"
+"    -h, --help           diese Hilfe anzeigen und beenden\n"
+"    -V, --version        Versionsinformation anzeigen und beenden\n"
+"    -L, --license        Lizenzinformationen anzeigen und beenden\n"
+"    -v, --verbose        Fortschritt zur Standardfehlerausgabe berichten\n"
+"    -q, --quiet          leise laufen; Warnungen unterdrücken\n"
+"    -f, --force          existierende Dateien ohne Nachfrage überschreiben\n"
+"    -m, --mismatch       Entschlüsselung mit unpassendem Kennwort erlauben\n"
+"    -E, --envvar var     Kennwort aus Umgebungsvariable lesen (unsicher)\n"
+"    -K, --key key        Kennwort auf Kommandozeile angeben (unsicher)\n"
+"    -k, --keyfile file   Kennwort oder -wörter aus einer Datei lesen\n"
+"    -P, --prompt prompt  alternative Eingabeaufforderung angeben\n"
+"    -S, --suffix .suf    Suffix .suf statt %s benutzen\n"
+"    -s, --strictsuffix   Dateien nicht verschlüsseln, die Suffix schon "
+"besitzen\n"
+"    -F, --envvar2 var    wie -E, für zweites Kennwort (\"keychange\" Modus)\n"
+"    -H, --key2 key       wie -K, für zweites Kennwort (\"keychange\" Modus)\n"
+"    -Q, --prompt2 prompt wie -P, für zweites Kennwort (\"keychange\" Modus)\n"
+"    -t, --timid          Verschlüsselungs-Kennwort zweimal erfragen "
+"(Voreinstellung)\n"
+"    -b, --brave          Verschlüsselungs-Kennwort nur einmal erfragen\n"
+"    -y, --keyref file    Datei, zu der Verschlüsselungs-Kennwort passen "
+"muss\n"
+"    -r, --recursive      Verzeichnisse rekursiv abarbeiten\n"
+"    -R, --rec-symlinks   folge symbolischen Verknüpfungen in "
+"Unterverzeichnisse\n"
+"    -l, --symlinks       folge symbolischen Verknüpfungen\n"
+"    -T, --tmpfiles       verwende temporäre Dateien, statt zu überschreiben "
+"(unsicher)\n"
+"    --                   Ende der Optionen, Dateinamen folgen\n"
+
+#: src/main.c:89 src/main.c:94
+#, c-format
+msgid "Copyright (C) 2000-2018 Peter Selinger.\n"
+msgstr "Copyright (C) 2000-2018 Peter Selinger.\n"
+
+#: src/main.c:97
+#, c-format
+msgid ""
+"For the full text of the GNU General Public License, see the file\n"
+"COPYING distributed with this software.\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software Foundation,\n"
+"Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n"
+msgstr ""
+"Der vollständige Text der GNU General Public License ist in der Datei\n"
+"COPYING enthalten, die zusammen mit dieser Software verteilt wird.\n"
+"\n"
+"Dieses Programm ist freie Software. Sie können es unter den Bedingungen\n"
+"der GNU General Public License, wie von der Free Software Foundation\n"
+"veröffentlicht, weitergeben und/oder modifizieren, entweder unter Version\n"
+"2 der Lizenz oder, wenn Sie wünschen, unter einer späteren Version.\n"
+"\n"
+"Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, daß es\n"
+"Ihnen von Nutzen sein wird, aber OHNE JEGLICHE GARANTIE, sogar ohne\n"
+"die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FÜR EINEN\n"
+"BESTIMMTEN ZWECK. Einzelheiten finden Sie in der GNU General Public "
+"License.\n"
+"\n"
+"Sie sollten ein Exemplar der GNU General Public License zusammen mit "
+"diesem \n"
+"Programm erhalten haben. Falls nicht, schreiben Sie an die Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
+"USA.\n"
+
+#: src/main.c:124
+#, c-format
+msgid ""
+"\n"
+"Command line:\n"
+msgstr ""
+"\n"
+"Kommandozeile:\n"
+
+#: src/main.c:128 src/main.c:129
+msgid "(known)"
+msgstr "(bekannt)"
+
+#: src/main.c:128 src/main.c:129
+msgid "(unknown)"
+msgstr "(unbekannt)"
+
+#: src/main.c:134 src/main.c:135 src/main.c:140 src/main.c:142
+msgid "(none)"
+msgstr "(nicht vorhanden)"
+
+#: src/main.c:257
+#, c-format
+msgid "%s: environment variable %s does not exist.\n"
+msgstr "%s: Umgebungsvariable %s existiert nicht.\n"
+
+#: src/main.c:363
+#, c-format
+msgid "Try --help for more information.\n"
+msgstr "Siehe --help für weitere Hinweise zur Benutzung.\n"
+
+#: src/main.c:367
+#, c-format
+msgid "%s: unimplemented option -- %c\n"
+msgstr "%s: Option nicht implementiert -- %c\n"
+
+#: src/main.c:395
+#, c-format
+msgid "%s: option -m can only be used with -c or when running as a filter.\n"
+msgstr ""
+"%s: Option -m kann nur zusammen mit -c verwendet werden, oder wenn\n"
+"als Filter betrieben.\n"
+
+#: src/main.c:402
+#, c-format
+msgid "%s: warning: empty list of filenames given\n"
+msgstr "%s: Warnung: keine Dateinamen angegeben\n"
+
+#: src/main.c:412
+#, c-format
+msgid ""
+"%s: encrypted data not written to a terminal. Use -f to force encryption.\n"
+"Try --help for more information.\n"
+msgstr ""
+"%s: verschlüsselte Daten werden nicht zum Terminal geschrieben.\n"
+"Die Verschlüsselung kann mit -f erzwungen werden.\n"
+"Siehe --help für weitere Hinweise zur Benutzung.\n"
+
+#: src/main.c:420
+#, c-format
+msgid ""
+"%s: encrypted data not read from a terminal. Use -f to force decryption.\n"
+"Try --help for more information.\n"
+msgstr ""
+"%s: verschlüsselte Daten werden nicht vom Terminal gelesen.\n"
+"Die Verschlüsselung kann mit -f erzwungen werden.\n"
+"Siehe --help für weitere Hinweise zur Benutzung.\n"
+
+#: src/main.c:463
+#, c-format
+msgid "%s: could not read key from %s: %s\n"
+msgstr "%s: Kennwort konnte nicht aus Datei %s gelesen werden: %s\n"
+
+#: src/main.c:471 src/main.c:478
+#, c-format
+msgid "%s: error reading keyfile\n"
+msgstr "%s: Fehler beim Lesen der Kennwort-Datei\n"
+
+#: src/main.c:493
+msgid "Enter encryption key: "
+msgstr "Kennwort zur Verschlüsselung: "
+
+#: src/main.c:497
+msgid "Enter decryption key: "
+msgstr "Kennwort zur Entschlüsselung: "
+
+#: src/main.c:501
+msgid "Enter old key: "
+msgstr "Bisheriges Kennwort: "
+
+#: src/main.c:505
+msgid "Enter key: "
+msgstr "Kennwort: "
+
+#: src/main.c:512 src/main.c:535
+#, c-format
+msgid "%s: no key given\n"
+msgstr "%s: kein Kennwort eingegeben\n"
+
+#: src/main.c:519 src/main.c:542
+msgid "(repeat) "
+msgstr "(wiederholen) "
+
+#: src/main.c:521 src/main.c:544
+#, c-format
+msgid "Sorry, the keys you entered did not match.\n"
+msgstr "Die eingegebenen Kennwörter stimmen nicht überein.\n"
+
+#: src/main.c:530
+msgid "Enter new key: "
+msgstr "Neues Kennwort: "
+
+#: src/main.c:558
+#, c-format
+msgid "%s: could not open %s: %s\n"
+msgstr "%s: Datei %s konnte nicht geöffnet werden: %s\n"
+
+#: src/main.c:567
+#, c-format
+msgid "The encryption key does not match the reference file.\n"
+msgstr ""
+"Kennwort zur Verschlüsselung stimmt nicht mit Vergleichdatei überein.\n"
+
+#: src/readkey.c:34
+#, c-format
+msgid "%s: cannot open /dev/tty: %s\n"
+msgstr "%s: /dev/tty konnte nicht geöffnet werden: %s\n"
+
+#: src/traverse.c:238
+#, c-format
+msgid "%s: interrupted.\n"
+msgstr "%s: Abbruch.\n"
+
+#: src/traverse.c:248
+#, c-format
+msgid ""
+"Interrupt - will exit after current file.\n"
+"Press CTRL-C twice to exit now (warning: this can lead to loss of data).\n"
+msgstr ""
+"Unterbrechung - Abbruch erfolgt, wenn die gerade bearbeitete Datei\n"
+"beendet ist. Drücken sie CTRL-C zweimal, um sofort abzubrechen\n"
+"(Warnung: dies kann zu Datenverlust führen).  \n"
+
+#: src/traverse.c:279
+#, c-format
+msgid "%s: encrypt write-protected file %s (y or n)? "
+msgstr ""
+"%s: Datei %s ist schreib-geschützt; trotzdem verschlüsseln (y oder n)? "
+
+#: src/traverse.c:282
+#, c-format
+msgid "%s: decrypt write-protected file %s (y or n)? "
+msgstr ""
+"%s: Datei %s ist schreib-geschützt; trotzdem entschlüsseln (y oder n)? "
+
+#: src/traverse.c:285
+#, c-format
+msgid "%s: perform keychange on write-protected file %s (y or n)? "
+msgstr ""
+"%s: Datei %s ist schreib-geschützt; Kennwort trotzdem ändern (y oder n)? "
+
+#: src/traverse.c:290
+#, c-format
+msgid "Not changed.\n"
+msgstr "Unverändert.\n"
+
+#: src/traverse.c:302
+#, c-format
+msgid "Already visited inode %s.\n"
+msgstr "Inode %s wurde bereits bearbeitet.\n"
+
+#: src/traverse.c:314
+#, c-format
+msgid "%s: warning: %s has %d links\n"
+msgstr "%s: Warnung: %s hat %d Verknüpfungen\n"
+
+#: src/traverse.c:340 src/traverse.c:530
+#, c-format
+msgid "Encrypting %s\n"
+msgstr "%s wird verschlüsselt\n"
+
+#: src/traverse.c:347 src/traverse.c:536 src/traverse.c:641
+#, c-format
+msgid "Decrypting %s\n"
+msgstr "%s wird entschlüsselt\n"
+
+#: src/traverse.c:354 src/traverse.c:542
+#, c-format
+msgid "Changing key for %s\n"
+msgstr "Kennwort wird geändert für %s\n"
+
+#: src/traverse.c:388 src/traverse.c:575
+#, c-format
+msgid "%s: %s: %s -- unchanged\n"
+msgstr "%s: %s: %s -- unverändert\n"
+
+#: src/traverse.c:408 src/traverse.c:595
+#, c-format
+msgid "%s: could not rename %s to %s: %s\n"
+msgstr "%s: %s konnte nicht in %s umbenannt werden: %s\n"
+
+#: src/traverse.c:487
+#, c-format
+msgid "%s: could not create temporary file for %s: %s\n"
+msgstr "%s: temporäre Datei für %s konnte nicht erzeugt werden: %s\n"
+
+#: src/traverse.c:605
+#, c-format
+msgid "%s: could not remove %s: %s\n"
+msgstr "%s: Datei %s konnte nicht entfernt werden: %s\n"
+
+#: src/traverse.c:665
+#, c-format
+msgid "%s: %s: %s -- ignored\n"
+msgstr "%s: %s: %s -- ignoriert\n"
+
+#: src/traverse.c:687
+#, c-format
+msgid "Decrypting standard input\n"
+msgstr "Standardeingabe wird entschlüsselt\n"
+
+#: src/traverse.c:708
+#, c-format
+msgid "%s: standard input: %s -- ignored\n"
+msgstr "%s: Standardeingabe: %s -- ignoriert\n"
+
+#: src/traverse.c:784
+#, c-format
+msgid "%s: %s: is a symbolic link -- ignored\n"
+msgstr "%s: %s: ist eine symbolische Verknüpfung -- ignoriert\n"
+
+#: src/traverse.c:791
+#, c-format
+msgid "%s: %s: is not a regular file -- ignored\n"
+msgstr "%s: %s: ist keine normale Datei -- ignoriert\n"
+
+#: src/traverse.c:807
+#, c-format
+msgid "%s: %s already has %s suffix -- ignored\n"
+msgstr "%s: %s hat bereits den Suffix %s -- ignoriert\n"
+
+#: src/traverse.c:830
+#, c-format
+msgid "%s: %s already exists; overwrite (y or n)? "
+msgstr "%s: %s existiert bereits; überschreiben (y oder n)? "
+
+#: src/traverse.c:834
+#, c-format
+msgid "Not overwritten.\n"
+msgstr "Nicht überschrieben.\n"
+
+#: src/traverse.c:879
+#, c-format
+msgid "%s: %s: directory is a symbolic link -- ignored\n"
+msgstr "%s: %s: Verzeichnis ist eine symbolische Verknüpfung -- ignoriert\n"
+
+#: src/traverse.c:887
+#, c-format
+msgid "%s: %s: is a directory -- ignored\n"
+msgstr "%s: %s: ist ein Verzeichnis -- ignoriert\n"
+
+#: src/traverse.c:897
+#, c-format
+msgid "Already visited directory %s -- skipped.\n"
+msgstr "Verzeichnis %s wurde bereits bearbeitet -- übersprungen.\n"
+
+#: src/getopt.c:688
+#, c-format
+msgid "%s: option `%s' is ambiguous\n"
+msgstr "%s: Option \"%s\" ist mehrdeutig\n"
+
+#: src/getopt.c:713
+#, c-format
+msgid "%s: option `--%s' doesn't allow an argument\n"
+msgstr "%s: Option \"--%s\" erlaubt kein Argument\n"
+
+#: src/getopt.c:718
+#, c-format
+msgid "%s: option `%c%s' doesn't allow an argument\n"
+msgstr "%s: Option \"%c%s\" erlaubt kein Argument\n"
+
+#: src/getopt.c:736 src/getopt.c:909
+#, c-format
+msgid "%s: option `%s' requires an argument\n"
+msgstr "%s: Option \"%s\" benötigt ein Argument\n"
+
+#: src/getopt.c:765
+#, c-format
+msgid "%s: unrecognized option `--%s'\n"
+msgstr "%s: unbekannte Option \"--%s\"\n"
+
+#: src/getopt.c:769
+#, c-format
+msgid "%s: unrecognized option `%c%s'\n"
+msgstr "%s: unbekannte Option \"%c%s\"\n"
+
+#: src/getopt.c:795
+#, c-format
+msgid "%s: illegal option -- %c\n"
+msgstr "%s: ungültige Option -- %c\n"
+
+#: src/getopt.c:798
+#, c-format
+msgid "%s: invalid option -- %c\n"
+msgstr "%s: ungültige Option -- %c\n"
+
+#: src/getopt.c:828 src/getopt.c:958
+#, c-format
+msgid "%s: option requires an argument -- %c\n"
+msgstr "%s: Option benötigt ein Argument -- %c\n"
+
+#: src/getopt.c:875
+#, c-format
+msgid "%s: option `-W %s' is ambiguous\n"
+msgstr "%s: Option \"-W %s\" ist mehrdeutig\n"
+
+#: src/getopt.c:893
+#, c-format
+msgid "%s: option `-W %s' doesn't allow an argument\n"
+msgstr "%s: Option \"-W %s\" erlaubt kein Argument\n"
+
+#~ msgid "success"
+#~ msgstr "kein Fehler"

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html>
+<!-- This is an automatically generated file.  Do not edit.
+   This file is dual-licensed.  Choose whichever you want.
+  
+   The first licence is a regular 2-clause BSD licence.  The second licence
+   is the CC-0 from Creative Commons. It is intended to release Monocypher
+   to the public domain.  The BSD licence serves as a fallback option.
+  
+   SPDX-License-Identifier: BSD-2-Clause OR CC0-1.0
+  
+   ----------------------------------------------------------------------------
+  
+   Copyright (c) 2019-2020, 2023 Fabio Scotoni
+   Copyright (c) 2023            Loup Vaillant
+   All rights reserved.
+  
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are
+   met:
+  
+   1. Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+  
+   2. Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the
+      distribution.
+  
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+   HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  
+   ----------------------------------------------------------------------------
+  
+   Written in 2019-2020, 2023 by Fabio Scotoni and Loup Vaillant
+  
+   To the extent possible under law, the author(s) have dedicated all copyright
+   and related neighboring rights to this software to the public domain
+   worldwide.  This software is distributed without any warranty.
+  
+   You should have received a copy of the CC0 Public Domain Dedication along
+   with this software.  If not, see
+   <https://creativecommons.org/publicdomain/zero/1.0/>
+   -->
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="style.css" type="text/css" media="all"/>
+  <title>CRYPTO_SHA512(3MONOCYPHER)</title>
+</head>
+<body>
+<table class="head">
+  <tr>
+    <td class="head-ltitle">CRYPTO_SHA512(3MONOCYPHER)</td>
+    <td class="head-vol">3MONOCYPHER</td>
+    <td class="head-rtitle">CRYPTO_SHA512(3MONOCYPHER)</td>
+  </tr>
+</table>
+<div class="manual-text">
+<section class="Sh">
+<h1 class="Sh" id="NAME"><a class="permalink" href="#NAME">NAME</a></h1>
+<p class="Pp"><code class="Nm">crypto_sha512</code>,
+    <code class="Nm">crypto_sha512_init</code>,
+    <code class="Nm">crypto_sha512_update</code>,
+    <code class="Nm">crypto_sha512_final</code>
+    <code class="Nm">crypto_sha512_hmac</code>,
+    <code class="Nm">crypto_sha512_hmac_init</code>,
+    <code class="Nm">crypto_sha512_hmac_update</code>,
+    <code class="Nm">crypto_sha512_hmac_final</code>,
+    <code class="Nm">crypto_sha512_hkdf</code>,
+    <code class="Nm">crypto_sha512_hkdf_expand</code> &#x2014;
+    <span class="Nd">hashing, message authentication, and key derivation with
+    SHA-512</span></p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SYNOPSIS"><a class="permalink" href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p class="Pp"><code class="In">#include
+    &lt;<a class="In">monocypher-ed25519.h</a>&gt;</code></p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_sha512</code>(<var class="Fa">uint8_t hash[64]</var>,
+    <var class="Fa">const uint8_t *message</var>, <var class="Fa">size_t
+    message_size</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_sha512_init</code>(<var class="Fa">crypto_sha512_ctx
+    *ctx</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_sha512_update</code>(<var class="Fa">crypto_sha512_ctx
+    *ctx</var>, <var class="Fa">const uint8_t *message</var>,
+    <var class="Fa">size_t message_size</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_sha512_final</code>(<var class="Fa">crypto_sha512_ctx
+    *ctx</var>, <var class="Fa">uint8_t hash[64]</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_sha512_hmac</code>(<var class="Fa">uint8_t
+    hmac[64]</var>, <var class="Fa">const uint8_t *key</var>,
+    <var class="Fa">size_t key_size</var>, <var class="Fa">const uint8_t
+    *message</var>, <var class="Fa">size_t message_size</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_sha512_hmac_init</code>(<var class="Fa">crypto_sha512_hmac_ctx
+    *ctx</var>, <var class="Fa">const uint8_t *key</var>, <var class="Fa">size_t
+    key_size</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_sha512_hmac_update</code>(<var class="Fa">crypto_sha512_hmac_ctx
+    *ctx</var>, <var class="Fa">const uint8_t *message</var>,
+    <var class="Fa">size_t message_size</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_sha512_hmac_final</code>(<var class="Fa">crypto_sha512_hmac_ctx
+    *ctx</var>, <var class="Fa">uint8_t hmac[64]</var>);</p>
+<p class="Pp"><code class="Fn">crypto_sha512_hkdf</code>(<var class="Fa">uint8_t
+    *okm</var>, <var class="Fa">size_t okm_size</var>, <var class="Fa">const
+    uint8_t *ikm</var>, <var class="Fa">size_t ikm_size</var>,
+    <var class="Fa">const uint8_t *salt</var>, <var class="Fa">size_t
+    salt_size</var>, <var class="Fa">const uint8_t *info</var>,
+    <var class="Fa">size_t info_size</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_sha512_hkdf_expand</code>(<var class="Fa">uint8_t
+    *okm</var>, <var class="Fa">size_t okm_size</var>, <var class="Fa">const
+    uint8_t *prk</var>, <var class="Fa">size_t prk_size</var>,
+    <var class="Fa">const uint8_t *info</var>, <var class="Fa">size_t
+    info_size</var>);</p>
+<p class="Pp"><var class="Ft">void</var></p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="DESCRIPTION"><a class="permalink" href="#DESCRIPTION">DESCRIPTION</a></h1>
+<section class="Ss">
+<h2 class="Ss" id="Hashing"><a class="permalink" href="#Hashing">Hashing</a></h2>
+<p class="Pp"><a class="permalink" href="#crypto_sha512"><code class="Fn" id="crypto_sha512">crypto_sha512</code></a>(),
+    <a class="permalink" href="#crypto_sha512_init"><code class="Fn" id="crypto_sha512_init">crypto_sha512_init</code></a>(),
+    <a class="permalink" href="#crypto_sha512_update"><code class="Fn" id="crypto_sha512_update">crypto_sha512_update</code></a>(),
+    and
+    <a class="permalink" href="#crypto_sha512_final"><code class="Fn" id="crypto_sha512_final">crypto_sha512_final</code></a>()
+    implement SHA-512, a cryptographically secure hash. They are provided to
+    enable compatibility with other cryptographic systems. It is generally
+    recommended to use
+    <a class="Xr" href="crypto_blake2b.html">crypto_blake2b(3monocypher)</a>
+    instead, as it both performs faster on x86_64 CPUs and lacks many of the
+    pitfalls of SHA-512.</p>
+<p class="Pp">Note that SHA-512 itself is not suitable for hashing passwords and
+    deriving keys from them; use the
+    <a class="Xr" href="crypto_argon2.html">crypto_argon2(3monocypher)</a>
+    family of functions for that purpose instead.</p>
+<p class="Pp" id="vulnerable">SHA-512 is
+    <a class="permalink" href="#vulnerable"><i class="Em">vulnerable to length
+    extension attacks</i></a>, and thus cannot directly be used for message
+    authentication codes (MAC), nor as a random oracle. For those, use the
+    <a class="permalink" href="#crypto_sha512_hmac"><code class="Fn" id="crypto_sha512_hmac">crypto_sha512_hmac</code></a>()
+    family of functions instead.</p>
+<p class="Pp">The arguments are:</p>
+<dl class="Bl-tag">
+  <dt><var class="Fa">hash</var></dt>
+  <dd>The output SHA-512 hash, which is always 64-bytes long.</dd>
+  <dt><var class="Fa">message</var></dt>
+  <dd>The message to hash. May be <code class="Dv">NULL</code> if
+      <var class="Fa">message_size</var> is 0.</dd>
+  <dt><var class="Fa">message_size</var></dt>
+  <dd>Length of <var class="Fa">message</var>, in bytes.</dd>
+</dl>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Message_authentication_codes"><a class="permalink" href="#Message_authentication_codes">Message
+  authentication codes</a></h2>
+<p class="Pp"><a class="permalink" href="#crypto_sha512_hmac~2"><code class="Fn" id="crypto_sha512_hmac~2">crypto_sha512_hmac</code></a>(),
+    <a class="permalink" href="#crypto_sha512_hmac_init"><code class="Fn" id="crypto_sha512_hmac_init">crypto_sha512_hmac_init</code></a>(),
+    <a class="permalink" href="#crypto_sha512_hmac_update"><code class="Fn" id="crypto_sha512_hmac_update">crypto_sha512_hmac_update</code></a>(),
+    and
+    <a class="permalink" href="#crypto_sha512_hmac_final"><code class="Fn" id="crypto_sha512_hmac_final">crypto_sha512_hmac_final</code></a>()
+    implement HMAC with SHA-512, and can be used for message authentication
+    codes or as a random oracle. They are provided to enable compatibility with
+    other cryptographic systems. It is generally recommended to use keyed
+    <a class="Xr" href="crypto_blake2b.html">crypto_blake2b(3monocypher)</a>
+    instead, as it performs faster on x86_64 CPUs.</p>
+<p class="Pp">The arguments are:</p>
+<dl class="Bl-tag">
+  <dt><var class="Fa">hmac</var></dt>
+  <dd>The output MAC, which is always 64-bytes long. When used as a message
+      authentication code, it can safely be truncated down to 16 bytes. To avoid
+      timing attacks, use
+      <a class="Xr" href="crypto_verify16.html">crypto_verify16(3monocypher)</a>,
+      <a class="Xr" href="crypto_verify32.html">crypto_verify32(3monocypher)</a>,
+      or
+      <a class="Xr" href="crypto_verify64.html">crypto_verify64(3monocypher)</a>
+      to compare (possibly truncated) MACs.</dd>
+  <dt id="crypto_sha512_hmac~3"><var class="Fa">key</var></dt>
+  <dd>Some secret key. When uniformly random, one cannot predict the final HMAC
+      without it. Users may want to wipe the key with
+      <a class="Xr" href="crypto_wipe.html">crypto_wipe(3monocypher)</a> once
+      they are done with it. Also stands for the <var class="Fa">salt</var>
+      argument when using
+      <a class="permalink" href="#crypto_sha512_hmac~3"><code class="Fn">crypto_sha512_hmac</code></a>()
+      for HKDF extraction.</dd>
+  <dt><var class="Fa">key_size</var></dt>
+  <dd>Length of <var class="Fa">key</var>, in bytes. 32 is a good default. Keys
+      longer than 128 bytes will be reduced to 64 bytes by hashing the key with
+      SHA-512.</dd>
+  <dt><var class="Fa">message</var></dt>
+  <dd>The message to compute the HMAC for. May be <code class="Dv">NULL</code>
+      if <var class="Fa">message_size</var> is 0. Also stands for the
+      <var class="Fa">ikm</var> argument when using
+      <code class="Fn">crypto_sha512_hmac</code>() for HKDF extraction.</dd>
+  <dt><var class="Fa">message_size</var></dt>
+  <dd>Length of <var class="Fa">message</var>, in bytes.</dd>
+</dl>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Key_derivation"><a class="permalink" href="#Key_derivation">Key
+  derivation</a></h2>
+<p class="Pp"><code class="Fn">crypto_sha512_hkdf</code>() and
+    <code class="Fn">crypto_sha512_hkdf_expand</code>() implement HKDF key
+    derivation on top of SHA-512. HKDF is divided in two phases: first we
+    <a class="permalink" href="#extract"><i class="Em" id="extract">extract</i></a>
+    entropy from some input key material to produce a
+    <i class="Em">pseudo-random key</i> (PRK) which is indistinguishable from
+    uniform random bytes. Then we
+    <a class="permalink" href="#expand"><i class="Em" id="expand">expand</i></a>
+    that pseudo-random key into a longer stream of independent random bytes
+    called <a class="permalink" href="#output"><i class="Em" id="output">output
+    key material</i></a> (OKM).</p>
+<p class="Pp" id="crypto_sha512_hmac~4">HKDF extraction is already implemented
+    in
+    <a class="permalink" href="#crypto_sha512_hmac~4"><code class="Fn">crypto_sha512_hmac</code></a>(),
+    so there is no dedicated function. HKDF expansion is implemented by
+    <a class="permalink" href="#crypto_sha512_hkdf_expand"><code class="Fn" id="crypto_sha512_hkdf_expand">crypto_sha512_hkdf_expand</code></a>().
+    Note that expansion works with any uniformly random key, the PRK does not
+    have to come from <code class="Fn">crypto_sha512_hmac</code>() specifically.
+    Likewise, if compatibility or standard compliance is not an issue, expansion
+    could in principle use any pseudo-random function, such as
+    <a class="Xr" href="crypto_chacha20_djb.html">crypto_chacha20_djb(3monocypher)</a>.</p>
+<p class="Pp" id="crypto_sha512_hkdf"><a class="permalink" href="#crypto_sha512_hkdf"><code class="Fn">crypto_sha512_hkdf</code></a>()
+    is a convenience function that performs
+    <code class="Fn">crypto_sha512_hmac</code>() and
+    <code class="Fn">crypto_sha512_hkdf_expand</code>().</p>
+<p class="Pp" id="crypto_sha512_hkdf~2">Contrary to most functions in
+    Monocypher, the inputs of
+    <a class="permalink" href="#crypto_sha512_hkdf~2"><code class="Fn">crypto_sha512_hkdf</code></a>()
+    and
+    <a class="permalink" href="#crypto_sha512_hkdf_expand~2"><code class="Fn" id="crypto_sha512_hkdf_expand~2">crypto_sha512_hkdf_expand</code></a>()
+    <a class="permalink" href="#cannot"><i class="Em" id="cannot">cannot
+    overlap</i></a> with their output. The unlimited size of both inputs and
+    output prevents us from from caching one of them in a local variable.</p>
+<p class="Pp">The arguments are:</p>
+<dl class="Bl-tag">
+  <dt><var class="Fa">okm</var></dt>
+  <dd>The output key material of HKDF or HKDF expansion, usable as a symmetric
+      encryption key, or set thereof.</dd>
+  <dt><var class="Fa">okm_size</var></dt>
+  <dd>Length of <var class="Fa">okm</var>, in bytes.</dd>
+  <dt><var class="Fa">ikm</var></dt>
+  <dd>Input key material containing enough secret entropy to derive uniformly
+      random keys from, such as the shared secret of a key exchange performed
+      with
+      <a class="Xr" href="crypto_x25519.html">crypto_x25519(3monocypher)</a>.
+      Passwords do <b class="Sy">not</b> contain enough entropy to be used as
+      input key material. Hash them with
+      <a class="Xr" href="crypto_argon2.html">crypto_argon2(3monocypher)</a>
+      instead.</dd>
+  <dt><var class="Fa">ikm_size</var></dt>
+  <dd>Length of <var class="Fa">ikm</var>, in bytes.</dd>
+  <dt id="crypto_sha512_hmac~5"><var class="Fa">prk</var></dt>
+  <dd>Pseudo-random key. Typically comes from an HKDF extraction with
+      <a class="permalink" href="#crypto_sha512_hmac~5"><code class="Fn">crypto_sha512_hmac</code></a>(),
+      but can come from any source as long as it is uniformly random. Should be
+      at least 32 bytes long.</dd>
+  <dt><var class="Fa">prk_size</var></dt>
+  <dd>Length of <var class="Fa">prk</var>, in bytes.</dd>
+  <dt><var class="Fa">salt</var></dt>
+  <dd>An optional random salt, used to increase the security of the output key
+      material <var class="Fa">okm</var> in some settings. Can be NULL if
+      <var class="Fa">salt_size</var> is zero. Otherwise it should contain at
+      least 16 bytes.</dd>
+  <dt><var class="Fa">salt_size</var></dt>
+  <dd>Length of <var class="Fa">salt</var>, in bytes.</dd>
+  <dt><var class="Fa">info</var></dt>
+  <dd>Optional domain separation string for key derivation. Can be NULL if
+      <var class="Fa">info_size</var> is zero.</dd>
+  <dt><var class="Fa">info_size</var></dt>
+  <dd>Length of <var class="Fa">info</var>, in bytes.</dd>
+</dl>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Incremental_interface"><a class="permalink" href="#Incremental_interface">Incremental
+  interface</a></h2>
+<p class="Pp">An incremental interface is provided. It is useful for handling
+    streams of data or large files without using too much memory. This interface
+    uses three steps:</p>
+<ul class="Bl-bullet">
+  <li id="crypto_sha512_init~2">initialisation with
+      <a class="permalink" href="#crypto_sha512_init~2"><code class="Fn">crypto_sha512_init</code></a>()
+      or <code class="Fn">crypto_sha512_hmac_init</code>(), which sets up a
+      context with the hashing parameters;</li>
+  <li>update with <code class="Fn">crypto_sha512_update</code>() or
+      <code class="Fn">crypto_sha512_hmac_update</code>(), which hashes the
+      message chunk by chunk and keeps the intermediary result in the
+    context;</li>
+  <li>and finalisation with <code class="Fn">crypto_sha512_final</code>() or
+      <code class="Fn">crypto_sha512_hmac_final</code>(), which produces the
+      final hash. The <var class="Ft">crypto_sha512_ctx</var> or
+      <var class="Ft">crypto_sha512_hmac_ctx</var> is automatically wiped upon
+      finalisation.</li>
+</ul>
+<p class="Pp" id="crypto_sha512~2"><a class="permalink" href="#crypto_sha512~2"><code class="Fn">crypto_sha512</code></a>()
+    is a convenience function that performs
+    <a class="permalink" href="#crypto_sha512_init~3"><code class="Fn" id="crypto_sha512_init~3">crypto_sha512_init</code></a>(),
+    <a class="permalink" href="#crypto_sha512_update~2"><code class="Fn" id="crypto_sha512_update~2">crypto_sha512_update</code></a>(),
+    and
+    <a class="permalink" href="#crypto_sha512_final~2"><code class="Fn" id="crypto_sha512_final~2">crypto_sha512_final</code></a>().</p>
+<p class="Pp" id="crypto_sha512_hmac~6"><a class="permalink" href="#crypto_sha512_hmac~6"><code class="Fn">crypto_sha512_hmac</code></a>()
+    is a convenience function that performs
+    <a class="permalink" href="#crypto_sha512_hmac_init~2"><code class="Fn" id="crypto_sha512_hmac_init~2">crypto_sha512_hmac_init</code></a>(),
+    <a class="permalink" href="#crypto_sha512_hmac_update~2"><code class="Fn" id="crypto_sha512_hmac_update~2">crypto_sha512_hmac_update</code></a>(),
+    and
+    <a class="permalink" href="#crypto_sha512_hmac_final~2"><code class="Fn" id="crypto_sha512_hmac_final~2">crypto_sha512_hmac_final</code></a>().</p>
+</section>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="RETURN_VALUES"><a class="permalink" href="#RETURN_VALUES">RETURN
+  VALUES</a></h1>
+<p class="Pp">These functions return nothing.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="EXAMPLES"><a class="permalink" href="#EXAMPLES">EXAMPLES</a></h1>
+<p class="Pp">Hashing a message all at once:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>uint8_t hash   [64]; /* Output hash (64 bytes)          */
+uint8_t message[12] = &quot;Lorem ipsum&quot;; /* Message to hash */
+crypto_sha512(hash, message, 12);</pre>
+</div>
+<p class="Pp">Hashing a message incrementally:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>uint8_t hash   [ 64]; /* Output hash (64 bytes) */
+uint8_t message[500] = {1}; /* Message to hash  */
+crypto_sha512_ctx ctx;
+crypto_sha512_init(&amp;ctx);
+for (size_t i = 0; i &lt; 500; i += 100) {
+    crypto_sha512_update(&amp;ctx, message + i, 100);
+}
+crypto_sha512_final(&amp;ctx, hash);</pre>
+</div>
+<p class="Pp">Computing a message authentication code all at once:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>uint8_t hash   [64];                /* Output hash             */
+uint8_t key    [32];                /* Key                     */
+uint8_t message[10] = &quot;Lorem ipsu&quot;; /* Message to authenticate */
+arc4random_buf(key, 32);
+crypto_sha512_hmac(hash, key, 32, message, 10);
+/* Wipe secrets if they are no longer needed */
+crypto_wipe(message, 10);
+crypto_wipe(key, 32);</pre>
+</div>
+<p class="Pp">Computing a message authentication code incrementally:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>uint8_t hash   [64];        /* Output hash             */
+uint8_t key    [32];        /* Key                     */
+uint8_t message[500] = {1}; /* Message to authenticate */
+crypto_sha512_hmac_ctx ctx;
+arc4random_buf(key, 32);
+crypto_sha512_hmac_init(&amp;ctx, key, 32);
+/* Wipe the key */
+crypto_wipe(key, 32);
+for (size_t i = 0; i &lt; 500; i += 100) {
+    crypto_sha512_hmac_update(&amp;ctx, message + i, 100);
+    /* Wipe secrets if they are no longer needed */
+    crypto_wipe(message + i, 100);
+}
+crypto_sha512_hmac_final(&amp;ctx, hash);</pre>
+</div>
+<p class="Pp">Deriving keys from input key material:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>uint8_t okm[128];                 /* Output random keys */
+uint8_t ikm [96];                 /* Input key material */
+uint8_t salt[16];                 /* Random salt        */
+uint8_t info[11] = &quot;Lorem ipsum&quot;; /* Domain separation  */
+arc4random_buf(salt, sizeof(salt));
+crypto_sha512_hkdf(okm, sizeof(okm),
+                   ikm, sizeof(ikm),
+                   salt, sizeof(salt),
+                   info, sizeof(info));
+uint8_t *key1 = okm +  0;
+uint8_t *key2 = okm + 32;
+uint8_t *key3 = okm + 64;
+uint8_t *key4 = okm + 96;
+/* Wipe okm when it is no longer needed */</pre>
+</div>
+<p class="Pp">Deriving keys from several bits of input key material:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>uint8_t okm [96];            /* Output secret keys        */
+uint8_t pk_a[32];            /* Alice public X25519 key   */
+uint8_t pk_b[32];            /* Bob   public X25519 key   */
+uint8_t skab[32];            /* Alice &amp; bob shared secret */
+uint8_t ikm [96];            /* Input key material        */
+uint8_t salt[16];            /* Random salt               */
+uint8_t info[ 6] = &quot;X25519&quot;; /* Domain separation         */
+arc4random_buf(salt, sizeof(salt));
+
+/* Extract */
+uint8_t prk[64];             /* pseudo-random key         */
+crypto_sha512_hmac_ctx ctx;
+crypto_sha512_hmac_init  (&amp;ctx, salt, sizeof(salt));
+crypto_sha512_hmac_update(&amp;ctx, pk_a, sizeof(pk_a));
+crypto_sha512_hmac_update(&amp;ctx, pk_b, sizeof(pk_b));
+crypto_sha512_hmac_update(&amp;ctx, skab, sizeof(skab));
+crypto_sha512_hmac_final (&amp;ctx, prk);
+
+/* Expand */
+crypto_sha512_hkdf_expand(okm, sizeof(okm),
+                          prk, sizeof(prk),
+                          info, sizeof(info));
+uint8_t *key1 = okm +  0;
+uint8_t *key2 = okm + 32;
+uint8_t *key3 = okm + 64;
+/* Wipe okm when it is no longer needed */</pre>
+</div>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SEE_ALSO"><a class="permalink" href="#SEE_ALSO">SEE
+  ALSO</a></h1>
+<p class="Pp"><a class="Xr" href="crypto_blake2b.html">crypto_blake2b(3monocypher)</a>,
+    <a class="Xr" href="crypto_aead_lock.html">crypto_aead_lock(3monocypher)</a>,
+    <a class="Xr" href="crypto_poly1305.html">crypto_poly1305(3monocypher)</a>,
+    <a class="Xr" href="intro.html">intro(3monocypher)</a></p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="STANDARDS"><a class="permalink" href="#STANDARDS">STANDARDS</a></h1>
+<p class="Pp">These functions implement SHA-512, HMAC with SHA-512, and HKDF
+    with SHA-512. HMAC and SHA-512 are described in RFC 6234; SHA-512 is also
+    described in the Federal Information Processing Standard (FIPS) 180-4; HMAC
+    is also described in FIPS 198-1. HKDF is described in RFC 5869.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="HISTORY"><a class="permalink" href="#HISTORY">HISTORY</a></h1>
+<p class="Pp">The <code class="Fn">crypto_sha512</code>(),
+    <code class="Fn">crypto_sha512_init</code>(),
+    <code class="Fn">crypto_sha512_update</code>(), and
+    <code class="Fn">crypto_sha512_final</code>() functions first appeared in
+    Monocypher 0.3, but were not intended for use outside Monocypher itself and
+    thus undocumented. They became part of the official API in Monocypher
+  3.0.0.</p>
+<p class="Pp">The <code class="Fn">crypto_hmac_sha512</code>(),
+    <code class="Fn">crypto_hmac_sha512_init</code>(),
+    <code class="Fn">crypto_hmac_sha512_update</code>(), and
+    <code class="Fn">crypto_hmac_sha512_final</code>() functions first appeared
+    in Monocypher 3.0.0, then renamed
+    <code class="Fn">crypto_sha512_hmac</code>(),
+    <code class="Fn">crypto_sha512_hmac_init</code>(),
+    <code class="Fn">crypto_sha512_hmac_update</code>(), and
+    <code class="Fn">crypto_sha512_hmac_final</code>() in Monocypher 4.0.0.</p>
+<p class="Pp"><code class="Fn">crypto_sha512_hkdf</code>() and
+    <code class="Fn">crypto_sha512_hkdf_expand</code>() were added in Monocypher
+    4.0.0.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="CAVEATS"><a class="permalink" href="#CAVEATS">CAVEATS</a></h1>
+<p class="Pp">Monocypher does not perform any input validation. Any deviation
+    from the specified input and output length ranges results in
+    <a class="permalink" href="#undefined"><b class="Sy" id="undefined">undefined
+    behaviour</b></a>. Make sure your inputs are correct.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SECURITY_CONSIDERATIONS"><a class="permalink" href="#SECURITY_CONSIDERATIONS">SECURITY
+  CONSIDERATIONS</a></h1>
+<p class="Pp">SHA-512 is a general-purpose cryptographic hash function; this
+    means that it is not suited for hashing passwords and deriving cryptographic
+    keys from passwords. While cryptographic keys usually have hundreds of bits
+    of entropy, passwords are often much less complex. When storing passwords as
+    hashes or when deriving keys from them, the goal is normally to prevent
+    attackers from quickly iterating all possible passwords. Because passwords
+    tend to be simple, it is important to artificially slow down attackers by
+    using especially computationally difficult hashing algorithms. Monocypher
+    therefore provides
+    <a class="Xr" href="crypto_argon2.html">crypto_argon2(3monocypher)</a> for
+    password hashing and deriving keys from passwords.</p>
+<p class="Pp" id="uniformly">While HKDF and HMAC are proper key derivation
+    functions (KDF), the HKDF expand step alone is <i class="Em">not</i>. It is
+    a <i class="Em">pseudo-random function</i> (PRF), that only works with a
+    <a class="permalink" href="#uniformly"><i class="Em">uniformly</i></a>
+    random key. We cannot simply input regular (non uniform) input key material
+    without making unusually strong assumptions about the security of HMAC.</p>
+</section>
+</div>
+<table class="foot">
+  <tr>
+    <td class="foot-date">February 25, 2023</td>
+    <td class="foot-os">Debian</td>
+  </tr>
+</table>
+</body>
+</html>

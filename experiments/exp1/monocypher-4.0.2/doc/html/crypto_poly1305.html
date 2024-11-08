@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<!-- This is an automatically generated file.  Do not edit.
+   This file is dual-licensed.  Choose whichever you want.
+  
+   The first licence is a regular 2-clause BSD licence.  The second licence
+   is the CC-0 from Creative Commons. It is intended to release Monocypher
+   to the public domain.  The BSD licence serves as a fallback option.
+  
+   SPDX-License-Identifier: BSD-2-Clause OR CC0-1.0
+  
+   ----------------------------------------------------------------------------
+  
+   Copyright (c) 2017-2019 Loup Vaillant
+   Copyright (c) 2017-2018 Michael Savage
+   Copyright (c) 2017-2021 Fabio Scotoni
+   All rights reserved.
+  
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are
+   met:
+  
+   1. Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+  
+   2. Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the
+      distribution.
+  
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+   HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  
+   ----------------------------------------------------------------------------
+  
+   Written in 2017-2021 by Loup Vaillant, Michael Savage and Fabio Scotoni
+  
+   To the extent possible under law, the author(s) have dedicated all copyright
+   and related neighboring rights to this software to the public domain
+   worldwide.  This software is distributed without any warranty.
+  
+   You should have received a copy of the CC0 Public Domain Dedication along
+   with this software.  If not, see
+   <https://creativecommons.org/publicdomain/zero/1.0/>
+   -->
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="style.css" type="text/css" media="all"/>
+  <title>CRYPTO_POLY1305(3MONOCYPHER)</title>
+</head>
+<body>
+<table class="head">
+  <tr>
+    <td class="head-ltitle">CRYPTO_POLY1305(3MONOCYPHER)</td>
+    <td class="head-vol">3MONOCYPHER</td>
+    <td class="head-rtitle">CRYPTO_POLY1305(3MONOCYPHER)</td>
+  </tr>
+</table>
+<div class="manual-text">
+<section class="Sh">
+<h1 class="Sh" id="NAME"><a class="permalink" href="#NAME">NAME</a></h1>
+<p class="Pp"><code class="Nm">crypto_poly1305</code>,
+    <code class="Nm">crypto_poly1305_init</code>,
+    <code class="Nm">crypto_poly1305_update</code>,
+    <code class="Nm">crypto_poly1305_final</code> &#x2014;
+    <span class="Nd">Poly1305 one-time message authentication codes</span></p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SYNOPSIS"><a class="permalink" href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p class="Pp"><code class="In">#include
+    &lt;<a class="In">monocypher.h</a>&gt;</code></p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_poly1305</code>(<var class="Fa">uint8_t mac[16]</var>,
+    <var class="Fa">const uint8_t *message</var>, <var class="Fa">size_t
+    message_size</var>, <var class="Fa">const uint8_t key[32]</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_poly1305_init</code>(<var class="Fa">crypto_poly1305_ctx
+    *ctx</var>, <var class="Fa">const uint8_t key[32]</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_poly1305_update</code>(<var class="Fa">crypto_poly1305_ctx
+    *ctx</var>, <var class="Fa">const uint8_t *message</var>,
+    <var class="Fa">size_t message_size</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_poly1305_final</code>(<var class="Fa">crypto_poly1305_ctx
+    *ctx</var>, <var class="Fa">uint8_t mac[16]</var>);</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="DESCRIPTION"><a class="permalink" href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p class="Pp">Poly1305 is a one-time message authentication code.
+    &#x201C;One-time&#x201D; means the authentication key can be used only once.
+    <a class="permalink" href="#This"><b class="Sy" id="This">This makes
+    Poly1305 easy to misuse</b></a>. On the other hand, Poly1305 is fast and
+    provably secure if used correctly.</p>
+<p class="Pp">Poly1305 is a low-level primitive. Consider using authenticated
+    encryption, implemented by
+    <a class="Xr" href="crypto_aead_lock.html">crypto_aead_lock(3monocypher)</a>.</p>
+<p class="Pp">The arguments are:</p>
+<dl class="Bl-tag">
+  <dt><var class="Fa">mac</var></dt>
+  <dd>The message authentication code.</dd>
+  <dt><var class="Fa">key</var></dt>
+  <dd>The secret authentication key. Use only once per message. Do not use the
+      session key to authenticate messages. It should be wiped with
+      <a class="Xr" href="crypto_wipe.html">crypto_wipe(3monocypher)</a> after
+      use.</dd>
+  <dt><var class="Fa">message</var></dt>
+  <dd>The message to authenticate. May overlap with the
+      <var class="Fa">mac</var> argument.</dd>
+  <dt><var class="Fa">message_size</var></dt>
+  <dd>Length of <var class="Fa">message</var>, in bytes.</dd>
+</dl>
+<section class="Ss">
+<h2 class="Ss" id="Direct_interface"><a class="permalink" href="#Direct_interface">Direct
+  interface</a></h2>
+<p class="Pp"><a class="permalink" href="#crypto_poly1305"><code class="Fn" id="crypto_poly1305">crypto_poly1305</code></a>()
+    produces a message authentication code for the given message and
+    authentication key. To verify the integrity of a message, use
+    <a class="Xr" href="crypto_verify16.html">crypto_verify16(3monocypher)</a>
+    to compare the received MAC to the output <var class="Fa">mac</var>.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Incremental_interface"><a class="permalink" href="#Incremental_interface">Incremental
+  interface</a></h2>
+<p class="Pp"><a class="permalink" href="#crypto_poly1305_init"><code class="Fn" id="crypto_poly1305_init">crypto_poly1305_init</code></a>()
+    initialises a context. <var class="Fa">key</var> should be wiped once the
+    context is initialised. Then
+    <a class="permalink" href="#crypto_poly1305_update"><code class="Fn" id="crypto_poly1305_update">crypto_poly1305_update</code></a>()
+    authenticates the message chunk by chunk. Once the message is entirely
+    processed,
+    <a class="permalink" href="#crypto_poly1305_final"><code class="Fn" id="crypto_poly1305_final">crypto_poly1305_final</code></a>()
+    yields the message authentication code.</p>
+</section>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="RETURN_VALUES"><a class="permalink" href="#RETURN_VALUES">RETURN
+  VALUES</a></h1>
+<p class="Pp">These functions return nothing.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="EXAMPLES"><a class="permalink" href="#EXAMPLES">EXAMPLES</a></h1>
+<p class="Pp">The following examples assume the existence of
+    <code class="Fn">arc4random_buf</code>(), which fills the given buffer with
+    cryptographically secure random bytes. If
+    <code class="Fn">arc4random_buf</code>() does not exist on your system, see
+    <a class="Xr" href="intro.html">intro(3monocypher)</a> for advice about how
+    to generate cryptographically secure random bytes.</p>
+<p class="Pp">To authenticate a message:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>const uint8_t msg[ 5] = &quot;Lorem&quot;; /* Message to authenticate */
+uint8_t       key[32]; /* Random secret key (use only once) */
+uint8_t       mac[16]; /* Message authentication code (MAC) */
+arc4random_buf(key, 32);
+crypto_poly1305(mac, msg, 5, key);
+/* Wipe the key */
+crypto_wipe(key, 32);</pre>
+</div>
+<p class="Pp">To verify the above message:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>const uint8_t msg     [ 5] = &quot;Lorem&quot;; /* Message to verify */
+uint8_t       key     [32];           /* The above key     */
+const uint8_t mac     [16];           /* The above MAC     */
+uint8_t       real_mac[16];           /* The actual MAC    */
+crypto_poly1305(real_mac, msg, 5, key);
+/* Wipe the key */
+crypto_wipe(key, 32);
+if (crypto_verify16(mac, real_mac)) {
+    /* Corrupted message, abort processing */
+} else {
+    /* Genuine message */
+}
+/* The real mac is secret.  Wipe it */
+crypto_wipe(real_mac, 16);</pre>
+</div>
+<p class="Pp">Incremental authentication:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>const uint8_t msg[500]= {1}; /* Message to authenticate      */
+uint8_t       key[ 32]; /* Random secret key (use only once) */
+uint8_t       mac[ 16]; /* Message authentication code (MAC) */
+crypto_poly1305_ctx ctx;
+arc4random_buf(key, 32);
+crypto_poly1305_init(&amp;ctx, key);
+/* Wipe the key */
+crypto_wipe(key, 32);
+for (int i = 0; i &lt; 500; i += 100) {
+    crypto_poly1305_update(&amp;ctx, msg, 100);
+}
+crypto_poly1305_final(&amp;ctx, mac);</pre>
+</div>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SEE_ALSO"><a class="permalink" href="#SEE_ALSO">SEE
+  ALSO</a></h1>
+<p class="Pp"><a class="Xr" href="crypto_blake2b.html">crypto_blake2b(3monocypher)</a>,
+    <a class="Xr" href="crypto_aead_lock.html">crypto_aead_lock(3monocypher)</a>,
+    <a class="Xr" href="crypto_verify16.html">crypto_verify16(3monocypher)</a>,
+    <a class="Xr" href="intro.html">intro(3monocypher)</a></p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="STANDARDS"><a class="permalink" href="#STANDARDS">STANDARDS</a></h1>
+<p class="Pp">These functions implement Poly1305, described in RFC 8439.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="HISTORY"><a class="permalink" href="#HISTORY">HISTORY</a></h1>
+<p class="Pp">The <code class="Fn">crypto_poly1305_init</code>(),
+    <code class="Fn">crypto_poly1305_update</code>(), and
+    <code class="Fn">crypto_poly1305_final</code>() functions first appeared in
+    Monocypher 0.1. <code class="Fn">crypto_poly1305</code>() first appeared in
+    Monocypher 1.1.0.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="CAVEATS"><a class="permalink" href="#CAVEATS">CAVEATS</a></h1>
+<p class="Pp">Monocypher does not perform any input validation. Any deviation
+    from the specified input and output length ranges results in
+    <a class="permalink" href="#undefined"><b class="Sy" id="undefined">undefined
+    behaviour</b></a>. Make sure your inputs are correct.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SECURITY_CONSIDERATIONS"><a class="permalink" href="#SECURITY_CONSIDERATIONS">SECURITY
+  CONSIDERATIONS</a></h1>
+<p class="Pp">Poly1305 is difficult to use correctly. Do not use it unless you
+    are absolutely sure what you are doing. Use authenticated encryption
+    instead; see
+    <a class="Xr" href="crypto_aead_lock.html">crypto_aead_lock(3monocypher)</a>.
+    If you are certain you do not want encryption, refer to
+    <a class="Xr" href="crypto_blake2b.html">crypto_blake2b(3monocypher)</a> on
+    how to use BLAKE2b to generate message authentication codes.</p>
+<section class="Ss">
+<h2 class="Ss" id="Authentication_key_requirements"><a class="permalink" href="#Authentication_key_requirements">Authentication
+  key requirements</a></h2>
+<p class="Pp">Poly1305 is a
+    <a class="permalink" href="#one-time"><i class="Em" id="one-time">one-time</i></a>
+    authenticator. This puts rather stringent constraints on the authentication
+    key:</p>
+<ul class="Bl-bullet">
+  <li>Any given key must be used only once. Using the same key for two different
+      messages reveals it to the attacker. Do not use the session key, or it
+      will void all security.</li>
+  <li>Authentication keys must be random, and independent from each other. Do
+      not use non-random nonces. Do not use related keys. Use fresh,
+      unpredictable, uniformly distributed random numbers.</li>
+  <li>The key must be transmitted to the recipient without revealing it to the
+      attacker. Somehow.</li>
+</ul>
+<p class="Pp" id="dedicated">The only practical source for the authentication
+    key is a chunk of the encryption stream used to encrypt the message. That
+    chunk must be
+    <a class="permalink" href="#dedicated"><i class="Em">dedicated</i></a> to
+    the authentication key: if it is reused to encrypt the message itself, the
+    attacker may recover that chunk by guessing the message then forge arbitrary
+    messages.</p>
+<p class="Pp" id="unique">To get this right, you need a session key, a
+    <a class="permalink" href="#unique"><i class="Em">unique</i></a> nonce, and
+    a stream cipher. Generate a stream with the session key and nonce. Take the
+    first 32 bytes of that stream as your authentication key, then use the
+    <a class="permalink" href="#rest"><i class="Em" id="rest">rest</i></a> of
+    the stream to encrypt your message. This is the approach used by
+    <a class="Xr" href="crypto_aead_lock.html">crypto_aead_lock(3monocypher)</a>.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Protection_against_side_channels"><a class="permalink" href="#Protection_against_side_channels">Protection
+  against side channels</a></h2>
+<p class="Pp">Use
+    <a class="Xr" href="crypto_verify16.html">crypto_verify16(3monocypher)</a>
+    to compare message authentication codes. Avoid standard buffer comparison
+    functions: they may not run in constant time, enabling an attacker to
+    exploit timing attacks to recover the MAC.</p>
+<p class="Pp">The authentication key should be wiped with
+    <a class="Xr" href="crypto_wipe.html">crypto_wipe(3monocypher)</a> after
+    use.</p>
+<p class="Pp">The incremental interface automatically wipes its context when
+    finished, so users do not need to do it themselves.</p>
+</section>
+</section>
+</div>
+<table class="foot">
+  <tr>
+    <td class="foot-date">June 11, 2021</td>
+    <td class="foot-os">Debian</td>
+  </tr>
+</table>
+</body>
+</html>

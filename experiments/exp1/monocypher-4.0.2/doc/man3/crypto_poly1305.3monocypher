@@ -1,0 +1,279 @@
+.\" This file is dual-licensed.  Choose whichever you want.
+.\"
+.\" The first licence is a regular 2-clause BSD licence.  The second licence
+.\" is the CC-0 from Creative Commons. It is intended to release Monocypher
+.\" to the public domain.  The BSD licence serves as a fallback option.
+.\"
+.\" SPDX-License-Identifier: BSD-2-Clause OR CC0-1.0
+.\"
+.\" ----------------------------------------------------------------------------
+.\"
+.\" Copyright (c) 2017-2019 Loup Vaillant
+.\" Copyright (c) 2017-2018 Michael Savage
+.\" Copyright (c) 2017-2021 Fabio Scotoni
+.\" All rights reserved.
+.\"
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions are
+.\" met:
+.\"
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\"
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the
+.\"    distribution.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+.\" "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+.\" LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+.\" A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+.\" HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+.\" SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+.\" LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+.\" DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+.\" THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+.\" (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+.\" OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+.\"
+.\" ----------------------------------------------------------------------------
+.\"
+.\" Written in 2017-2021 by Loup Vaillant, Michael Savage and Fabio Scotoni
+.\"
+.\" To the extent possible under law, the author(s) have dedicated all copyright
+.\" and related neighboring rights to this software to the public domain
+.\" worldwide.  This software is distributed without any warranty.
+.\"
+.\" You should have received a copy of the CC0 Public Domain Dedication along
+.\" with this software.  If not, see
+.\" <https://creativecommons.org/publicdomain/zero/1.0/>
+.\"
+.Dd June 11, 2021
+.Dt CRYPTO_POLY1305 3MONOCYPHER
+.Os
+.Sh NAME
+.Nm crypto_poly1305 ,
+.Nm crypto_poly1305_init ,
+.Nm crypto_poly1305_update ,
+.Nm crypto_poly1305_final
+.Nd Poly1305 one-time message authentication codes
+.Sh SYNOPSIS
+.In monocypher.h
+.Ft void
+.Fo crypto_poly1305
+.Fa "uint8_t mac[16]"
+.Fa "const uint8_t *message"
+.Fa "size_t message_size"
+.Fa "const uint8_t key[32]"
+.Fc
+.Ft void
+.Fo crypto_poly1305_init
+.Fa "crypto_poly1305_ctx *ctx"
+.Fa "const uint8_t key[32]"
+.Fc
+.Ft void
+.Fo crypto_poly1305_update
+.Fa "crypto_poly1305_ctx *ctx"
+.Fa "const uint8_t *message"
+.Fa "size_t message_size"
+.Fc
+.Ft void
+.Fo crypto_poly1305_final
+.Fa "crypto_poly1305_ctx *ctx"
+.Fa "uint8_t mac[16]"
+.Fc
+.Sh DESCRIPTION
+Poly1305 is a one-time message authentication code.
+.Dq One-time
+means the authentication key can be used only once.
+.Sy This makes Poly1305 easy to misuse .
+On the other hand, Poly1305 is fast and provably secure if used
+correctly.
+.Pp
+Poly1305 is a low-level primitive.
+Consider using authenticated encryption, implemented by
+.Xr crypto_aead_lock 3monocypher .
+.Pp
+The arguments are:
+.Bl -tag -width Ds
+.It Fa mac
+The message authentication code.
+.It Fa key
+The secret authentication key.
+Use only once per message.
+Do not use the session key to authenticate messages.
+It should be wiped with
+.Xr crypto_wipe 3monocypher
+after use.
+.It Fa message
+The message to authenticate.
+May overlap with the
+.Fa mac
+argument.
+.It Fa message_size
+Length of
+.Fa message ,
+in bytes.
+.El
+.Ss Direct interface
+.Fn crypto_poly1305
+produces a message authentication code for the given message and
+authentication key.
+To verify the integrity of a message, use
+.Xr crypto_verify16 3monocypher
+to compare the received MAC to the output
+.Fa mac .
+.Ss Incremental interface
+.Fn crypto_poly1305_init
+initialises a context.
+.Fa key
+should be wiped once the context is initialised.
+Then
+.Fn crypto_poly1305_update
+authenticates the message chunk by chunk.
+Once the message is entirely processed,
+.Fn crypto_poly1305_final
+yields the message authentication code.
+.Sh RETURN VALUES
+These functions return nothing.
+.Sh EXAMPLES
+The following examples assume the existence of
+.Fn arc4random_buf ,
+which fills the given buffer with cryptographically secure random bytes.
+If
+.Fn arc4random_buf
+does not exist on your system, see
+.Xr intro 3monocypher
+for advice about how to generate cryptographically secure random bytes.
+.Pp
+To authenticate a message:
+.Bd -literal -offset indent
+const uint8_t msg[ 5] = "Lorem"; /* Message to authenticate */
+uint8_t       key[32]; /* Random secret key (use only once) */
+uint8_t       mac[16]; /* Message authentication code (MAC) */
+arc4random_buf(key, 32);
+crypto_poly1305(mac, msg, 5, key);
+/* Wipe the key */
+crypto_wipe(key, 32);
+.Ed
+.Pp
+To verify the above message:
+.Bd -literal -offset indent
+const uint8_t msg     [ 5] = "Lorem"; /* Message to verify */
+uint8_t       key     [32];           /* The above key     */
+const uint8_t mac     [16];           /* The above MAC     */
+uint8_t       real_mac[16];           /* The actual MAC    */
+crypto_poly1305(real_mac, msg, 5, key);
+/* Wipe the key */
+crypto_wipe(key, 32);
+if (crypto_verify16(mac, real_mac)) {
+    /* Corrupted message, abort processing */
+} else {
+    /* Genuine message */
+}
+/* The real mac is secret.  Wipe it */
+crypto_wipe(real_mac, 16);
+.Ed
+.Pp
+Incremental authentication:
+.Bd -literal -offset indent
+const uint8_t msg[500]= {1}; /* Message to authenticate      */
+uint8_t       key[ 32]; /* Random secret key (use only once) */
+uint8_t       mac[ 16]; /* Message authentication code (MAC) */
+crypto_poly1305_ctx ctx;
+arc4random_buf(key, 32);
+crypto_poly1305_init(&ctx, key);
+/* Wipe the key */
+crypto_wipe(key, 32);
+for (int i = 0; i < 500; i += 100) {
+    crypto_poly1305_update(&ctx, msg, 100);
+}
+crypto_poly1305_final(&ctx, mac);
+.Ed
+.Sh SEE ALSO
+.Xr crypto_blake2b 3monocypher ,
+.Xr crypto_aead_lock 3monocypher ,
+.Xr crypto_verify16 3monocypher ,
+.Xr intro 3monocypher
+.Sh STANDARDS
+These functions implement Poly1305, described in RFC 8439.
+.Sh HISTORY
+The
+.Fn crypto_poly1305_init ,
+.Fn crypto_poly1305_update ,
+and
+.Fn crypto_poly1305_final
+functions first appeared in Monocypher 0.1.
+.Fn crypto_poly1305
+first appeared in Monocypher 1.1.0.
+.Sh CAVEATS
+Monocypher does not perform any input validation.
+Any deviation from the specified input and output length ranges results
+in
+.Sy undefined behaviour .
+Make sure your inputs are correct.
+.Sh SECURITY CONSIDERATIONS
+Poly1305 is difficult to use correctly.
+Do not use it unless you are absolutely sure what you are doing.
+Use authenticated encryption instead; see
+.Xr crypto_aead_lock 3monocypher .
+If you are certain you do not want encryption, refer to
+.Xr crypto_blake2b 3monocypher
+on how to use BLAKE2b to generate message authentication codes.
+.Ss Authentication key requirements
+Poly1305 is a
+.Em one-time
+authenticator.
+This puts rather stringent constraints on the authentication key:
+.Bl -bullet
+.It
+Any given key must be used only once.
+Using the same key for two different messages reveals it to the
+attacker.
+Do not use the session key, or it will void all security.
+.It
+Authentication keys must be random, and independent from each other.
+Do not use non-random nonces.
+Do not use related keys.
+Use fresh, unpredictable, uniformly distributed random numbers.
+.It
+The key must be transmitted to the recipient without revealing it to the
+attacker.
+Somehow.
+.El
+.Pp
+The only practical source for the authentication key is a chunk of the
+encryption stream used to encrypt the message.
+That chunk must be
+.Em dedicated
+to the authentication key:
+if it is reused to encrypt the message itself, the attacker may recover
+that chunk by guessing the message then forge arbitrary messages.
+.Pp
+To get this right, you need a session key, a
+.Em unique
+nonce, and a
+stream cipher.
+Generate a stream with the session key and nonce.
+Take the first 32 bytes of that stream as your authentication key, then
+use the
+.Em rest
+of the stream to encrypt your message.
+This is the approach used by
+.Xr crypto_aead_lock 3monocypher .
+.Ss Protection against side channels
+Use
+.Xr crypto_verify16 3monocypher
+to compare message authentication codes.
+Avoid standard buffer comparison functions:
+they may not run in constant time, enabling an attacker to exploit timing
+attacks to recover the MAC.
+.Pp
+The authentication key should be wiped with
+.Xr crypto_wipe 3monocypher
+after use.
+.Pp
+The incremental interface automatically wipes its context when finished,
+so users do not need to do it themselves.

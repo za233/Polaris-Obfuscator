@@ -1,0 +1,9 @@
+size:
+gcc -> 169.4kb
+polaris -> 273.8kb
+vmp -> 3322.3 kb
+
+time:
+gcc -> 0.016
+polaris -> 0.017
+vmp -> 0.1969

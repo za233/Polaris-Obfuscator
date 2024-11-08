@@ -1,0 +1,26 @@
+2018-07-26  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* Makefile.in.in: Upgrade to gettext-0.19.8.1.
+	* Rules-quot: Upgrade to gettext-0.19.8.1.
+
+2012-12-28  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* Makefile.in.in: Upgrade to gettext-0.18.1.
+	* Rules-quot: Upgrade to gettext-0.18.1.
+
+2007-04-01  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* Makefile.in.in: Upgrade to gettext-0.14.3.
+	* Rules-quot: Upgrade to gettext-0.14.3.
+
+2006-01-17  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* Makefile.in.in: New file, from gettext-0.11.4.
+	* boldquot.sed: New file, from gettext-0.11.4.
+	* en@boldquot.header: New file, from gettext-0.11.4.
+	* en@quot.header: New file, from gettext-0.11.4.
+	* insert-header.sin: New file, from gettext-0.11.4.
+	* quot.sed: New file, from gettext-0.11.4.
+	* remove-potcdate.sin: New file, from gettext-0.11.4.
+	* Rules-quot: New file, from gettext-0.11.4.
+

@@ -1,0 +1,110 @@
+July 27, 2018: Release 1.11
+
+ This release fixes a number of minor portability issues and minor
+ bugs. In cat and unixcrypt modes, "-" can now be specified as a
+ filename to mean standard input. The emacs mode has been updated for
+ compatibility with Emacs 26. Estonian translations were added. Thanks
+ to Hugh McDonald, dcb314, d8uoba, Zhang Jun, and Duncan Bayne for
+ reporting bugs, and to Estprog for the Estonian translation.
+
+October 18, 2012: Release 1.10
+
+ This release fixes a number of minor portability issues and minor
+ bugs. The ccrypt core functionality has been factored into a
+ convenience library libccrypt.a. A ccguess program was added to
+ assist in the recovery of mistyped keys. Improved error checking and
+ fixed minor compiler warnings.  Minor improvements to emacs support,
+ and added a --disable-emacs configuration option. Thanks to
+ bornlibra23 and Johannes Ruscheinski for bug reports.
+
+August 28, 2009: Release 1.9
+
+ This release fixes a number of portability issues. There is no change
+ in functionality relative to release 1.8. However, compilation errors
+ on several platforms have been fixed, including Mac OSX, Ubuntu,
+ FreeBSD, and Solaris 10.  Also, rudimentary OS/2 support via EMX has
+ been added. Thanks to Lester Ingber, Elbert Pol, and Michael Annino
+ for reporting problems and helping to fix them.
+
+June 5, 2009: Release 1.8
+
+ This long-overdue release fixes some minor bugs and adds minor
+ features. Added a new --keyref option to avoid double password
+ prompt. Added a new exit code in case the key was not entered or not
+ found. Added internationalization support and German and French
+ translations.  Fixed minor bugs in user interface and updated emacs
+ support. Password files ending in a DOS-style end-of-line marker are
+ now correctly recognized. Improved portability and testing.
+
+March 28, 2004: Release 1.7
+
+ Large file support now works under cygwin. Prompting twice for
+ encryption passwords is now the default. Added --disable-libcrypt
+ option for systems where libcrypt is broken.
+
+August 26, 2003: Release 1.6
+
+ Fixed a potential (but rare) segmentation fault. 
+
+August 25, 2003: Release 1.5
+
+ Numerous improvements to the code and some bug fixes. --mismatch
+ option now works again. Ccrypt now also compiles under the gcc-3.3
+ compiler and the cc compiler.  Return values were made more
+ meaningful. Autoconfiguration has been improved, and a new
+ --with-lispdir configuration option was added.  The "check" target
+ has been improved to work on more machines. Some bugs in emacs
+ support were fixed.
+
+March 29, 2003: Release 1.4
+
+ Ccrypt now handles files larger than 2GB. Also, a much-requested new
+ option --tmpfiles was added which causes ccrypt to use temporary
+ files during encryption, rather than overwriting the old file
+ contents destructively. This is less secure than the default
+ behavior, but it prevents data loss in case of an interruption or a
+ crash during crypting.
+
+September 26, 2002: Release 1.3
+
+ This release improves the speed of ccrypt by about 20-30% (in file
+ mode), 45-50% (in filter mode), and 85% (in unix crypt mode).
+ Encryption and decryption functions have been separated out into a
+ library ccryptlib which can be used by other GPL-compliant programs.
+ Encryption/decryption of write-protected files is now possible. Some
+ bugs in adding/removing filename suffixes were fixed, and a new
+ option --strictsuffix was added. Command line options were added to
+ specify the second key in keychange mode. Pseudorandom number
+ generation was improved by taking into account the current time in
+ microseconds, not just seconds. The --timid option now also applies
+ in filter mode. Autoconfiguration was improved.
+
+January 29, 2002: Release 1.2
+
+ This release provides vastly improved encryption/decryption speed. By
+ optimizing one critical inner loop, ccrypt now runs about 2-3 times
+ faster than the previous release. The only other changes were some
+ minor improvements to the autoconf scripts. No new features were
+ added.
+
+November 28, 2001: Release 1.1
+
+ There are two major changes in this release: first, I have added an
+ option --unixcrypt, which allows the decryption of files that have
+ been encrypted with the old unix "crypt" utility. Since the cipher
+ used by "crypt" is broken and no longer secure, it is recommended
+ that all such files should be converted to the ccrypt format. The
+ second change is that ccrypt is now configured using the
+ automake/autoconf tools. This should make compilation and
+ installation a lot more standard and portable. This release of ccrypt
+ compiles under Linux, SunOS, MacOS X, FreeBSD, AIX, and CygWin with
+ no problems, and it should be portable to other systems with no or
+ few changes. I have also added some tests that can be invoked by
+ "make check", which check that ccrypt is working properly.
+
+October 30, 2001: Release 1.0
+
+ This is the first public release of ccrypt. It fixes the file format
+ and the basic user interface. All future releases of ccrypt will be
+ backward compatible with this format, i.e., they will be able to
+ decrypt files that were produced by earlier releases.

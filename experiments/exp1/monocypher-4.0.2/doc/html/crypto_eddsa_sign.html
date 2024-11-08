@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+<!-- This is an automatically generated file.  Do not edit.
+   This file is dual-licensed.  Choose whichever you want.
+  
+   The first licence is a regular 2-clause BSD licence.  The second licence
+   is the CC-0 from Creative Commons. It is intended to release Monocypher
+   to the public domain.  The BSD licence serves as a fallback option.
+  
+   SPDX-License-Identifier: BSD-2-Clause OR CC0-1.0
+  
+   ----------------------------------------------------------------------------
+  
+   Copyright (c) 2017-2019, 2022-2023 Loup Vaillant
+   Copyright (c) 2017-2018 Michael Savage
+   Copyright (c) 2017, 2019-2023 Fabio Scotoni
+   All rights reserved.
+  
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are
+   met:
+  
+   1. Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+  
+   2. Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the
+      distribution.
+  
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+   HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  
+   ----------------------------------------------------------------------------
+  
+   Written in 2017-2023 by Loup Vaillant, Michael Savage and Fabio Scotoni
+  
+   To the extent possible under law, the author(s) have dedicated all copyright
+   and related neighboring rights to this software to the public domain
+   worldwide.  This software is distributed without any warranty.
+  
+   You should have received a copy of the CC0 Public Domain Dedication along
+   with this software.  If not, see
+   <https://creativecommons.org/publicdomain/zero/1.0/>
+   -->
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="style.css" type="text/css" media="all"/>
+  <title>CRYPTO_SIGN(3MONOCYPHER)</title>
+</head>
+<body>
+<table class="head">
+  <tr>
+    <td class="head-ltitle">CRYPTO_SIGN(3MONOCYPHER)</td>
+    <td class="head-vol">3MONOCYPHER</td>
+    <td class="head-rtitle">CRYPTO_SIGN(3MONOCYPHER)</td>
+  </tr>
+</table>
+<div class="manual-text">
+<section class="Sh">
+<h1 class="Sh" id="NAME"><a class="permalink" href="#NAME">NAME</a></h1>
+<p class="Pp"><code class="Nm">crypto_eddsa_sign</code>,
+    <code class="Nm">crypto_eddsa_check</code>,
+    <code class="Nm">crypto_eddsa_key_pair</code>,
+    <code class="Nm">crypto_eddsa_to_x25519</code>,
+    <code class="Nm">crypto_eddsa_trim_scalar</code>,
+    <code class="Nm">crypto_eddsa_reduce</code>,
+    <code class="Nm">crypto_eddsa_mul_add</code>,
+    <code class="Nm">crypto_eddsa_scalarbase</code>,
+    <code class="Nm">crypto_eddsa_check_equation</code> &#x2014;
+    <span class="Nd">public key signatures</span></p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SYNOPSIS"><a class="permalink" href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p class="Pp"><code class="In">#include
+    &lt;<a class="In">monocypher.h</a>&gt;</code></p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_eddsa_sign</code>(<var class="Fa">uint8_t
+    signature[64]</var>, <var class="Fa">const uint8_t secret_key[64]</var>,
+    <var class="Fa">const uint8_t *message</var>, <var class="Fa">size_t
+    message_size</var>);</p>
+<p class="Pp"><var class="Ft">int</var>
+  <br/>
+  <code class="Fn">crypto_eddsa_check</code>(<var class="Fa">const uint8_t
+    signature[64]</var>, <var class="Fa">const uint8_t public_key[32]</var>,
+    <var class="Fa">const uint8_t *message</var>, <var class="Fa">size_t
+    message_size</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_eddsa_key_pair</code>(<var class="Fa">uint8_t
+    secret_key[64]</var>, <var class="Fa">uint8_t public_key[32]</var>,
+    <var class="Fa">uint8_t seed[32]</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_eddsa_to_x25519</code>(<var class="Fa">uint8_t
+    x25519[32]</var>, <var class="Fa">const uint8_t eddsa[32]</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_eddsa_trim_scalar</code>(<var class="Fa">uint8_t
+    out[32]</var>, <var class="Fa">const uint8_t in[32]</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_eddsa_reduce</code>(<var class="Fa">uint8_t
+    reduced[32]</var>, <var class="Fa">const uint8_t expanded[64]</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_eddsa_mul_add</code>(<var class="Fa">uint8_t
+    r[32]</var>, <var class="Fa">const uint8_t a[32]</var>,
+    <var class="Fa">const uint8_t b[32]</var>, <var class="Fa">const uint8_t
+    c[32]</var>);</p>
+<p class="Pp"><var class="Ft">void</var>
+  <br/>
+  <code class="Fn">crypto_eddsa_scalarbase</code>(<var class="Fa">uint8_t
+    point[32]</var>, <var class="Fa">const uint8_t scalar[32]</var>);</p>
+<p class="Pp"><var class="Ft">int</var>
+  <br/>
+  <code class="Fn">crypto_eddsa_check_equation</code>(<var class="Fa">const
+    uint8_t Rs[64]</var>, <var class="Fa">const uint8_t A[32]</var>,
+    <var class="Fa">const uint8_t h[32]</var>);</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="DESCRIPTION"><a class="permalink" href="#DESCRIPTION">DESCRIPTION</a></h1>
+<section class="Ss">
+<h2 class="Ss">High level API</h2>
+<p class="Pp"><a class="permalink" href="#crypto_eddsa_sign"><code class="Fn" id="crypto_eddsa_sign">crypto_eddsa_sign</code></a>()
+    and <code class="Fn">crypto_eddsa_check</code>() provide EdDSA public key
+    signatures and verification.
+    <a class="permalink" href="#crypto_eddsa_key_pair"><code class="Fn" id="crypto_eddsa_key_pair">crypto_eddsa_key_pair</code></a>()
+    computes the private and public keys from a random seed. The arguments
+  are:</p>
+<dl class="Bl-tag">
+  <dt><var class="Fa">seed</var></dt>
+  <dd>Random seed, freshly generated and used only once. It is automatically
+      wiped by <code class="Fn">crypto_eddsa_key_pair</code>(). See
+      <a class="Xr" href="intro.html">intro(3monocypher)</a> about random number
+      generation (use your operating system's random number generator).</dd>
+  <dt><var class="Fa">signature</var></dt>
+  <dd>The signature.</dd>
+  <dt><var class="Fa">secret_key</var></dt>
+  <dd>A secret key generated by <code class="Fn">crypto_eddsa_key_pair</code>(),
+      known only to you. Internally the secret key is made up of the seed and
+      the public key. They are bundled together to avoid misuse, and should be
+      treated as a unit.</dd>
+  <dt><var class="Fa">public_key</var></dt>
+  <dd>The associated public key, known to everyone.</dd>
+  <dt><var class="Fa">message</var></dt>
+  <dd>The message to sign.</dd>
+  <dt><var class="Fa">message_size</var></dt>
+  <dd>Length of <var class="Fa">message</var>, in bytes.</dd>
+</dl>
+<p class="Pp"><var class="Fa">signature</var> and <var class="Fa">message</var>
+    may overlap.</p>
+<p class="Pp" id="crypto_eddsa_sign~2"><a class="permalink" href="#crypto_eddsa_sign~2"><code class="Fn">crypto_eddsa_sign</code></a>()
+    signs a message with <var class="Fa">secret_key</var>.</p>
+<p class="Pp" id="crypto_eddsa_check"><a class="permalink" href="#crypto_eddsa_check"><code class="Fn">crypto_eddsa_check</code></a>()
+    checks that a given signature is genuine. Meaning, only someone who had the
+    private key could have signed the message.
+    <a class="permalink" href="#It"><b class="Sy" id="It">It does not run in
+    constant time</b></a>. It does not have to in most threat models because
+    nothing is secret: everyone knows the public key, and the signature and
+    message are rarely secret. If the message needs to be secret, use a key
+    exchange protocol involving
+    <a class="Xr" href="crypto_x25519.html">crypto_x25519(3monocypher)</a> and
+    then
+    <a class="Xr" href="crypto_aead_lock.html">crypto_aead_lock(3monocypher)</a>
+    instead.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss">Conversion to X25519</h2>
+<p class="Pp"><a class="permalink" href="#crypto_eddsa_to_x25519"><code class="Fn" id="crypto_eddsa_to_x25519">crypto_eddsa_to_x25519</code></a>()
+    Converts and EdDSA public key to an X25519 public key. Note that it ignores
+    the sign of the <i class="Em">x</i> coordinate of the EdDSA input. The
+    inverse operation is provided by
+    <a class="Xr" href="crypto_x25519_to_eddsa.html">crypto_x25519_to_eddsa(3monocypher)</a>.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss">Low-level building blocks</h2>
+<p class="Pp"><code class="Fn">crypto_eddsa_trim_scalar</code>(),
+    <code class="Fn">crypto_eddsa_reduce</code>(),
+    <code class="Fn">crypto_eddsa_mul_add</code>(),
+    <code class="Fn">crypto_eddsa_scalarbase</code>(), and
+    <code class="Fn">crypto_eddsa_check_equation</code>() provide low-level
+    functionality to implement specialised APIs and variants of EdDSA.
+    Monocypher uses them to implement all high-level EdDSA and Ed25519
+    functions.</p>
+<p class="Pp" id="dangerous">These functions are
+    <a class="permalink" href="#dangerous"><b class="Sy">dangerous</b></a>,
+    using them directly allows many kinds of catastrophic misuse. The following
+    descriptions are kept concise and technical on purpose. If you do not
+    understand them, do not not use those functions.</p>
+<p class="Pp" id="crypto_eddsa_trim_scalar"><a class="permalink" href="#crypto_eddsa_trim_scalar"><code class="Fn">crypto_eddsa_trim_scalar</code></a>()
+    reads a 256-bit number represented in little-endian, and outputs the same
+    number modified as follows: the 3 least significant bits are cleared; the
+    most significant bit is cleared; and the second most significant bit is
+  set.</p>
+<p class="Pp" id="crypto_eddsa_reduce"><a class="permalink" href="#crypto_eddsa_reduce"><code class="Fn">crypto_eddsa_reduce</code></a>()
+    reads a 512-bit number represented in little-endian, and outputs the same
+    number reduced modulo the prime order of Curve25519.</p>
+<p class="Pp" id="crypto_eddsa_mul_add"><a class="permalink" href="#crypto_eddsa_mul_add"><code class="Fn">crypto_eddsa_mul_add</code></a>()
+    reads three 256-bit numbers represented in little-endian, and outputs
+    <var class="Fa">a</var> &#x00D7; <var class="Fa">b</var> +
+    <var class="Fa">c</var>, reduced modulo the prime order of Curve25519.</p>
+<p class="Pp" id="crypto_eddsa_scalarbase"><a class="permalink" href="#crypto_eddsa_scalarbase"><code class="Fn">crypto_eddsa_scalarbase</code></a>()
+    reads a 256-bit number represented in little-endian, and outputs the result
+    of the scalar multiplication between that number and the twisted Edwards
+    base point of Curve25519. The output uses the same compressed representation
+    as regular EdDSA public keys: the most significant bit represents the sign
+    of the <i class="Em">x</i> coordinate (1 if it is odd, 0 if it is even), and
+    the 255 other bits represent the
+    <a class="permalink" href="#y"><i class="Em" id="y">y</i></a> coordinate in
+    little-endian.</p>
+<p class="Pp" id="crypto_eddsa_check_equation"><a class="permalink" href="#crypto_eddsa_check_equation"><code class="Fn">crypto_eddsa_check_equation</code></a>()
+    reads a signature <var class="Fa">Rs</var>, a public_key
+    <var class="Fa">A</var>, and hash <var class="Fa">h</var>, then checks the
+    following:</p>
+<ul class="Bl-dash">
+  <li><var class="Fa">A</var> and <var class="Fa">R</var> are both on the
+    curve.</li>
+  <li><var class="Fa">s</var> is below the prime order of Curve25519.</li>
+  <li>[8&#x00D7;s]B = [8]R + [8&#x00D7;h]A</li>
+</ul>
+<p class="Pp" id="This">It then returns 0 if all checks hold, -1 otherwise. Note
+    that <var class="Fa">A</var> and <var class="Fa">R</var> are allowed to have
+    low order, and their encoding is allowed to be non-canonical.
+    <a class="permalink" href="#This"><b class="Sy">This function does not run
+    in constant time</b></a>, do not use it with secret inputs.</p>
+</section>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="RETURN_VALUES"><a class="permalink" href="#RETURN_VALUES">RETURN
+  VALUES</a></h1>
+<section class="Ss">
+<h2 class="Ss">High level API</h2>
+<p class="Pp"><code class="Fn">crypto_eddsa_key_pair</code>() and
+    <code class="Fn">crypto_eddsa_sign</code>() return nothing.</p>
+<p class="Pp"><code class="Fn">crypto_eddsa_check</code>() returns 0 for
+    legitimate signatures and -1 for forgeries.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss">Conversion to X25519</h2>
+<p class="Pp"><code class="Fn">crypto_eddsa_to_x25519</code>() returns
+  nothing.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss">Low-level building blocks</h2>
+<p class="Pp"><code class="Fn">crypto_eddsa_trim_scalar</code>(),
+    <code class="Fn">crypto_eddsa_reduce</code>(),
+    <code class="Fn">crypto_eddsa_mul_add</code>(), and
+    <code class="Fn">crypto_eddsa_scalarbase</code>() return nothing.</p>
+<p class="Pp"><code class="Fn">crypto_eddsa_check_equation</code>() returns 0
+    for legitimate signatures and -1 for forgeries.</p>
+</section>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="EXAMPLES"><a class="permalink" href="#EXAMPLES">EXAMPLES</a></h1>
+<p class="Pp">The following examples assume the existence of
+    <code class="Fn">arc4random_buf</code>(), which fills the given buffer with
+    cryptographically secure random bytes. If
+    <code class="Fn">arc4random_buf</code>() does not exist on your system, see
+    <a class="Xr" href="intro.html">intro(3monocypher)</a> for advice about how
+    to generate cryptographically secure random bytes.</p>
+<p class="Pp">Generate a key pair:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>uint8_t seed[32]; /* Random seed         */
+uint8_t sk  [64]; /* secret key          */
+uint8_t pk  [32]; /* Matching public key */
+arc4random_buf(seed, 32);
+crypto_eddsa_key_pair(sk, pk, seed);
+/* Wipe the secret key if it is no longer needed */
+/* The seed is wiped automatically               */
+crypto_wipe(sk, 32);</pre>
+</div>
+<p class="Pp">Sign a message:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>uint8_t       sk       [64]; /* Secret key from above          */
+const uint8_t message  [11] = &quot;Lorem ipsu&quot;; /* Message to sign */
+uint8_t       signature[64];
+crypto_eddsa_sign(signature, sk, message, 10);
+/* Wipe the secret key if it is no longer needed */
+crypto_wipe(sk, 32);</pre>
+</div>
+<p class="Pp">Check the above:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>const uint8_t pk       [32]; /* Their public key              */
+const uint8_t message  [11] = &quot;Lorem ipsu&quot;; /* Signed message */
+const uint8_t signature[64]; /* Signature to check            */
+if (crypto_eddsa_check(signature, pk, message, 10)) {
+	/* Message is corrupted, do not trust it */
+} else {
+	/* Message is genuine */
+}</pre>
+</div>
+<p class="Pp">Implement XEdDSA (signatures with X25519 keys normally used for
+    key exchange) with the low-level building blocks</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>#include &lt;monocypher.h&gt;
+#include &lt;monocypher-ed25519.h&gt;
+#include &lt;string.h&gt;
+
+void xed25519_sign(uint8_t signature[64],
+                   const uint8_t secret_key[32],
+                   const uint8_t random[64],
+                   const uint8_t *message, size_t message_size)
+{
+	static const uint8_t zero   [32] = {0};
+	static const uint8_t minus_1[32] = {
+		0xec, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58,
+		0xd6, 0x9c, 0xf7, 0xa2, 0xde, 0xf9, 0xde, 0x14,
+		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10,
+	};
+	static const uint8_t prefix[32] = {
+		0xfe, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+		0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+		0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+		0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+	};
+
+	/* Key pair (a, A) */
+	uint8_t A[32];  /* XEdDSA public key  */
+	uint8_t a[32];  /* XEdDSA private key */
+	crypto_eddsa_trim_scalar(a, secret_key);
+	crypto_eddsa_scalarbase(A, a);
+	int is_negative = A[31] &amp; 0x80; /* Retrieve sign bit */
+	A[31] &amp;= 0x7f;                  /* Clear sign bit    */
+	if (is_negative) {
+		/* a = -a */
+		crypto_eddsa_mul_add(a, a, minus_1, zero);
+	}
+
+	/* Secret nonce r */
+	uint8_t r[64];
+	crypto_sha512_ctx ctx;
+	crypto_sha512_init  (&amp;ctx);
+	crypto_sha512_update(&amp;ctx, prefix , 32);
+	crypto_sha512_update(&amp;ctx, a      , 32);
+	crypto_sha512_update(&amp;ctx, message, message_size);
+	crypto_sha512_update(&amp;ctx, random , 64);
+	crypto_sha512_final (&amp;ctx, r);
+	crypto_eddsa_reduce(r, r);
+
+	/* First half of the signature R */
+	uint8_t R[32];
+	crypto_eddsa_scalarbase(R, r);
+
+	/* hash(R || A || M) */
+	uint8_t H[64];
+	crypto_sha512_init  (&amp;ctx);
+	crypto_sha512_update(&amp;ctx, R      , 32);
+	crypto_sha512_update(&amp;ctx, A      , 32);
+	crypto_sha512_update(&amp;ctx, message, message_size);
+	crypto_sha512_final (&amp;ctx, H);
+	crypto_eddsa_reduce(H, H);
+
+	/* Signature */
+	memcpy(signature, R, 32);
+	crypto_eddsa_mul_add(signature + 32, a, H, r);
+
+	/* Wipe secrets (A, R, and H are not secret) */
+	crypto_wipe(a, 32);
+	crypto_wipe(r, 32);
+}
+
+int xed25519_verify(const uint8_t signature[64],
+                    const uint8_t public_key[32],
+                    const uint8_t *message, size_t message_size)
+{
+	/* Convert X25519 key to EdDSA */
+	uint8_t A[32];
+	crypto_x25519_to_eddsa(A, public_key);
+
+	/* hash(R || A || M) */
+	uint8_t H[64];
+	crypto_sha512_ctx ctx;
+	crypto_sha512_init  (&amp;ctx);
+	crypto_sha512_update(&amp;ctx, signature, 32);
+	crypto_sha512_update(&amp;ctx, A        , 32);
+	crypto_sha512_update(&amp;ctx, message  , message_size);
+	crypto_sha512_final (&amp;ctx, H);
+	crypto_eddsa_reduce(H, H);
+
+	/* Check signature */
+	return crypto_eddsa_check_equation(signature, A, H);
+}</pre>
+</div>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SEE_ALSO"><a class="permalink" href="#SEE_ALSO">SEE
+  ALSO</a></h1>
+<p class="Pp"><a class="Xr" href="crypto_blake2b.html">crypto_blake2b(3monocypher)</a>,
+    <a class="Xr" href="crypto_x25519.html">crypto_x25519(3monocypher)</a>,
+    <a class="Xr" href="crypto_aead_lock.html">crypto_aead_lock(3monocypher)</a>,
+    <a class="Xr" href="intro.html">intro(3monocypher)</a></p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="STANDARDS"><a class="permalink" href="#STANDARDS">STANDARDS</a></h1>
+<p class="Pp"><code class="Fn">crypto_eddsa_sign</code>(),
+    <code class="Fn">crypto_eddsa_check</code>(), and
+    <code class="Fn">crypto_eddsa_key_pair</code>() implement PureEdDSA with
+    Curve25519 and BLAKE2b, as described in RFC 8032. This is the same as
+    Ed25519, with BLAKE2b instead of SHA-512.</p>
+<p class="Pp"><code class="Fn">crypto_eddsa_trim_scalar</code>(),
+    <code class="Fn">crypto_eddsa_reduce</code>(),
+    <code class="Fn">crypto_eddsa_mul_add</code>(),
+    <code class="Fn">crypto_eddsa_scalarbase</code>(), and
+    <code class="Fn">crypto_eddsa_check_equation</code>() can be used to
+    implement any Curve25519 based EdDSA variant, including Ed25519 and
+    Ed25519ph.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="HISTORY"><a class="permalink" href="#HISTORY">HISTORY</a></h1>
+<p class="Pp">The <code class="Fn">crypto_sign</code>(),
+    <code class="Fn">crypto_check</code>(), and
+    <code class="Fn">crypto_sign_public_key</code>() functions appeared in
+    Monocypher 0.2.</p>
+<p class="Pp">Starting with Monocypher 2.0.5, modified signatures abusing the
+    inherent signature malleability property of EdDSA now cause a non-zero
+    return value of <code class="Fn">crypto_check</code>(); in prior versions,
+    such signatures would be accepted.</p>
+<p class="Pp" id="A"><a class="permalink" href="#A"><b class="Sy">A critical
+    security vulnerability</b></a> that caused all-zero signatures to be
+    accepted was introduced in Monocypher 0.3; it was fixed in Monocypher 1.1.1
+    and 2.0.4.</p>
+<p class="Pp">In Monocypher 4.0.0
+    <code class="Fn">crypto_eddsa_trim_scalar</code>(),
+    <code class="Fn">crypto_eddsa_reduce</code>(),
+    <code class="Fn">crypto_eddsa_mul_add</code>(),
+    <code class="Fn">crypto_eddsa_scalarbase</code>(), and
+    <code class="Fn">crypto_eddsa_check_equation</code>() were added, and the
+    incremental and custom hash API removed. The main interface was also
+    reworked to avoid misuse, and
+    <code class="Fn">crypto_eddsa_key_pair</code>() replaced
+    <code class="Fn">crypto_sign_public_key</code>().</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="CAVEATS"><a class="permalink" href="#CAVEATS">CAVEATS</a></h1>
+<p class="Pp">Monocypher does not perform any input validation. Any deviation
+    from the specified input and output length ranges results in
+    <a class="permalink" href="#undefined"><b class="Sy" id="undefined">undefined
+    behaviour</b></a>. Make sure your inputs are correct.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SECURITY_CONSIDERATIONS"><a class="permalink" href="#SECURITY_CONSIDERATIONS">SECURITY
+  CONSIDERATIONS</a></h1>
+<section class="Ss">
+<h2 class="Ss" id="Signature_malleability"><a class="permalink" href="#Signature_malleability">Signature
+  malleability</a></h2>
+<p class="Pp">Signature malleability is the ability of an attacker to produce a
+    valid signature with knowledge of only an existing signature and the public
+    key. Monocypher prevents that by checking the encoding of the signature, and
+    guarantees that generating new signatures requires the private key.</p>
+<p class="Pp">On the other hand, EdDSA signatures are not unique like
+    cryptographic hashes. The signing procedure is deterministic by
+    specification and <code class="Fn">crypto_eddsa_sign</code>() follows this
+    specification. However, someone with the private key can generate
+    arbitrarily many valid, canonical, and different signatures of the same
+    message. Because of this, never assume that signatures are unique.</p>
+</section>
+<section class="Ss">
+<h2 class="Ss" id="Fault_injection_and_power_analysis"><a class="permalink" href="#Fault_injection_and_power_analysis">Fault
+  injection and power analysis</a></h2>
+<p class="Pp">Fault injection (also known as glitching) and power analysis may
+    be used to manipulate the resulting signature and recover the secret key in
+    some cases. This requires hardware access. We can try to mitigate this
+    attack by prefixing all hashes a random data block, in a construction
+    similar to Ed25519ctx. Note that there may still be other power-related side
+    channels (such as if the CPU leaks information when an operation overflows a
+    register) that must be considered.</p>
+</section>
+</section>
+</div>
+<table class="foot">
+  <tr>
+    <td class="foot-date">February 25, 2023</td>
+    <td class="foot-os">Debian</td>
+  </tr>
+</table>
+</body>
+</html>
