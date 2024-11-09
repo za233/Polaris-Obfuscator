@@ -153,7 +153,7 @@ We have several examples in the "Examples" directory that demonstrate  how to us
 
 Through these examples, you will be able to perceive that adding  obfuscation to your code is a very simple thing.  Moreover, you will also be capable of sensing the threats that  traditional IR-based obfuscation is exposed to and how Polaris resolves  these threats.  
 
-We use `/examples/1/example1` as an example. Part of the source code is shown below.
+We use `/examples/2/example2` as an example. Part of the source code is shown below.
 
 ```C++
 class TEA {
