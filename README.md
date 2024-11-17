@@ -18,7 +18,12 @@ Compared with the OLLVM framework, this framework not only provides obfuscation 
 
 ### 0x2 MIR Level Obfuscation
 
-Polaris's back-end obfuscation is designed to make decompilers ineffective, preventing IR-based obfuscation from being removed. Polaris's backend obfuscation can disrupt the disassembly phase of the  decompiler, making it unable to properly identify functions. In  addition, the backend data flow obfuscation can render the decompilation process ineffective, generating nonsensical pseudocode.
+Polaris's back-end obfuscation is designed to make decompilers ineffective, preventing IR-based obfuscation from being removed. Polaris's backend obfuscation can disrupt the disassembly phase of the  decompiler, making it unable to properly identify functions. In  addition, the backend data flow obfuscation can render the decompilation process ineffective, generating nonsensical pseudocode.  It uses four obfuscation techniques to achieve those effects.
+
+- **Dirty Bytes Insertion** : It inserts meaningless data between machine instructions and leverages opaque predicate and conditional jump instructions to prevent the data from being executed.
+- **Function Splitting**:  It may cause decompilers to misidentify the basic block as a function and attempt to decompile it. 
+- **Junk Instruction Insertion**:  By inserting numerous junk instructions with side effects but no impact on program semantics, the data flow analysis conducted by decompilers can be impeded significantly.
+- **Instruction Substitution**:  It replaces specify instructions with several instructions which have the same semantics. It reduces the disparity between junk instructions and original instructions
 
 
 ## Build
