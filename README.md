@@ -212,6 +212,8 @@ use command `clang++ example2.cpp -mllvm -passes=sub,bcf,fla -o example2` to get
 
 ![3](/imgs/backend_obfu_example.png)
 
-
-
 Even though attackers force IDA to generate some pseudo code, the output was still wrong and really hard to read. The results are shown in the picture below.![3](/imgs/backend_obfu_example2.png)
+
+The following pictures show the IDA's analysis results for original program and obfuscated program. Most functions of the original program have been identified, shown in blue.![4](/imgs/backend_obfu_example4.png)
+
+On the contrary, the functions in the obfuscated program cannot be properly recognized by IDA. The program is filled with instructions and data that IDA cannot recognize as functions, shown in red and grey.![5](/imgs/backend_obfu_example3.png)
