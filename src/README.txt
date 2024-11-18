@@ -1,0 +1,1 @@
+This obfuscator is based on LLVM-16.0.6. Please download the complete LLVM project and copy the `llvm` folder into the LLVM project directory. Then follow the instructions of compiling the LLVM project.
