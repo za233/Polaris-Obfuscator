@@ -154,7 +154,7 @@ Value *LinearMBA::buildLinearMBA(BinaryOperator *OriginalInsn,
 }
 bool LinearMBA::processAt(Instruction &Insn) {
   std::vector<LinearMBATerm> TermsSelected;
-  Value *Result;
+  Value *Result = nullptr;
   if (isa<BinaryOperator>(Insn)) {
     BinaryOperator &BI = cast<BinaryOperator>(Insn);
     switch (BI.getOpcode()) {

@@ -70,7 +70,8 @@ PreservedAnalyses BogusControlFlow2::run(Function &F,
       origBB.push_back(&BB);
     }
     for (BasicBlock *BB : origBB) {
-      if (isa<InvokeInst>(BB->getTerminator()) || BB->isEHPad()) {
+      if (isa<InvokeInst>(BB->getTerminator()) || BB->isEHPad() ||
+          (getRandomNumber() % 100) <= 20) {
         continue;
       }
       BasicBlock *headBB = BB;
