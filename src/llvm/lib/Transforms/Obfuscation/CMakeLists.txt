@@ -8,8 +8,11 @@ add_llvm_component_library(LLVMObfuscation
   GlobalsEncryption.cpp
   IndirectBranch.cpp
   IndirectCall.cpp
+  LinearMBA.cpp
+  MergeFunction.cpp
   Substitution.cpp
   Pipeline.cpp
+  MBAMatrix.cpp
 
   LINK_COMPONENTS
   Core
@@ -18,3 +21,4 @@ add_llvm_component_library(LLVMObfuscation
   TransformUtils
   
   )
+

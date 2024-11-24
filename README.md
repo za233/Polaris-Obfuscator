@@ -15,6 +15,7 @@ Compared with the OLLVM framework, this framework not only provides obfuscation 
 - **String Encryption**: Encrypt global constants in the program and decrypt them in the function stack.(instead of .ctor)
 - **Bogus Control Flow**: Insert amount of conditional jumps with opaque predicates to complicate the control flow graph.
 - **Instruction Substitution**: Replace the arithmetic instruction with an equivalent set of arithmetic instructions.
+- **Merge Function**： Merge several functions into one function.
 
 ### 0x2 MIR Level Obfuscation
 
@@ -113,6 +114,7 @@ here are some supported pass's names:
 - **alias**: enable alias access obfuscation
 - **bcf**: enable bogus control flow obfuscation
 - **sub**: enable instruction substitution obfuscation
+- **merge**: enable functions merging obfuscation
 
 Enabling multiple obfuscation passes is supported,  you should separate pass names with commas.
 
@@ -128,17 +130,17 @@ this command will enable flattening obfuscation and indirect call obfuscation wh
 
 After enabling the pass, you need to mark functions in your source as follows to inform the obfuscator which functions should be obfuscated.
 
-For LLVM IR-based obfuscation, you can use the `annotate` to mark a function and specify which obfuscation passes should be applied to that function. Here are some supported pass names along with their corresponding obfuscations.
+For **IR-based obfuscation**, you can use the `annotate` to mark a function and specify which obfuscation passes should be applied to that function. Here are some supported pass names along with their corresponding obfuscations.
 
 - indirectcall for indirect call obfuscation
 - indirectbr for indirect branch obfuscation
 - flattening for flattening obfuscation
 - aliasaccess for alias access obfuscation
 - boguscfg for bogus control flow obfuscation
-
 - substitution for instruction substitution
+- mergefunction for functions merging
 
-For backend obfuscation, you need to insert an `asm` statement into the obfuscated function, and its label must be `backend-obfu`. The backend will automatically identify functions with this statement, and then perform backend obfuscation.
+For **backend obfuscation**, you need to insert an `asm` statement into the obfuscated function, and its label must be `backend-obfu`. The backend will automatically identify functions with this statement, and then perform backend obfuscation.
 
 An example of a marking function is shown in the following code, where the target function is obfuscated with indirect call ,indirect branch,alias access and backend obfuscation.
 
@@ -150,7 +152,7 @@ int __attribute((__annotate__(("indirectcall,indirectbr,aliasaccess")))) main() 
 }
 ```
 
-### 
+
 
 ## Examples
 
@@ -216,4 +218,4 @@ Even though attackers force IDA to generate some pseudo code, the output was sti
 
 The following pictures show the IDA's analysis results for original program and obfuscated program. Most functions of the original program have been identified, shown in blue.![4](/imgs/backend_obfu_example4.png)
 
-On the contrary, the functions in the obfuscated program cannot be properly recognized by IDA. The program is filled with instructions and data that IDA cannot recognize as functions, shown in red and grey.![5](/imgs/backend_obfu_example3.png)
+On the contrary, the obfuscated program is filled with instructions and data that IDA cannot recognize as functions, shown in red and grey.![5](/imgs/backend_obfu_example3.png)

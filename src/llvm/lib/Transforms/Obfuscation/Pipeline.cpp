@@ -10,6 +10,8 @@
 #include "llvm/Transforms/Obfuscation/GlobalsEncryption.h"
 #include "llvm/Transforms/Obfuscation/IndirectBranch.h"
 #include "llvm/Transforms/Obfuscation/IndirectCall.h"
+#include "llvm/Transforms/Obfuscation/LinearMBA.h"
+#include "llvm/Transforms/Obfuscation/MergeFunction.h"
 #include "llvm/Transforms/Obfuscation/Substitution.h"
 #include "llvm/Transforms/Utils/LowerSwitch.h"
 using namespace llvm;
@@ -26,7 +28,7 @@ ModulePassManager buildObfuscationPipeline() {
   ModulePassManager MPM;
 
   for (auto pass : Passes) {
-    // errs() << pass << "\n";
+    errs() << pass << "\n";
     if (pass == "fla") {
       MPM.addPass(Flattening());
     } else if (pass == "gvenc") {
@@ -50,6 +52,12 @@ ModulePassManager buildObfuscationPipeline() {
     } else if (pass == "sub") {
       FunctionPassManager FPM;
       FPM.addPass(Substitution());
+      MPM.addPass(createModuleToFunctionPassAdaptor(std::move(FPM)));
+    } else if (pass == "merge") {
+      MPM.addPass(MergeFunction());
+    } else if (pass == "mba") {
+      FunctionPassManager FPM;
+      FPM.addPass(LinearMBA());
       MPM.addPass(createModuleToFunctionPassAdaptor(std::move(FPM)));
     }
   }
