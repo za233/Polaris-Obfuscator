@@ -29,7 +29,7 @@ Polaris's back-end obfuscation is designed to make decompilers ineffective, prev
 
 ## Build
 
-**Download the complete LLVM-16.0.6 project and copy the `llvm` folder from `src` into the LLVM project directory.**
+**Use build.sh to build the obfuscator or you can follow the instructions below to build according to your needs.**   
 
 Then Configure and build LLVM and Clang:
 
