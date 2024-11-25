@@ -15,7 +15,8 @@ Compared with the OLLVM framework, this framework not only provides obfuscation 
 - **String Encryption**: Encrypt global constants in the program and decrypt them in the function stack.(instead of .ctor)
 - **Bogus Control Flow**: Insert amount of conditional jumps with opaque predicates to complicate the control flow graph.
 - **Instruction Substitution**: Replace the arithmetic instruction with an equivalent set of arithmetic instructions.
-- **Merge Function**： Merge several functions into one function.
+- **Merge Function**：Merge several functions into one function.
+- **Linear MBA**: Use Linear MBA to replace bitwise operators.
 
 ### 0x2 MIR Level Obfuscation
 
@@ -115,6 +116,7 @@ here are some supported pass's names:
 - **bcf**: enable bogus control flow obfuscation
 - **sub**: enable instruction substitution obfuscation
 - **merge**: enable functions merging obfuscation
+- **mba**: enable linear mba obfuscation
 
 Enabling multiple obfuscation passes is supported,  you should separate pass names with commas.
 
@@ -139,6 +141,7 @@ For **IR-based obfuscation**, you can use the `annotate` to mark a function and 
 - boguscfg for bogus control flow obfuscation
 - substitution for instruction substitution
 - mergefunction for functions merging
+- linearmba for linear mba obfuscation
 
 For **backend obfuscation**, you need to insert an `asm` statement into the obfuscated function, and its label must be `backend-obfu`. The backend will automatically identify functions with this statement, and then perform backend obfuscation.
 
