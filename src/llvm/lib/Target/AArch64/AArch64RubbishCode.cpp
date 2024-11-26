@@ -32,14 +32,14 @@ public:
 
   bool runOnMachineFunction(MachineFunction &MF) override;
 };
+} // namespace
 char AArch64RubbishCodePass::ID = 0;
-
-bool AArch64RubbishCodePass::runOnMachineFunction(MachineFunction &MF) {
-  return false;
-}
 INITIALIZE_PASS(AArch64RubbishCodePass, DEBUG_TYPE, DEBUG_TYPE, false, false)
 
 FunctionPass *llvm::createAArch64RubbishCodePassPass() {
   return new AArch64RubbishCodePass();
 }
-} // namespace
+
+bool AArch64RubbishCodePass::runOnMachineFunction(MachineFunction &MF) {
+  return false;
+}
