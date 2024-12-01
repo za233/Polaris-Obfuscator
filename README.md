@@ -32,6 +32,8 @@ Polaris's back-end obfuscation is designed to make decompilers ineffective, prev
 
 **Use build.sh to build the obfuscator or you can follow the instructions below to build according to your needs.**   
 
+**Note: please make sure -DLLVM_ENABLE_ASSERTIONS=Off.**
+
 Then Configure and build LLVM and Clang:
 
 * ``cd llvm-project``
