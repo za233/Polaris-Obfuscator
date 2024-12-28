@@ -1,6 +1,6 @@
 # Polairs-Obfuscator
 
-Polairs-Obfuscator is a code obfuscator based on LLVM 16.0.6.This project contain several IR-based obfuscation and backend obfuscation which can transform the code into a more complex form in the IR level (or assemble level) while preserving the original code's semantics. Using this obfuscator to compile code can prevent you code from being cracked.  
+Polairs-Obfuscator is a code obfuscator based on LLVM 16.0.6.This project contain several IR-based obfuscation and backend obfuscation which can transform the code into a more complex form in the IR level (or assemble level) while preserving the original code's semantics. Using this obfuscator to compile code can prevent your code from being cracked.  
 
 ## Features
 
@@ -11,7 +11,7 @@ Compared with the OLLVM framework, this framework not only provides obfuscation 
 - **Alias Access**:  Use pointer aliases to access local variables.
 - **Flattening**: Control flow flattening obfuscation.
 - **Indirect Branch**: Use real-time computed target addresses for indirect jumps.
-- **Indirect Call**:  Using real-time computed function address for .
+- **Indirect Call**:  Using real-time computed function address for indirect calls.
 - **String Encryption**: Encrypt global constants in the program and decrypt them in the function stack.(instead of .ctor)
 - **Bogus Control Flow**: Insert amount of conditional jumps with opaque predicates to complicate the control flow graph.
 - **Instruction Substitution**: Replace the arithmetic instruction with an equivalent set of arithmetic instructions.
@@ -20,7 +20,7 @@ Compared with the OLLVM framework, this framework not only provides obfuscation 
 
 ### 0x2 MIR Level Obfuscation
 
-Polaris's back-end obfuscation is designed to make decompilers ineffective, preventing IR-based obfuscation from being removed. Polaris's backend obfuscation can disrupt the disassembly phase of the  decompiler, making it unable to properly identify functions. In  addition, the backend data flow obfuscation can render the decompilation process ineffective, generating nonsensical pseudocode.  It uses four obfuscation techniques to achieve those effects.
+Polaris's back-end obfuscation is designed to make decompilers ineffective, preventing IR-based obfuscation from being removed. Polaris's backend obfuscation can disrupt the disassembly phase of the decompiler, making it unable to properly identify functions. In addition, the backend data flow obfuscation can render the decompilation process ineffective, generating nonsensical pseudocode. It uses four obfuscation techniques to achieve those effects.
 
 - **Dirty Bytes Insertion** : It inserts meaningless data between machine instructions and leverages opaque predicate and conditional jump instructions to prevent the data from being executed.
 - **Function Splitting**:  It may cause decompilers to misidentify the basic block as a function and attempt to decompile it. 
