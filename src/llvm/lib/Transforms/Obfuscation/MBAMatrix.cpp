@@ -86,6 +86,7 @@ void MBAMatrix::lineElimate(int Dst, int Src, int ColumnIdx) {
 void MBAMatrix::gaussian() {
   sortLine();
   for (int i = 0; i < Line; i++) {
+    sortLine();
     int Start = getLineFirstNonZero(i);
     if (Start == Column) {
       break;
@@ -94,10 +95,12 @@ void MBAMatrix::gaussian() {
       lineElimate(j, i, Start);
     }
     simplify();
+    sortLine();
   }
 
   int Rank = getRank();
   for (int i = Rank - 1; i > 0; i--) {
+    sortLine();
     int Z = getLineFirstNonZero(i);
     if (Z == Column) {
       break;
@@ -106,6 +109,7 @@ void MBAMatrix::gaussian() {
       lineElimate(j, i, Z);
     }
     simplify();
+    sortLine();
   }
   sortLine();
 }
