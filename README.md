@@ -1,6 +1,6 @@
-# Polairs-Obfuscator
+# Polaris-Obfuscator
 
-Polairs-Obfuscator is a code obfuscator based on LLVM 16.0.6.This project contain several IR-based obfuscation and backend obfuscation which can transform the code into a more complex form in the IR level (or assemble level) while preserving the original code's semantics. Using this obfuscator to compile code can prevent your code from being cracked.  
+Polaris-Obfuscator is a code obfuscator based on LLVM 16.0.6.This project contain several IR-based obfuscation and backend obfuscation which can transform the code into a more complex form in the IR level (or assemble level) while preserving the original code's semantics. Using this obfuscator to compile code can prevent your code from being cracked.  
 
 ## Features
 
